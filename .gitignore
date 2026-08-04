@@ -1,0 +1,41 @@
+# Android Studio
+.idea/
+*.iml
+.navigation/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Gradle
+.gradle/
+build/
+**/build/
+
+# Local environment
+local.properties
+.env
+.env.*
+!.env.example
+
+# Android packages and signing
+*.apk
+*.aab
+*.ap_
+*.jks
+*.keystore
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# LLM model files
+*.litertlm
+*.task
+*.tflite
+models/
+
+# Temporary files
+*.tmp
+*.swp

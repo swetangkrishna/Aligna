@@ -40,6 +40,6 @@ dependencies {
     // it's now fixed instead of left floating (a future "latest.release" could otherwise
     // silently pull a breaking change on a later sync).
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.24"
-    implementation "com.google.ai.edge.litertlm:litertlm-android:latest.release"
+    implementation "com.google.ai.edge.litertlm:litertlm-android:0.15.0"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2"
 }
