@@ -3,7 +3,7 @@ import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.middleware import RequestContextMiddleware
-from app.api.routes import chat, health
+from app.api.routes import auth, chat, health
 from app.core.config import get_settings
 from fastapi import HTTPException
 from fastapi.exceptions import RequestValidationError
@@ -83,3 +83,8 @@ async def root() -> dict[str, str]:
         "service": settings.app_name,
         "status": "running",
     }
+
+app.include_router(
+    auth.router,
+    prefix=settings.api_v1_prefix,
+)

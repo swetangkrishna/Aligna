@@ -18,6 +18,23 @@ class Settings(BaseSettings):
     min_length=16,
     )
 
+    database_url: str = (
+        "postgresql+asyncpg://"
+        "aligna:aligna_dev_password@postgres:5432/aligna"
+    )
+
+    jwt_secret_key: str = Field(
+        default="replace-with-a-long-random-secret",
+        min_length=32,
+    )
+
+    jwt_algorithm: str = "HS256"
+
+    access_token_expire_minutes: int = Field(
+        default=30,
+        ge=5,
+        le=1440,
+    )
     model_provider: Literal["ollama", "vllm"] = "ollama"
     model_base_url: HttpUrl = Field(
         default="http://host.docker.internal:11434/v1"

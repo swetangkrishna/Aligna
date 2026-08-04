@@ -1,5 +1,7 @@
 from typing import Annotated
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.db.session import get_database_session
 from fastapi import Depends
 
 from app.core.config import Settings, get_settings
@@ -23,4 +25,9 @@ def get_model_client(
 ModelClientDependency = Annotated[
     ModelClient,
     Depends(get_model_client),
+]
+
+DatabaseSessionDependency = Annotated[
+    AsyncSession,
+    Depends(get_database_session),
 ]
