@@ -72,6 +72,11 @@ class RemoteAiProvider(
                     )
                 }
 
+            val requestId =
+                java.util.UUID
+                    .randomUUID()
+                    .toString()
+
             val request =
                 Request.Builder()
                     .url(
@@ -86,6 +91,14 @@ class RemoteAiProvider(
                         "Accept",
                         "application/json"
                     )
+                    .header(
+                        "X-Aligna-API-Key",
+                        BuildConfig.AI_API_KEY
+                    )
+                    .header(
+                        "X-Request-ID",
+                        requestId
+                    )
                     .build()
 
             client
@@ -96,9 +109,42 @@ class RemoteAiProvider(
                         response.body?.string().orEmpty()
 
                     if (!response.isSuccessful) {
+                        val requestId =
+                            response.header(
+                                "X-Request-ID"
+                            ).orEmpty()
+
+                        val errorMessage =
+                            try {
+                                JSONObject(responseBody)
+                                    .optJSONObject("error")
+                                    ?.optString("message")
+                                    ?.takeIf {
+                                        it.isNotBlank()
+                                    }
+                            } catch (_: Throwable) {
+                                null
+                            }
+
                         throw IOException(
-                            "AI server error ${response.code}: " +
-                                    responseBody.take(500)
+                            buildString {
+                                append(
+                                    errorMessage
+                                        ?: "AI server request failed"
+                                )
+
+                                append(
+                                    " (status=${response.code}"
+                                )
+
+                                if (requestId.isNotBlank()) {
+                                    append(
+                                        ", requestId=$requestId"
+                                    )
+                                }
+
+                                append(")")
+                            }
                         )
                     }
 

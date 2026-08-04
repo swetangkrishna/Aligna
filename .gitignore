@@ -39,3 +39,29 @@ models/
 # Temporary files
 *.tmp
 *.swp
+
+.venv/
+
+venv/
+
+env/
+
+**/.venv/
+
+**/venv/
+
+**/env/
+
+# Python caches
+
+__pycache__/
+
+*.py[cod]
+
+.pytest_cache/
+
+.mypy_cache/
+
+.ruff_cache/
+
+EOF

@@ -23,10 +23,22 @@ android {
 
         release {
             minifyEnabled false
-
+            buildConfigField(
+                    "String",
+                    "AI_API_KEY",
+                    "\"\""
+            )
             buildConfigField "String", "AI_PROVIDER", "\"remote\""
             buildConfigField "String", "AI_BASE_URL", "\"https://api.aligna.app\""
+            buildConfigField(
 
+                    "String",
+
+                    "AI_API_KEY",
+
+                    "\"pIiQt0B4zdA_Bt3SKWbbzB1W-VASKzUOsvIs38p_sD4\""
+
+            )
             proguardFiles getDefaultProguardFile(
                     "proguard-android-optimize.txt"
             ), "proguard-rules.pro"
