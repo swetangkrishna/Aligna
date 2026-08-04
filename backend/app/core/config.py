@@ -13,6 +13,11 @@ class Settings(BaseSettings):
 
     api_v1_prefix: str = "/api/v1"
 
+    app_api_key: str = Field(
+    default="change-this-development-key",
+    min_length=16,
+    )
+
     model_provider: Literal["ollama", "vllm"] = "ollama"
     model_base_url: HttpUrl = Field(
         default="http://host.docker.internal:11434/v1"

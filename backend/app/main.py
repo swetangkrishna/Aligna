@@ -2,10 +2,17 @@ import logging
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+from app.core.middleware import RequestContextMiddleware
 from app.api.routes import chat, health
 from app.core.config import get_settings
+from fastapi import HTTPException
+from fastapi.exceptions import RequestValidationError
 
+from app.core.errors import (
+    http_exception_handler,
+    unexpected_exception_handler,
+    validation_exception_handler,
+)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -29,6 +36,12 @@ app = FastAPI(
 )
 
 app.add_middleware(
+
+    RequestContextMiddleware
+
+)
+
+app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
     allow_credentials=False,
@@ -49,6 +62,20 @@ app.include_router(
     prefix=settings.api_v1_prefix,
 )
 
+app.add_exception_handler(
+    HTTPException,
+    http_exception_handler,
+)
+
+app.add_exception_handler(
+    RequestValidationError,
+    validation_exception_handler,
+)
+
+app.add_exception_handler(
+    Exception,
+    unexpected_exception_handler,
+)
 
 @app.get("/")
 async def root() -> dict[str, str]:

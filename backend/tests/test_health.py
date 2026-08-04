@@ -12,6 +12,9 @@ def test_health_endpoint() -> None:
     )
 
     assert response.status_code == 200
+    assert response.headers.get(
+        "X-Request-ID"
+    )
 
     data = response.json()
 

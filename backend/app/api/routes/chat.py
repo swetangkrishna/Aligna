@@ -1,4 +1,7 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
+from typing import Annotated
+
+from app.api.security import require_api_key
 
 from app.api.dependencies import (
     ModelClientDependency,
@@ -14,6 +17,9 @@ from app.services.model_client import ModelServiceError
 router = APIRouter(
     prefix="/chat",
     tags=["chat"],
+    dependencies=[
+        Depends(require_api_key),
+    ],
 )
 
 

@@ -21,6 +21,39 @@ class ModelClient:
     ) -> None:
         self._settings = settings
 
+    async def check_health(
+        self,
+    ) -> bool:
+        base_url = str(
+            self._settings.model_base_url
+        ).rstrip("/")
+
+        models_endpoint = f"{base_url}/models"
+
+        timeout = httpx.Timeout(
+            10.0,
+            connect=5.0,
+        )
+
+        try:
+            async with httpx.AsyncClient(
+                timeout=timeout,
+            ) as client:
+                response = await client.get(
+                    models_endpoint,
+                    headers={
+                        "Authorization": (
+                            "Bearer "
+                            f"{self._settings.model_api_key}"
+                        ),
+                    },
+                )
+
+            return response.is_success
+
+        except httpx.HTTPError:
+            return False
+
     async def complete(
         self,
         request: ChatCompletionRequest,
