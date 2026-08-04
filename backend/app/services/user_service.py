@@ -1,5 +1,6 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+import uuid
 
 from app.core.passwords import (
     hash_password,
@@ -25,7 +26,18 @@ def normalize_email(
 ) -> str:
     return email.strip().lower()
 
+async def find_user_by_id(
+    session: AsyncSession,
+    user_id: uuid.UUID,
+) -> User | None:
+    result = await session.execute(
+        select(User).where(
+            User.id == user_id
+        )
+    )
 
+    return result.scalar_one_or_none()
+    
 async def find_user_by_email(
     session: AsyncSession,
     email: str,

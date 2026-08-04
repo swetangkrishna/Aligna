@@ -13,7 +13,11 @@ import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 class RemoteAiProvider(
-    private val baseUrl: String = BuildConfig.AI_BASE_URL
+    private val baseUrl: String =
+        BuildConfig.AI_BASE_URL,
+
+    private val accessTokenProvider:
+        () -> String? = { null }
 ) : AiProvider {
 
     private val jsonMediaType =
@@ -92,8 +96,8 @@ class RemoteAiProvider(
                         "application/json"
                     )
                     .header(
-                        "X-Aligna-API-Key",
-                        BuildConfig.AI_API_KEY
+                        "Authorization",
+                        "Bearer $accessToken"
                     )
                     .header(
                         "X-Request-ID",

@@ -3,7 +3,12 @@ import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.middleware import RequestContextMiddleware
-from app.api.routes import auth, chat, health
+from app.api.routes import (
+    auth,
+    chat,
+    health,
+    users,
+)
 from app.core.config import get_settings
 from fastapi import HTTPException
 from fastapi.exceptions import RequestValidationError
@@ -59,6 +64,11 @@ app.include_router(
 
 app.include_router(
     chat.router,
+    prefix=settings.api_v1_prefix,
+)
+
+app.include_router(
+    users.router,
     prefix=settings.api_v1_prefix,
 )
 

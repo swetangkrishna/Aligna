@@ -13,11 +13,6 @@ class Settings(BaseSettings):
 
     api_v1_prefix: str = "/api/v1"
 
-    app_api_key: str = Field(
-    default="change-this-development-key",
-    min_length=16,
-    )
-
     database_url: str = (
         "postgresql+asyncpg://"
         "aligna:aligna_dev_password@postgres:5432/aligna"

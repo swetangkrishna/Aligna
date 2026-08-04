@@ -6,7 +6,7 @@ from app.main import app
 client = TestClient(app)
 
 
-def test_chat_requires_api_key() -> None:
+def test_chat_requires_bearer_token() -> None:
     response = client.post(
         "/api/v1/chat/completions",
         json={
@@ -20,12 +20,9 @@ def test_chat_requires_api_key() -> None:
     )
 
     assert response.status_code == 401
-
-    data = response.json()
-
     assert (
-        data["error"]["code"]
-        == "missing_api_key"
+        response.headers.get(
+            "WWW-Authenticate"
+        )
+        == "Bearer"
     )
-
-    assert data["error"]["request_id"]

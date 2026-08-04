@@ -1,7 +1,9 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from typing import Annotated
 
-from app.api.security import require_api_key
+from app.api.authentication import (
+    CurrentUserDependency,
+)
 
 from app.api.dependencies import (
     ModelClientDependency,
@@ -17,9 +19,7 @@ from app.services.model_client import ModelServiceError
 router = APIRouter(
     prefix="/chat",
     tags=["chat"],
-    dependencies=[
-        Depends(require_api_key),
-    ],
+
 )
 
 
@@ -29,9 +29,12 @@ router = APIRouter(
 )
 async def create_chat_completion(
     request: ChatCompletionRequest,
+    current_user: CurrentUserDependency,
     settings: SettingsDependency,
     model_client: ModelClientDependency,
 ) -> ChatCompletionResponse:
+    _ = current_user
+
     total_characters = sum(
         len(message.content)
         for message in request.messages
