@@ -16,9 +16,20 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField "String", "AI_PROVIDER", "\"remote\""
+            buildConfigField "String", "AI_BASE_URL", "\"http://10.0.2.2:8000\""
+        }
+
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "AI_PROVIDER", "\"remote\""
+            buildConfigField "String", "AI_BASE_URL", "\"https://api.aligna.app\""
+
+            proguardFiles getDefaultProguardFile(
+                    "proguard-android-optimize.txt"
+            ), "proguard-rules.pro"
         }
     }
     compileOptions {
@@ -26,7 +37,12 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions { jvmTarget = '17' }
-}
+
+	
+    buildFeatures {
+    buildConfig true
+	}
+	}
 
 repositories {
     google()
@@ -41,5 +57,6 @@ dependencies {
     // silently pull a breaking change on a later sync).
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.24"
     implementation "com.google.ai.edge.litertlm:litertlm-android:0.15.0"
+    implementation "com.squareup.okhttp3:okhttp:4.12.0"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2"
 }
