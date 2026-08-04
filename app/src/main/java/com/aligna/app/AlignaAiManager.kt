@@ -4,18 +4,20 @@ import android.content.Context
 import android.util.Log
 import org.json.JSONArray
 import org.json.JSONObject
+import com.aligna.app.ai.AiProvider
+import com.aligna.app.ai.AiProviderFactory
 
 class AlignaAiManager(
     context: Context
 ) : AutoCloseable {
 
-    private val gemma =
-        GemmaEngine(
+    private val provider: AiProvider =
+        AiProviderFactory.create(
             context.applicationContext
         )
 
     suspend fun initialize() {
-        gemma.initialize()
+        provider.initialize()
     }
 
     suspend fun answerQuestion(
@@ -105,7 +107,7 @@ class AlignaAiManager(
             }
         )
 
-        return gemma.generateAnswer(
+        return provider.generate(
             systemInstruction =
                 systemPrompt,
 
@@ -169,7 +171,7 @@ Return this JSON structure:
 }
             """.trimIndent()
 
-        return gemma.generateAnswer(
+        return provider.generate(
             systemInstruction =
                 AlignaPromptBuilder
                     .workoutPlanSystemPrompt(),
@@ -235,7 +237,7 @@ Return this JSON structure:
 }
             """.trimIndent()
 
-        return gemma.generateAnswer(
+        return provider.generate(
             systemInstruction =
                 AlignaPromptBuilder
                     .mealPlanSystemPrompt(),
@@ -376,15 +378,15 @@ Return this JSON structure:
     }
 
     fun backend(): String {
-        return gemma.getBackend()
+        return provider.providerName()
     }
 
     fun isInitialized(): Boolean {
-        return gemma.isInitialized()
+        return provider.isInitialized()
     }
 
     override fun close() {
-        gemma.close()
+        provider.close()
     }
 
     private fun JSONObject.putNullable(
