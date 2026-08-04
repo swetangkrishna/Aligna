@@ -1,0 +1,45 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.aligna.app'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.aligna.app"
+        minSdk 26
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions { jvmTarget = '17' }
+}
+
+repositories {
+    google()
+    mavenCentral()
+}
+
+dependencies {
+    // On-device LLM inference (Gemma 4, via LiteRT-LM — replaces the earlier MediaPipe
+    // tasks-genai integration per aligna_gemma4_integration_plan.md). Pinned to 0.14.0 —
+    // this is the version that actually resolved from "latest.release" during setup, so
+    // it's now fixed instead of left floating (a future "latest.release" could otherwise
+    // silently pull a breaking change on a later sync).
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.24"
+    implementation "com.google.ai.edge.litertlm:litertlm-android:latest.release"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2"
+}

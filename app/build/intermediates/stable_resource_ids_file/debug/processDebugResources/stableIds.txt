@@ -1,0 +1,8 @@
+com.aligna.app:style/AppTheme = 0x7f050000
+com.aligna.app:string/app_name = 0x7f040000
+com.aligna.app:mipmap/ic_launcher_round = 0x7f030001
+com.aligna.app:mipmap/ic_launcher = 0x7f030000
+com.aligna.app:drawable/ic_launcher_foreground = 0x7f020000
+com.aligna.app:color/ic_launcher_background = 0x7f010002
+com.aligna.app:color/brand = 0x7f010001
+com.aligna.app:color/bg = 0x7f010000

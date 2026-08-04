@@ -1,0 +1,8 @@
+com.aligna.app-pngs-0 /Users/swetangkrishna/AndroidStudioProjects/aligna-android_6/android/app/build/generated/res/pngs/debug
+com.aligna.app-resValues-1 /Users/swetangkrishna/AndroidStudioProjects/aligna-android_6/android/app/build/generated/res/resValues/debug
+com.aligna.app-updated_navigation_xml-2 /Users/swetangkrishna/AndroidStudioProjects/aligna-android_6/android/app/build/generated/updated_navigation_xml/debug
+com.aligna.app-packageDebugResources-3 /Users/swetangkrishna/AndroidStudioProjects/aligna-android_6/android/app/build/intermediates/incremental/debug/packageDebugResources/merged.dir
+com.aligna.app-packageDebugResources-4 /Users/swetangkrishna/AndroidStudioProjects/aligna-android_6/android/app/build/intermediates/incremental/debug/packageDebugResources/stripped.dir
+com.aligna.app-debug-5 /Users/swetangkrishna/AndroidStudioProjects/aligna-android_6/android/app/build/intermediates/merged_res/debug/mergeDebugResources
+com.aligna.app-debug-6 /Users/swetangkrishna/AndroidStudioProjects/aligna-android_6/android/app/src/debug/res
+com.aligna.app-main-7 /Users/swetangkrishna/AndroidStudioProjects/aligna-android_6/android/app/src/main/res

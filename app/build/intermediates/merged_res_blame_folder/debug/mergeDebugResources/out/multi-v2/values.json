@@ -1,0 +1,62 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.aligna.app-mergeDebugResources-2:/values/values.xml",
+            "map": [
+                {
+                    "source": "/Users/swetangkrishna/AndroidStudioProjects/aligna-android_6/android/app/src/main/res/values/colors.xml",
+                    "from": {
+                        "startLines": "2,1,3",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "56,16,93",
+                        "endColumns": "36,39,56",
+                        "endOffsets": "88,51,145"
+                    },
+                    "to": {
+                        "startLines": "2,3,4",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,92,132",
+                        "endColumns": "36,39,56",
+                        "endOffsets": "87,127,184"
+                    }
+                },
+                {
+                    "source": "/Users/swetangkrishna/AndroidStudioProjects/aligna-android_6/android/app/src/main/res/values/themes.xml",
+                    "from": {
+                        "startLines": "1",
+                        "startColumns": "4",
+                        "startOffsets": "16",
+                        "endLines": "4",
+                        "endColumns": "12",
+                        "endOffsets": "236"
+                    },
+                    "to": {
+                        "startLines": "6",
+                        "startColumns": "4",
+                        "startOffsets": "233",
+                        "endLines": "9",
+                        "endColumns": "12",
+                        "endOffsets": "453"
+                    }
+                },
+                {
+                    "source": "/Users/swetangkrishna/AndroidStudioProjects/aligna-android_6/android/app/src/main/res/values/strings.xml",
+                    "from": {
+                        "startLines": "1",
+                        "startColumns": "4",
+                        "startOffsets": "16",
+                        "endColumns": "43",
+                        "endOffsets": "55"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "189",
+                        "endColumns": "43",
+                        "endOffsets": "228"
+                    }
+                }
+            ]
+        }
+    ]
+}

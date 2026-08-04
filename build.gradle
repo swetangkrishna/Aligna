@@ -1,0 +1,9 @@
+plugins {
+    id 'com.android.application' version '8.13.2' apply false
+    // Bumped from 1.9.24: litertlm-android's classes are compiled with Kotlin 2.3.0
+    // metadata, and a 1.9.x compiler can only read metadata up to 2.0.0 — hence the
+    // "incompatible version of Kotlin" error. 2.3.20 is the latest stable release as
+    // of this fix and comfortably reads 2.3.0 metadata; Gradle 8.7 (see gradle-wrapper.properties)
+    // and AGP 8.5.0 both support it.
+    id 'org.jetbrains.kotlin.android' version '2.3.20' apply false
+}
