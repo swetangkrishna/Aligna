@@ -1,0 +1,6 @@
+#!/Users/swetangkrishna/AndroidStudioProjects/aligna-android_6/android/backend/.venv/bin/python
+import sys
+from detect_installer._test import main
+if __name__ == '__main__':
+    sys.argv[0] = sys.argv[0].removesuffix('.exe')
+    sys.exit(main())
