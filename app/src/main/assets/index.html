@@ -7,11 +7,97 @@
   <meta name="theme-color" content="#4B3B87">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
+  <!-- Web manifest disabled in the Android WebView build. -->
+  <!-- 
   <link rel="manifest" href="manifest.webmanifest">
+  -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
+    .ai-plan-summary {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 16px;
+  border: 1px solid
+    rgba(75, 59, 135, 0.16);
+  border-radius: 18px;
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f3effb
+    );
+  box-shadow: var(--shadow);
+}
+
+.ai-plan-summary.hidden {
+  display: none;
+}
+
+.ai-plan-summary-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ai-plan-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 5px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--green-soft);
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ai-plan-summary h3 {
+  margin: 0;
+  color: var(--ink);
+  font-family:
+    "Bricolage Grotesque",
+    sans-serif;
+  font-size: 18px;
+}
+
+.ai-plan-summary p {
+  margin: 3px 0 0;
+  color: var(--ink-soft);
+  font-size: 12.5px;
+}
+
+.ai-plan-adjust {
+  flex: none;
+  border: 0;
+  background: transparent;
+  color: var(--green);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.ai-plan-days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ai-plan-days span {
+  padding: 5px 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-weight: 700;
+}
     .personalised-home-button {
   display: grid;
   width: calc(100% - 40px);
@@ -113,7 +199,17 @@
       env(safe-area-inset-bottom)
     );
 }
-
+.personalised-grocery-source {
+  flex: none;
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: #f0ecf8;
+  color: #716887;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
 .personalised-header {
   display: flex;
   align-items: center;
@@ -410,18 +506,194 @@
 }
 
 .ai-action-preview {
-  max-height: 240px;
-  overflow-y: auto;
   padding: 14px;
   border: 1px solid #e7e0f2;
-  border-radius: 15px;
-  background: #faf8fd;
+  border-radius: 17px;
+  background:
+    linear-gradient(
+      145deg,
+      #faf8fd,
+      #f5f1fb
+    );
   color: #40384f;
-  font-size: 13px;
-  line-height: 1.5;
-  white-space: pre-wrap;
 }
 
+.action-preview-row {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.action-preview-emoji {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  flex: none;
+  place-items: center;
+  border-radius: 14px;
+  background: #ebe5f8;
+  font-size: 21px;
+}
+
+.action-preview-copy {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.action-preview-copy strong {
+  color: #2c2540;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.action-preview-copy span {
+  color: #7c748d;
+  font-size: 12.5px;
+  line-height: 1.35;
+}
+
+.action-preview-copy em {
+  margin-top: 2px;
+  color: #513b99;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 750;
+}
+
+.action-preview-plan {
+  display: grid;
+  gap: 12px;
+}
+
+.action-preview-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.action-preview-tags span {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #574c6b;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.action-preview-replacement {
+  display: grid;
+  gap: 8px;
+}
+
+.action-preview-replacement div {
+  display: grid;
+  gap: 2px;
+}
+
+.action-preview-replacement small {
+  color: #91889f;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.action-preview-replacement strong {
+  color: #2c2540;
+  font-size: 14px;
+}
+
+.action-preview-arrow {
+  color: #513b99;
+  font-size: 16px;
+}
+.action-preview-meal-list {
+  display: grid;
+  gap: 8px;
+}
+
+.action-preview-meal-list > div {
+  display: grid;
+  grid-template-columns:
+    28px
+    1fr;
+  column-gap: 8px;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.action-preview-meal-list > div > span {
+  grid-row: 1 / 3;
+  font-size: 20px;
+}
+
+.action-preview-meal-list strong {
+  color: #302a40;
+  font-size: 12.5px;
+}
+
+.action-preview-meal-list small {
+  color: #81798f;
+  font-size: 10.5px;
+}
+
+.action-preview-warning {
+  margin: 0;
+  color: #9b4c31;
+  font-size: 12px;
+}
+
+.active-workout-header {
+  display: grid;
+  gap: 3px;
+  margin: 3px 0 12px;
+  padding: 12px 14px;
+  border-left: 4px solid
+    var(--green);
+  border-radius: 0 14px 14px 0;
+  background: #ffffff;
+  box-shadow: var(--shadow);
+}
+
+.active-workout-header small {
+  color: var(--ink-soft);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.active-workout-header strong {
+  color: var(--ink);
+  font-size: 15px;
+}
+
+.active-workout-header span {
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+
+.ai-action-header-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.ai-action-header-row .ai-action-icon {
+  margin-bottom: 0;
+}
+
+.ai-action-label {
+  color: #766c89;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
 .ai-action-buttons {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -626,7 +898,22 @@
        (now violet, #4B3B87) so the rest of the stylesheet below doesn't need
        renaming everywhere it's used. --amber/--clay are now the coral accent. */
     *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-    html,body{margin:0;padding:0}
+    html,body{
+      margin:0;
+      padding:0;
+      max-width:100%;
+      overflow-x:hidden;
+    }
+
+    .app,
+    #view-train,
+    #view-train section,
+    .sessionpick,
+    .session-group,
+    .session-grid{
+      max-width:100%;
+      min-width:0;
+    }
     body{
       background:var(--bg);
       color:var(--ink);
@@ -810,8 +1097,88 @@
     .pillbtn{border:1.5px solid var(--line);background:var(--surface-2);border-radius:10px;padding:8px 12px;font-family:inherit;font-weight:600;font-size:13px;color:var(--ink);cursor:pointer}
 
     /* train */
-    .sessionpick{display:flex;gap:8px;margin-bottom:12px}
-    .sbtn{flex:1;border:1.5px solid var(--line);background:var(--surface);border-radius:13px;padding:10px 6px;cursor:pointer;text-align:center;transition:.15s}
+    .sessionpick {
+  display: grid;
+  gap: 14px;
+  width: 100%;
+  margin-bottom: 14px;
+  overflow: visible;
+}
+
+.session-group {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.session-group-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.session-group-title {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.session-group-count {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--green-soft);
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.session-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(88px, 1fr)
+    );
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+}
+
+.session-grid.personalised {
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(110px, 1fr)
+    );
+}
+
+.sbtn {
+  width: 100%;
+  min-width: 0;
+  min-height: 66px;
+  padding: 9px 7px;
+  overflow: hidden;
+}
+
+.sbtn .sn {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sbtn .sl {
+  display: -webkit-box;
+  overflow: hidden;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+    .sbtn{flex:none;border:1.5px solid var(--line);background:var(--surface);border-radius:13px;padding:10px 6px;cursor:pointer;text-align:center;transition:.15s}
     .sbtn.on{background:var(--green);border-color:var(--green)}
     .sbtn .sn{font-family:'Bricolage Grotesque';font-weight:800;font-size:16px;color:var(--ink)}
     .sbtn .sl{font-size:11px;color:var(--ink-soft);margin-top:1px}
@@ -1154,9 +1521,19 @@
       <div class="ribbon" style="border-left-color:var(--green);margin-bottom:14px">
         Right now, train to build — not to burn. Moderate effort, full rest between sessions, and eat within an hour of finishing. That's how the work turns into weight.
       </div>
-      <p class="eyebrow">This week's plan · 3 sessions</p>
-      <div class="sessionpick" id="sessionPick"></div>
-      <div id="todayTag" class="todaytag"></div>
+      <div
+  id="aiPlanSummary"
+  class="ai-plan-summary hidden"
+></div>
+
+<div
+  class="sessionpick"
+  id="sessionPick"
+></div>
+<div
+id="todayTag"
+class="active-workout-header"
+></div>
       <div id="workout"></div>
     </section>
   </div>
@@ -1248,8 +1625,8 @@
       Today
     </button>
     <button class="tab" data-v="ideas">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-9.33-5M6 8a6 6 0 0 0 4 5.65V17a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3.35A6 6 0 0 0 18 8M9 21h6"/></svg>
-      Ideas
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">  <path d="M4 15h16M6 15a6 6 0 0 1 12 0M12 9V7M9 4c0 1 1 1.5 1 2.5M14 4c0 1 1 1.5 1 2.5M3 19h18"/></svg>
+      Meals
     </button>
     <button class="tab" data-v="train">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 6.5l11 11M21 21l-1-1M3 3l1 1M18 22l4-4M2 6l4-4M7 17l-4 4M17 7l4-4"/><rect x="8" y="8" width="8" height="8" rx="1.5"/></svg>
@@ -1374,7 +1751,13 @@
   class="ai-action-overlay hidden"
 >
   <section class="ai-action-card">
-    <div class="ai-action-icon">✦</div>
+    <div class="ai-action-header-row">
+      <div class="ai-action-icon">✦</div>
+    
+      <span class="ai-action-label">
+        Suggested by Aligna
+      </span>
+    </div>
 
     <h3 id="ai-action-title">
       Apply this change?
@@ -1395,7 +1778,7 @@
         class="ai-action-secondary"
         type="button"
       >
-        Not now
+      Cancel
       </button>
 
       <button
@@ -1494,6 +1877,338 @@
       }
     };
 
+    function formatActionPreview(action) {
+  const payload =
+    action?.payload || {};
+
+  const safe = value =>
+    escapeHtml(
+      String(value ?? "")
+    );
+
+  switch(action?.type){
+    case "add_grocery_item":
+      return `
+        <div class="action-preview-row">
+          <div class="action-preview-emoji">
+            🛒
+          </div>
+
+          <div class="action-preview-copy">
+            <strong>
+              ${safe(
+                payload.name ||
+                payload.item ||
+                "Grocery item"
+              )}
+            </strong>
+
+            ${
+              payload.quantity
+                ? `
+                  <span>
+                    Quantity:
+                    ${safe(payload.quantity)}
+                  </span>
+                `
+                : ""
+            }
+          </div>
+        </div>
+      `;
+
+    case "remove_grocery_item":
+      return `
+        <div class="action-preview-row">
+          <div class="action-preview-emoji">
+            🗑️
+          </div>
+
+          <div class="action-preview-copy">
+            <strong>
+              ${safe(
+                payload.name ||
+                payload.item ||
+                "Grocery item"
+              )}
+            </strong>
+
+            <span>
+              Remove from shopping list
+            </span>
+          </div>
+        </div>
+      `;
+
+    case "save_workout_plan": {
+      const days =
+        Array.isArray(payload.days)
+          ? payload.days
+          : [];
+
+      return `
+        <div class="action-preview-plan">
+          <div class="action-preview-row">
+            <div class="action-preview-emoji">
+              🏋️
+            </div>
+
+            <div class="action-preview-copy">
+              <strong>
+                ${safe(
+                  payload.planName ||
+                  payload.name ||
+                  "Personalised workout"
+                )}
+              </strong>
+
+              <span>
+                ${days.length}
+                ${
+                  days.length === 1
+                    ? "training day"
+                    : "training days"
+                }
+              </span>
+            </div>
+          </div>
+
+          ${
+            days.length
+              ? `
+                <div class="action-preview-tags">
+                  ${days
+                    .slice(0, 7)
+                    .map(day => `
+                      <span>
+                        ${safe(
+                          day.day ||
+                          day.name ||
+                          "Training"
+                        )}
+                      </span>
+                    `)
+                    .join("")}
+                </div>
+              `
+              : ""
+          }
+        </div>
+      `;
+    }
+
+    case "save_meal_plan": {
+  const references =
+    extractMealReferences(
+      payload
+    );
+
+  const resolvedMeals =
+    references
+      .map(resolveMealIndex)
+      .filter(index =>
+        index >= 0
+      )
+      .map(index =>
+        IDEAS[index]
+      );
+
+  return `
+    <div class="action-preview-plan">
+      <div class="action-preview-row">
+        <div class="action-preview-emoji">
+          🍽️
+        </div>
+
+        <div class="action-preview-copy">
+          <strong>
+            ${safe(
+              payload.planName ||
+              payload.name ||
+              "Personalised meal plan"
+            )}
+          </strong>
+
+          <span>
+            ${resolvedMeals.length}
+            ${
+              resolvedMeals.length === 1
+                ? "meal"
+                : "meals"
+            }
+          </span>
+        </div>
+      </div>
+
+      ${
+        resolvedMeals.length
+          ? `
+            <div class="action-preview-meal-list">
+              ${resolvedMeals
+                .map(meal => `
+                  <div>
+                    <span>
+                      ${meal.em}
+                    </span>
+
+                    <strong>
+                      ${safe(meal.n)}
+                    </strong>
+
+                    <small>
+                      ${meal.k} kcal ·
+                      ${meal.protein}g protein
+                    </small>
+                  </div>
+                `)
+                .join("")}
+            </div>
+          `
+          : `
+            <p class="action-preview-warning">
+              The selected meals could not be matched
+              to Aligna's catalogue.
+            </p>
+          `
+      }
+    </div>
+  `;
+}
+
+    case "replace_meal":
+      return `
+        <div class="action-preview-replacement">
+          <div>
+            <small>Replace</small>
+
+            <strong>
+              ${safe(
+                payload.meal ||
+                payload.oldMeal ||
+                "Current meal"
+              )}
+            </strong>
+          </div>
+
+          <div class="action-preview-arrow">
+            ↓
+          </div>
+
+          <div>
+            <small>With</small>
+
+            <strong>
+              ${safe(
+                payload.replacement ||
+                payload.newMeal ||
+                payload.name ||
+                "Suggested meal"
+              )}
+            </strong>
+          </div>
+        </div>
+      `;
+
+    case "schedule_reminder":
+      return `
+        <div class="action-preview-row">
+          <div class="action-preview-emoji">
+            ⏰
+          </div>
+
+          <div class="action-preview-copy">
+            <strong>
+              ${safe(
+                payload.title ||
+                "Aligna reminder"
+              )}
+            </strong>
+
+            <span>
+              ${safe(
+                payload.text ||
+                payload.message ||
+                ""
+              )}
+            </span>
+
+            ${
+              payload.minutesFromNow
+                ? `
+                  <em>
+                    In
+                    ${safe(
+                      payload.minutesFromNow
+                    )}
+                    minutes
+                  </em>
+                `
+                : ""
+            }
+          </div>
+        </div>
+      `;
+
+    case "update_user_goal":
+      return `
+        <div class="action-preview-row">
+          <div class="action-preview-emoji">
+            🎯
+          </div>
+
+          <div class="action-preview-copy">
+            <strong>
+              ${safe(
+                payload.goal ||
+                payload.primaryGoal ||
+                "New goal"
+              )}
+            </strong>
+
+            <span>
+              Used for future recommendations
+            </span>
+          </div>
+        </div>
+      `;
+
+    case "mark_workout_complete":
+      return `
+        <div class="action-preview-row">
+          <div class="action-preview-emoji">
+            ✓
+          </div>
+
+          <div class="action-preview-copy">
+            <strong>
+              ${safe(
+                payload.name ||
+                payload.workout ||
+                "Current workout"
+              )}
+            </strong>
+
+            <span>
+              Add to progress history
+            </span>
+          </div>
+        </div>
+      `;
+
+    default:
+      return `
+        <div class="action-preview-copy">
+          <strong>
+            Aligna update
+          </strong>
+
+          <span>
+            Review and confirm this change.
+          </span>
+        </div>
+      `;
+  }
+}
     function openConfirmation(action) {
       pendingAction = action;
 
@@ -1508,13 +2223,39 @@
 
       description.textContent =
         labels.description;
+        const confirmLabels = {
+  add_grocery_item:
+    "Add item",
 
-      preview.textContent =
-        JSON.stringify(
-          action.payload,
-          null,
-          2
-        );
+  remove_grocery_item:
+    "Remove item",
+
+  save_workout_plan:
+    "Save workout",
+
+  save_meal_plan:
+    "Save meals",
+
+  replace_meal:
+    "Replace meal",
+
+  schedule_reminder:
+    "Set reminder",
+
+  mark_workout_complete:
+    "Mark complete",
+
+  update_user_goal:
+    "Update goal"
+};
+
+confirmButton.textContent =
+  confirmLabels[action.type] ||
+  "Apply change";
+        preview.innerHTML =
+  formatActionPreview(
+    action
+  );
 
       overlay.classList.remove("hidden");
     }
@@ -1522,7 +2263,7 @@
     function closeConfirmation() {
       overlay.classList.add("hidden");
       pendingAction = null;
-      preview.textContent = "";
+      preview.innerHTML = "";
     }
 
     window.addEventListener(
@@ -1533,7 +2274,7 @@
         );
       }
     );
-
+    
     cancelButton.addEventListener(
       "click",
       closeConfirmation
@@ -2189,6 +2930,156 @@ function findMealIndexById(mealId) {
     meal => meal.id === mealId
   );
 }
+function normaliseMealLookup(value){
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function findMealIndexByName(name){
+  const target =
+    normaliseMealLookup(name);
+
+  if(!target){
+    return -1;
+  }
+
+  return IDEAS.findIndex(meal => {
+    const mealName =
+      normaliseMealLookup(meal.n);
+
+    return (
+      mealName === target ||
+      mealName.includes(target) ||
+      target.includes(mealName)
+    );
+  });
+}
+
+function resolveMealIndex(value){
+  if(
+    Number.isInteger(value) &&
+    value >= 0 &&
+    value < IDEAS.length
+  ){
+    return value;
+  }
+
+  if(typeof value === "string"){
+    const byId =
+      findMealIndexById(value);
+
+    if(byId >= 0){
+      return byId;
+    }
+
+    return findMealIndexByName(value);
+  }
+
+  if(
+    value &&
+    typeof value === "object"
+  ){
+    const possibleId =
+      value.id ||
+      value.mealId ||
+      value.meal_id;
+
+    if(possibleId){
+      const byId =
+        findMealIndexById(
+          String(possibleId)
+        );
+
+      if(byId >= 0){
+        return byId;
+      }
+    }
+
+    const possibleName =
+      value.name ||
+      value.meal ||
+      value.title;
+
+    if(possibleName){
+      return findMealIndexByName(
+        possibleName
+      );
+    }
+  }
+
+  return -1;
+}
+function extractMealReferences(payload){
+  if(
+    !payload ||
+    typeof payload !== "object"
+  ){
+    return [];
+  }
+
+  const references = [];
+
+  if(Array.isArray(payload.mealIds)){
+    references.push(
+      ...payload.mealIds
+    );
+  }
+
+  if(Array.isArray(payload.meal_ids)){
+    references.push(
+      ...payload.meal_ids
+    );
+  }
+
+  if(Array.isArray(payload.meals)){
+    references.push(
+      ...payload.meals
+    );
+  }
+
+  if(Array.isArray(payload.days)){
+    payload.days.forEach(day => {
+      if(!day || typeof day !== "object"){
+        return;
+      }
+
+      if(Array.isArray(day.mealIds)){
+        references.push(
+          ...day.mealIds
+        );
+      }
+
+      if(Array.isArray(day.meal_ids)){
+        references.push(
+          ...day.meal_ids
+        );
+      }
+
+      if(Array.isArray(day.meals)){
+        references.push(
+          ...day.meals
+        );
+      }
+
+      /*
+       * Support a single meal object or name
+       * inside a day.
+       */
+      if(day.meal){
+        references.push(
+          day.meal
+        );
+      }
+    });
+  }
+
+  return references;
+}
+
 
 function getMealSummary(meal){
   return {
@@ -3133,6 +4024,306 @@ function findExerciseById(exerciseId) {
       exercise.id === exerciseId
   ) || null;
 }
+function normaliseExerciseLookup(value){
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function findExerciseByName(name){
+  const target =
+    normaliseExerciseLookup(name);
+
+  if(!target){
+    return null;
+  }
+
+  return allExercises().find(exercise => {
+    const exerciseName =
+      normaliseExerciseLookup(
+        exercise.name
+      );
+
+    return (
+      exerciseName === target ||
+      exerciseName.includes(target) ||
+      target.includes(exerciseName)
+    );
+  }) || null;
+}
+
+function resolveExercise(reference){
+  if(!reference){
+    return null;
+  }
+
+  if(typeof reference === "string"){
+    return (
+      findExerciseById(reference) ||
+      findExerciseByName(reference)
+    );
+  }
+
+  if(typeof reference === "object"){
+    const id =
+      reference.id ||
+      reference.exerciseId ||
+      reference.exercise_id;
+
+    if(id){
+      const byId =
+        findExerciseById(
+          String(id)
+        );
+
+      if(byId){
+        return {
+          ...byId,
+          ...reference,
+          id:
+            byId.id,
+          name:
+            byId.name
+        };
+      }
+    }
+
+    const name =
+      reference.name ||
+      reference.exercise ||
+      reference.title;
+
+    if(name){
+      const byName =
+        findExerciseByName(name);
+
+      if(byName){
+        return {
+          ...byName,
+          ...reference,
+          id:
+            byName.id,
+          name:
+            byName.name
+        };
+      }
+    }
+  }
+
+  return null;
+}
+function extractWorkoutDays(payload){
+  if(
+    !payload ||
+    typeof payload !== "object"
+  ){
+    return [];
+  }
+
+  if(Array.isArray(payload.days)){
+    return payload.days;
+  }
+
+  if(Array.isArray(payload.sessions)){
+    return payload.sessions;
+  }
+
+  if(Array.isArray(payload.workouts)){
+    return payload.workouts;
+  }
+
+  return [];
+}
+function normaliseAiWorkoutPlan(payload){
+  const rawDays =
+    extractWorkoutDays(payload);
+
+  const days =
+    rawDays
+      .map((day, dayIndex) => {
+        if(
+          !day ||
+          typeof day !== "object"
+        ){
+          return null;
+        }
+
+        const rawExercises =
+          Array.isArray(day.exercises)
+            ? day.exercises
+            : Array.isArray(
+                day.exerciseIds
+              )
+              ? day.exerciseIds
+              : Array.isArray(
+                  day.exercise_ids
+                )
+                ? day.exercise_ids
+                : [];
+
+        const exercises =
+          rawExercises
+            .map(resolveExercise)
+            .filter(Boolean)
+            .map(exercise => ({
+              ...exercise,
+
+              sets:
+                Number(exercise.sets) > 0
+                  ? Number(exercise.sets)
+                  : 3,
+
+              repetitions:
+                exercise.repetitions ||
+                exercise.reps ||
+                "8–12",
+
+              scheme:
+                exercise.scheme ||
+                `${
+                  Number(exercise.sets) > 0
+                    ? Number(exercise.sets)
+                    : 3
+                } × ${
+                  exercise.repetitions ||
+                  exercise.reps ||
+                  "8–12"
+                }`,
+
+              restSeconds:
+                Number(
+                  exercise.restSeconds ||
+                  exercise.rest_seconds
+                ) > 0
+                  ? Number(
+                      exercise.restSeconds ||
+                      exercise.rest_seconds
+                    )
+                  : 90
+            }));
+
+        if(!exercises.length){
+          return null;
+        }
+
+        return {
+          id:
+            String(
+              day.id ||
+              `ai_day_${dayIndex + 1}`
+            ),
+
+          day:
+            String(
+              day.day ||
+              day.name ||
+              `Day ${dayIndex + 1}`
+            ),
+
+          title:
+            String(
+              day.title ||
+              day.name ||
+              `Workout ${dayIndex + 1}`
+            ),
+
+          estimatedMinutes:
+            Number(
+              day.estimatedMinutes ||
+              day.durationMinutes ||
+              day.duration_minutes
+            ) || null,
+
+          exercises
+        };
+      })
+      .filter(Boolean);
+
+  if(!days.length){
+    throw new Error(
+      "The suggested workout did not contain exercises available in Aligna."
+    );
+  }
+
+  return {
+    id:
+      `ai_plan_${Date.now()}`,
+
+    name:
+      String(
+        payload.planName ||
+        payload.name ||
+        payload.title ||
+        "Personalised workout plan"
+      ),
+
+    createdAt:
+      new Date().toISOString(),
+
+    days
+  };
+}
+async function applyAiWorkoutPlan(payload){
+  const plan =
+    normaliseAiWorkoutPlan(
+      payload
+    );
+
+  S.aiWorkoutPlan =
+    plan;
+
+  S.curSession =
+    `AI:0`;
+
+  S.setProg = {};
+
+  await save();
+
+  renderTrain();
+
+  switchView(
+    "train"
+  );
+
+  if(
+    typeof closeAI ===
+    "function"
+  ){
+    closeAI();
+  }
+
+  window.dispatchEvent(
+    new CustomEvent(
+      "aligna-workout-plan-applied",
+      {
+        detail: plan
+      }
+    )
+  );
+}
+
+window.addEventListener(
+  "aligna-save-workout-plan",
+  event => {
+    applyAiWorkoutPlan(
+      event.detail || {}
+    ).catch(error => {
+      console.error(
+        "Could not apply AI workout plan",
+        error
+      );
+
+      aiAddMessage(
+        "bot error",
+        error?.message ||
+        "The workout plan could not be added."
+      );
+    });
+  }
+);
 
 function getExerciseSummary(exercise) {
   return {
@@ -3207,84 +4398,742 @@ function getExerciseSummary(exercise) {
     },1000);
   }
 
-  /* ---------- train rendering ---------- */
-  function renderTrain(){
-    const pick=document.getElementById("sessionPick"); pick.innerHTML="";
-    const todays=WEEK[new Date().getDay()];
-    if(!S.curSession) S.curSession = (todays==="rest"?"A":todays);
-    ["A","B","C"].forEach(k=>{
-      const b=document.createElement("button");
-      b.className="sbtn"+(S.curSession===k?" on":"");
-      b.innerHTML=`<div class="sn">${k}</div><div class="sl">${WORKOUTS[k].title.replace('Full Body ','Session ')}</div>`;
-      b.onclick=()=>{ S.curSession=k; save(); renderTrain(); };
-      pick.appendChild(b);
-    });
-    const tag=document.getElementById("todayTag");
-    tag.innerHTML = todays==="rest"
-      ? "Today is a <b>rest day</b> — recovery is where muscle is built. Light walking is great. Preview any session below."
-      : `Today's session: <b>${todays}</b>. Rest days fall between.`;
 
-    const w=WORKOUTS[S.curSession];
-    const wo=document.getElementById("workout");
-    const doneToday = (S.workouts||[]).some(x=>x.date===todayKey() && x.session===S.curSession);
-    wo.innerHTML="";
-    w.ex.forEach(ex=>{
-      const cur = (S.setProg&&S.setProg[ex.id])||0;
-      const el=document.createElement("div"); el.className="ex"+(cur>=ex.sets?" done":"");
-      let dots=""; for(let i=0;i<ex.sets;i++){ dots+=`<button class="setdot${i<cur?' on':''}" data-set="${ex.id}" data-i="${i}">${i+1}</button>`; }
-      const pat = PATTERNS[EX_PATTERN[ex.id]];
-      el.innerHTML=`
-        <div class="eh"><h4>${ex.name}<span class="chev">▾ tap for how-to</span></h4><span class="scheme">${ex.scheme}</span></div>
-        <p class="cue">${ex.cue}</p>
-        <div class="exdetail">
-          <div class="diagram">${diagramSVG(pat.frames, pat.labels)}</div>
-          <ol class="steps">${pat.steps.map(s=>`<li>${s}</li>`).join("")}</ol>
+  /* ---------- train rendering ---------- */
+  function isAiSession(value){
+  return (
+    typeof value === "string" &&
+    value.startsWith("AI:")
+  );
+}
+
+function getAiSessionIndex(value){
+  if(!isAiSession(value)){
+    return -1;
+  }
+
+  const index =
+    Number(
+      value.split(":")[1]
+    );
+
+  return Number.isInteger(index)
+    ? index
+    : -1;
+}
+
+function currentWorkoutSession(){
+  if(isAiSession(S.curSession)){
+    const index =
+      getAiSessionIndex(
+        S.curSession
+      );
+
+    const day =
+      S.aiWorkoutPlan
+        ?.days?.[index];
+
+    if(!day){
+      return null;
+    }
+
+    return {
+      key:
+        S.curSession,
+
+      title:
+        day.title,
+
+      ex:
+        day.exercises,
+
+      aiDay:
+        day
+    };
+  }
+
+  const workout =
+    WORKOUTS[S.curSession];
+
+  if(!workout){
+    return null;
+  }
+
+  return {
+    key:
+      S.curSession,
+
+    title:
+      workout.title,
+
+    ex:
+      workout.ex,
+
+    aiDay:
+      null
+  };
+}
+
+function renderTrain(){
+  const pick =
+    document.getElementById(
+      "sessionPick"
+    );
+
+  const planSummary =
+    document.getElementById(
+      "aiPlanSummary"
+    );
+
+  pick.innerHTML = "";
+
+  const todays =
+    WEEK[
+      new Date().getDay()
+    ];
+
+  if(!S.curSession){
+    S.curSession =
+      todays === "rest"
+        ? "A"
+        : todays;
+  }
+
+  /*
+   * Personalised plan summary
+   */
+  if(
+    S.aiWorkoutPlan &&
+    Array.isArray(
+      S.aiWorkoutPlan.days
+    ) &&
+    S.aiWorkoutPlan.days.length
+  ){
+    planSummary.classList.remove(
+      "hidden"
+    );
+
+    planSummary.innerHTML = `
+      <div class="ai-plan-summary-top">
+        <div>
+          <div class="ai-plan-badge">
+            ✦ Personalised plan
+          </div>
+
+          <h3>
+            ${escapeHtml(
+              S.aiWorkoutPlan.name ||
+              "Your Aligna plan"
+            )}
+          </h3>
+
+          <p>
+            ${S.aiWorkoutPlan.days.length}
+            ${
+              S.aiWorkoutPlan.days.length === 1
+                ? "workout"
+                : "workouts"
+            }
+            designed around your request
+          </p>
         </div>
-        <div class="ctrl">
-          <div class="setdots">${dots}</div>
-          <button
-            class="resttimer"
-            data-rest="${ex.restSeconds}">
-            Rest ${ex.restSeconds}s
-          </button>
-        </div>
-        <div class="restbar"><i></i></div>`;
-      wo.appendChild(el);
-      el.querySelector(".eh").onclick=()=>el.classList.toggle("open");
-      el.querySelectorAll("[data-set]").forEach(d=>d.onclick=(e)=>{
-        e.stopPropagation();
-        const id=d.dataset.set, i=+d.dataset.i;
-        if(!S.setProg) S.setProg={};
-        S.setProg[id] = (i < (S.setProg[id]||0)) ? i : i+1;
-        save(); renderTrain();
+
+        <button
+          id="adjustAiWorkout"
+          class="ai-plan-adjust"
+          type="button"
+        >
+          Adjust
+        </button>
+      </div>
+
+      <div class="ai-plan-days">
+        ${S.aiWorkoutPlan.days
+          .map(day => `
+            <span>
+              ${escapeHtml(
+                day.day ||
+                day.title ||
+                "Training day"
+              )}
+            </span>
+          `)
+          .join("")}
+      </div>
+    `;
+
+    const adjustButton =
+      document.getElementById(
+        "adjustAiWorkout"
+      );
+
+    adjustButton.onclick = () => {
+      openAI();
+
+      window.setTimeout(
+        () => {
+          const input =
+            document.getElementById(
+              "aiInput"
+            );
+
+          input.value =
+            "Adjust my personalised workout plan.";
+
+          input.focus();
+        },
+        250
+      );
+    };
+  }else{
+    planSummary.classList.add(
+      "hidden"
+    );
+
+    planSummary.innerHTML = "";
+  }
+
+  /*
+   * Personalised session group
+   */
+  if(
+    S.aiWorkoutPlan &&
+    Array.isArray(
+      S.aiWorkoutPlan.days
+    ) &&
+    S.aiWorkoutPlan.days.length
+  ){
+    const aiGroup =
+      document.createElement(
+        "div"
+      );
+
+    aiGroup.className =
+      "session-group";
+
+    aiGroup.innerHTML = `
+      <div class="session-group-head">
+        <p class="session-group-title">
+          Your personalised sessions
+        </p>
+
+        <span class="session-group-count">
+          ${S.aiWorkoutPlan.days.length}
+        </span>
+      </div>
+
+      <div
+        class="session-grid personalised"
+        data-ai-session-grid
+      ></div>
+    `;
+
+    const grid =
+      aiGroup.querySelector(
+        "[data-ai-session-grid]"
+      );
+
+    S.aiWorkoutPlan.days
+      .forEach((day, index) => {
+        const key =
+          `AI:${index}`;
+
+        const button =
+          document.createElement(
+            "button"
+          );
+
+        button.className =
+          "sbtn" +
+          (
+            S.curSession === key
+              ? " on"
+              : ""
+          );
+
+        button.innerHTML = `
+          <div class="sn">
+            ${escapeHtml(
+              day.day ||
+              `Day ${index + 1}`
+            )}
+          </div>
+
+          <div class="sl">
+            ${escapeHtml(
+              day.title ||
+              `${day.exercises?.length || 0} exercises`
+            )}
+          </div>
+        `;
+
+        button.onclick = () => {
+          S.curSession = key;
+          S.setProg = {};
+
+          save();
+          renderTrain();
+        };
+
+        grid.appendChild(
+          button
+        );
       });
-      const rb=el.querySelector("[data-rest]"), bar=el.querySelector(".restbar");
-      rb.onclick = event => {
+
+    pick.appendChild(
+      aiGroup
+    );
+  }
+
+  /*
+   * Built-in session group
+   */
+  const defaultGroup =
+    document.createElement(
+      "div"
+    );
+
+  defaultGroup.className =
+    "session-group";
+
+  defaultGroup.innerHTML = `
+    <div class="session-group-head">
+      <p class="session-group-title">
+        Built-in sessions
+      </p>
+
+      <span class="session-group-count">
+        3
+      </span>
+    </div>
+
+    <div
+      class="session-grid"
+      data-default-session-grid
+    ></div>
+  `;
+
+  const defaultGrid =
+    defaultGroup.querySelector(
+      "[data-default-session-grid]"
+    );
+
+  ["A", "B", "C"].forEach(key => {
+    const button =
+      document.createElement(
+        "button"
+      );
+
+    button.className =
+      "sbtn" +
+      (
+        S.curSession === key
+          ? " on"
+          : ""
+      );
+
+    button.innerHTML = `
+      <div class="sn">
+        Session ${key}
+      </div>
+
+      <div class="sl">
+        ${escapeHtml(
+          WORKOUTS[key].title
+        )}
+      </div>
+    `;
+
+    button.onclick = () => {
+      S.curSession = key;
+      S.setProg = {};
+
+      save();
+      renderTrain();
+    };
+
+    defaultGrid.appendChild(
+      button
+    );
+  });
+
+  pick.appendChild(
+    defaultGroup
+  );
+
+  /*
+   * Active workout heading
+   */
+  const tag =
+    document.getElementById(
+      "todayTag"
+    );
+
+  if(isAiSession(S.curSession)){
+    const index =
+      getAiSessionIndex(
+        S.curSession
+      );
+
+    const day =
+      S.aiWorkoutPlan
+        ?.days?.[index];
+
+    tag.innerHTML = `
+      <small>
+        Currently selected
+      </small>
+
+      <strong>
+        ${escapeHtml(
+          day?.title ||
+          day?.day ||
+          "Personalised workout"
+        )}
+      </strong>
+
+      <span>
+        ${
+          day?.exercises?.length || 0
+        }
+        exercises
+        ${
+          day?.estimatedMinutes
+            ? ` · approximately ${day.estimatedMinutes} minutes`
+            : ""
+        }
+      </span>
+    `;
+  }else{
+    tag.innerHTML = `
+      <small>
+        Currently selected
+      </small>
+
+      <strong>
+        ${
+          todays === "rest"
+            ? "Rest day preview"
+            : `Session ${S.curSession}`
+        }
+      </strong>
+
+      <span>
+        ${
+          todays === "rest"
+            ? "Recovery is where muscle is built."
+            : WORKOUTS[S.curSession]?.title || ""
+        }
+      </span>
+    `;
+  }
+
+  /*
+   * Render the selected workout
+   */
+  const wo =
+    document.getElementById(
+      "workout"
+    );
+
+  const w =
+    currentWorkoutSession();
+
+  if(!w){
+    wo.innerHTML = `
+      <div class="restdaycard">
+        <h3>Workout unavailable</h3>
+
+        <p>
+          Select another session or ask Aligna
+          to generate a new plan.
+        </p>
+      </div>
+    `;
+
+    return;
+  }
+
+  const doneToday =
+    (S.workouts || [])
+      .some(item =>
+        item.date === todayKey() &&
+        item.session === S.curSession
+      );
+
+  wo.innerHTML = "";
+
+  w.ex.forEach(exercise => {
+    const progressKey =
+      `${S.curSession}:${exercise.id}`;
+
+    const completedSets =
+      (
+        S.setProg &&
+        S.setProg[progressKey]
+      ) || 0;
+
+    const card =
+      document.createElement(
+        "div"
+      );
+
+    card.className =
+      "ex" +
+      (
+        completedSets >= exercise.sets
+          ? " done"
+          : ""
+      );
+
+    let setButtons = "";
+
+    for(
+      let setIndex = 0;
+      setIndex < exercise.sets;
+      setIndex += 1
+    ){
+      setButtons += `
+        <button
+          class="setdot${
+            setIndex < completedSets
+              ? " on"
+              : ""
+          }"
+          data-set="${escapeHtml(
+            progressKey
+          )}"
+          data-i="${setIndex}"
+        >
+          ${setIndex + 1}
+        </button>
+      `;
+    }
+
+    const pattern =
+      PATTERNS[
+        EX_PATTERN[exercise.id]
+      ] || null;
+
+    const instructions =
+      pattern
+        ? `
+          <div class="diagram">
+            ${diagramSVG(
+              pattern.frames,
+              pattern.labels
+            )}
+          </div>
+
+          <ol class="steps">
+            ${pattern.steps
+              .map(step =>
+                `<li>${escapeHtml(step)}</li>`
+              )
+              .join("")}
+          </ol>
+        `
+        : `
+          <p class="cue">
+            ${escapeHtml(
+              exercise.cue ||
+              "Use controlled form and stop if the movement causes pain."
+            )}
+          </p>
+        `;
+
+    card.innerHTML = `
+      <div class="eh">
+        <h4>
+          ${escapeHtml(
+            exercise.name
+          )}
+
+          <span class="chev">
+            ▾ tap for how-to
+          </span>
+        </h4>
+
+        <span class="scheme">
+          ${escapeHtml(
+            exercise.scheme ||
+            ""
+          )}
+        </span>
+      </div>
+
+      <p class="cue">
+        ${escapeHtml(
+          exercise.cue ||
+          ""
+        )}
+      </p>
+
+      <div class="exdetail">
+        ${instructions}
+      </div>
+
+      <div class="ctrl">
+        <div class="setdots">
+          ${setButtons}
+        </div>
+
+        <button
+          class="resttimer"
+          data-rest="${
+            Number(
+              exercise.restSeconds
+            ) || 90
+          }"
+        >
+          Rest ${
+            Number(
+              exercise.restSeconds
+            ) || 90
+          }s
+        </button>
+      </div>
+
+      <div class="restbar">
+        <i></i>
+      </div>
+    `;
+
+    wo.appendChild(
+      card
+    );
+
+    card
+      .querySelector(".eh")
+      .onclick = () => {
+        card.classList.toggle(
+          "open"
+        );
+      };
+
+    card
+      .querySelectorAll(
+        "[data-set]"
+      )
+      .forEach(button => {
+        button.onclick = event => {
           event.stopPropagation();
 
-          const restSeconds =
-            Number(rb.dataset.rest) || 90;
+          const key =
+            button.dataset.set;
 
-          runTimer(
-            restSeconds,
-            rb,
-            `Rest ${restSeconds}s`,
-            bar
-          );
+          const setIndex =
+            Number(
+              button.dataset.i
+            );
+
+          if(!S.setProg){
+            S.setProg = {};
+          }
+
+          S.setProg[key] =
+            setIndex <
+            (
+              S.setProg[key] || 0
+            )
+              ? setIndex
+              : setIndex + 1;
+
+          save();
+          renderTrain();
         };
-    });
-    const fin=document.createElement("button");
-    fin.className="finishw";
-    fin.textContent = doneToday ? "✓ Logged for today — nice work" : "Finish & log this workout";
-    fin.disabled = doneToday;
-    if(doneToday) fin.style.opacity=".6";
-    fin.onclick=()=>{
-      if(!S.workouts) S.workouts=[];
-      S.workouts.push({date:todayKey(), session:S.curSession});
-      S.setProg={}; save(); beep(); renderTrain();
+      });
+
+    const restButton =
+      card.querySelector(
+        "[data-rest]"
+      );
+
+    const restBar =
+      card.querySelector(
+        ".restbar"
+      );
+
+    restButton.onclick = event => {
+      event.stopPropagation();
+
+      const restSeconds =
+        Number(
+          restButton.dataset.rest
+        ) || 90;
+
+      runTimer(
+        restSeconds,
+        restButton,
+        `Rest ${restSeconds}s`,
+        restBar
+      );
     };
-    wo.appendChild(fin);
+  });
+
+  const finishButton =
+    document.createElement(
+      "button"
+    );
+
+  finishButton.className =
+    "finishw";
+
+  finishButton.textContent =
+    doneToday
+      ? "✓ Workout complete today"
+      : "Mark workout complete";
+
+  finishButton.disabled =
+    doneToday;
+
+  if(doneToday){
+    finishButton.style.opacity =
+      ".6";
   }
+
+  finishButton.onclick =
+    async () => {
+      if(doneToday){
+        return;
+      }
+
+      if(!Array.isArray(S.workouts)){
+        S.workouts = [];
+      }
+
+      S.workouts.push({
+        date:
+          todayKey(),
+
+        session:
+          S.curSession,
+
+        planId:
+          isAiSession(
+            S.curSession
+          )
+            ? S.aiWorkoutPlan?.id || null
+            : null,
+
+        planName:
+          isAiSession(
+            S.curSession
+          )
+            ? S.aiWorkoutPlan?.name || null
+            : null
+      });
+
+      await save();
+
+      beep();
+      renderTrain();
+    };
+
+  wo.appendChild(
+    finishButton
+  );
+}
 
   /* ---------- face rendering ---------- */
   function renderFace(){
@@ -3346,6 +5195,9 @@ function getExerciseSummary(exercise) {
     if(!S.workouts) S.workouts=[];
     if(!S.faceSessions) S.faceSessions=[];
     if(!S.setProg) S.setProg={};
+    if(!S.aiWorkoutPlan){
+  S.aiWorkoutPlan = null;
+}
     /*
 Old versions used temporary exercise IDs such as a1 and b2.
 
@@ -3549,7 +5401,15 @@ S.weights =
         const p=e.currentTarget.dataset.idx*1;
         const at=S.weekPlan.indexOf(p);
         if(at>-1) S.weekPlan.splice(at,1); else S.weekPlan.push(p);
-        save(); renderIdeas(filter); renderWeekPlan();
+        save();
+renderIdeas(filter);
+renderWeekPlan();
+
+window.dispatchEvent(
+  new CustomEvent(
+    "aligna-meal-plan-changed"
+  )
+);
       };
       list.appendChild(el);
     });
@@ -3567,24 +5427,255 @@ S.weights =
         const chip=document.createElement("div");
         chip.className="planchip"+(recipeReady(idx)?" ready":"");
         chip.innerHTML=`${r.em} ${r.n} <button data-rm="${idx}">✕</button>`;
-        chip.querySelector("button").onclick=()=>{
-          S.weekPlan=S.weekPlan.filter(x=>x!==idx);
-          save(); renderWeekPlan(); renderIdeas(currentFilter);
-        };
+        chip
+  .querySelector("button")
+  .onclick = () => {
+    S.weekPlan =
+      S.weekPlan.filter(
+        value =>
+          value !== idx
+      );
+
+    save();
+    renderWeekPlan();
+    renderIdeas(
+      currentFilter
+    );
+
+    window.dispatchEvent(
+      new CustomEvent(
+        "aligna-meal-plan-changed"
+      )
+    );
+  };
         wrap.appendChild(chip);
       });
     }
     renderGrocery();
   }
 
+  function getAiGroceryItems(){
+    try{
+      const raw =
+        localStorage.getItem(
+          "aligna_personalised_recommendations_v1"
+        );
+
+      if(!raw){
+        return [];
+      }
+
+      const parsed =
+        JSON.parse(raw);
+
+      return Array.isArray(
+        parsed.groceries
+      )
+        ? parsed.groceries
+        : [];
+    }catch(error){
+      console.error(
+        "Could not read AI groceries",
+        error
+      );
+
+      return [];
+    }
+  }
+
+  function getCombinedGroceryItems(){
+  const combined =
+    new Map();
+
+  /*
+   * Ingredients from meals added to
+   * S.weekPlan.
+   */
+  (S.weekPlan || [])
+    .forEach(index => {
+      const meal =
+        IDEAS[index];
+
+      if(
+        !meal ||
+        !Array.isArray(meal.ing)
+      ){
+        return;
+      }
+
+      meal.ing.forEach(rawIngredient => {
+        const parts =
+          String(rawIngredient)
+            .split(",");
+
+        const name =
+          String(
+            parts.shift() || ""
+          ).trim();
+
+        const quantity =
+          parts
+            .join(",")
+            .trim();
+
+        if(!name){
+          return;
+        }
+
+        const key =
+          name.toLowerCase();
+
+        if(!combined.has(key)){
+          combined.set(
+            key,
+            {
+              name,
+              quantity,
+              source:
+                "meal_plan"
+            }
+          );
+        }else if(quantity){
+          const existing =
+            combined.get(key);
+
+          if(
+            existing.quantity &&
+            !existing.quantity.includes(
+              quantity
+            )
+          ){
+            existing.quantity +=
+              ` · ${quantity}`;
+          }else if(
+            !existing.quantity
+          ){
+            existing.quantity =
+              quantity;
+          }
+        }
+      });
+    });
+
+  /*
+   * Items added directly through AI.
+   */
+  getAiGroceryItems()
+    .forEach(item => {
+      const name =
+        String(
+          item.name ||
+          item.item ||
+          ""
+        ).trim();
+
+      if(!name){
+        return;
+      }
+
+      const key =
+        name.toLowerCase();
+
+      const quantity =
+        String(
+          item.quantity || ""
+        ).trim();
+
+      if(combined.has(key)){
+        const existing =
+          combined.get(key);
+
+        if(quantity){
+          existing.quantity =
+            quantity;
+        }
+
+        /*
+         * Direct AI items remain removable.
+         */
+        existing.source =
+          "ai";
+      }else{
+        combined.set(
+          key,
+          {
+            id:
+              item.id ||
+              `grocery-${key}`,
+
+            name,
+            quantity,
+            checked:
+              Boolean(
+                item.checked
+              ),
+
+            source:
+              "ai"
+          }
+        );
+      }
+    });
+
+  return [
+    ...combined.values()
+  ];
+}
+
+
+
+window.AlignaAppData = {
+
+...(
+
+  window.AlignaAppData ||
+
+  {}
+
+),
+
+getCombinedGroceryItems
+
+};
+
   function renderGrocery(){
     const box=document.getElementById("groceryBox");
     const plan=S.weekPlan||[];
-    if(!plan.length){ box.classList.add("hidden"); return; }
+    const aiItems =
+  getAiGroceryItems();
+
+if(
+  !plan.length &&
+  !aiItems.length
+){
+  box.classList.add("hidden");
+  return;
+}
     box.classList.remove("hidden");
     if(!S.groceryChecked) S.groceryChecked={};
     // aggregate unique ingredient names across planned recipes
-    const names=[...new Set(plan.flatMap(idx=>IDEAS[idx].ing.map(ingName)))];
+    const recipeNames =
+  plan.flatMap(
+    idx =>
+      IDEAS[idx].ing.map(
+        ingName
+      )
+  );
+
+const aiNames =
+  getAiGroceryItems()
+    .map(item =>
+      item.quantity
+        ? `${item.name} · ${item.quantity}`
+        : item.name
+    );
+
+const names = [
+  ...new Set([
+    ...recipeNames,
+    ...aiNames
+  ])
+];
     const listEl=document.getElementById("groceryList"); listEl.innerHTML="";
     names.forEach(name=>{
       const checked = !!S.groceryChecked[name];
@@ -3742,6 +5833,92 @@ S.weights =
   }
 
   /* ---------- nav + settings ---------- */
+  function normaliseAiPageName(value){
+  const page =
+    String(value || "")
+      .trim()
+      .toLowerCase();
+
+  const aliases = {
+    home: "today",
+    today: "today",
+    dashboard: "today",
+
+    meal: "ideas",
+    meals: "ideas",
+    food: "ideas",
+    foods: "ideas",
+    ideas: "ideas",
+    grocery: "ideas",
+    groceries: "ideas",
+    shopping: "ideas",
+
+    train: "train",
+    training: "train",
+    workout: "train",
+    workouts: "train",
+    gym: "train",
+    exercise: "train",
+    exercises: "train",
+
+    face: "face",
+    symmetry: "face",
+    facial: "face",
+
+    progress: "progress",
+    results: "progress",
+    weight: "progress",
+    history: "progress",
+
+    personalised: "personalised",
+    personalized: "personalised",
+    "for you": "personalised"
+  };
+
+  return aliases[page] || null;
+}
+
+function navigateFromAi(payload){
+  const requestedPage =
+    payload?.page ||
+    payload?.screen ||
+    payload?.destination ||
+    payload?.view;
+
+  const page =
+    normaliseAiPageName(
+      requestedPage
+    );
+
+  if(!page){
+    throw new Error(
+      "Aligna could not identify the requested page."
+    );
+  }
+
+  if(page === "personalised"){
+    if(
+      window.AlignaPersonalised &&
+      typeof window
+        .AlignaPersonalised
+        .open === "function"
+    ){
+      closeAI();
+      window
+        .AlignaPersonalised
+        .open();
+
+      return;
+    }
+
+    throw new Error(
+      "The personalised page is unavailable."
+    );
+  }
+
+  closeAI();
+  switchView(page);
+}
   function switchView(v){
     ["today","ideas","train","face","progress"].forEach(name=>{
       document.getElementById("view-"+name).classList.toggle("hidden", name!==v);
@@ -3751,8 +5928,35 @@ S.weights =
     if(v==="ideas"){ renderIdeas(currentFilter); renderWeekPlan(); }
     if(v==="train") renderTrain();
     if(v==="face") renderFace();
+    if(
+  typeof renderAiSuggestions ===
+  "function"
+){
+  renderAiSuggestions();
+}
     window.scrollTo(0,0);
   }
+  window.addEventListener(
+  "aligna-navigate",
+  event => {
+    try{
+      navigateFromAi(
+        event.detail || {}
+      );
+    }catch(error){
+      console.error(
+        "AI navigation failed",
+        error
+      );
+
+      aiAddMessage(
+        "bot error",
+        error?.message ||
+        "That page could not be opened."
+      );
+    }
+  }
+);
   let currentFilter="all";
 
   /* ---------- on-device AI chat (Gemma 4 via window.AlignaAI) ---------- */
@@ -3977,6 +6181,137 @@ function buildAiAppContext(){
         .querySelector(".tab.on")
         ?.dataset.v ||
       "today",
+
+      selectedWorkout:
+  (() => {
+    const workout =
+      currentWorkoutSession();
+
+    if(!workout){
+      return null;
+    }
+
+    return {
+      session:
+        S.curSession,
+
+      title:
+        workout.title,
+
+      personalised:
+        isAiSession(
+          S.curSession
+        ),
+
+      exercises:
+        (workout.ex || [])
+          .map(exercise => ({
+            id:
+              exercise.id,
+
+            name:
+              exercise.name,
+
+            scheme:
+              exercise.scheme
+          }))
+    };
+  })(),
+
+personalisedWorkout:
+  S.aiWorkoutPlan
+    ? {
+        id:
+          S.aiWorkoutPlan.id,
+
+        name:
+          S.aiWorkoutPlan.name,
+
+        days:
+          (S.aiWorkoutPlan.days || [])
+            .map(day => ({
+              id:
+                day.id,
+
+              day:
+                day.day,
+
+              title:
+                day.title,
+
+              estimatedMinutes:
+                day.estimatedMinutes,
+
+              exerciseCount:
+                day.exercises?.length || 0
+            }))
+      }
+    : null,
+
+groceryItems:
+  (() => {
+    const recipeItems =
+      (S.weekPlan || [])
+        .flatMap(index =>
+          IDEAS[index]?.ing || []
+        )
+        .map(ingName);
+
+    const aiItems =
+      getAiGroceryItems()
+        .map(item => ({
+          name:
+            item.name,
+
+          quantity:
+            item.quantity || ""
+        }));
+
+    return {
+      recipeItems: [
+        ...new Set(
+          recipeItems
+        )
+      ].slice(0, 30),
+
+      aiItems:
+        aiItems.slice(0, 30)
+    };
+  })(),
+
+progressSummary: {
+  workoutsThisWeek:
+    (() => {
+      const weekStart =
+        Date.now() -
+        7 * 86_400_000;
+
+      return (S.workouts || [])
+        .filter(item =>
+          new Date(
+            `${item.date}T00:00:00`
+          ).getTime() >= weekStart
+        )
+        .length;
+    })(),
+
+  completedMealsToday:
+    (S.slots || [])
+      .filter(slot =>
+        slot.done
+      )
+      .length,
+
+  water:
+    Number(S.water) || 0,
+
+  waterGoal:
+    Number(S.waterGoal) || 8,
+
+  latestWeight:
+    getValidWeightEntries()
+      .slice(-1)[0] || null
+},
 
     nextScheduledItem:
       next
@@ -4556,9 +6891,12 @@ function explainAiError(detail){
   }
 
   return (
-    "The AI response could not be generated. " +
-    "Check Logcat with the tag AlignaGemma."
-  );
+
+  "AI error: " +
+
+  value
+
+);
 }
 
 function sendToAI(text){
@@ -4724,6 +7062,10 @@ function sendToAI(text){
 
 window.onAiAnswer =
   function(result){
+    console.log(
+  "FULL ALIGNA AI RESULT",
+  JSON.stringify(result, null, 2)
+);
     const requestId =
       result?.requestId;
 
@@ -4758,6 +7100,46 @@ window.onAiAnswer =
           result.answer ||
           "No response was generated."
         );
+
+      if(
+        result.action &&
+        typeof result.action ===
+          "object"
+      ){
+        if(
+          window.AlignaActions &&
+          typeof window
+            .AlignaActions
+            .executeAction ===
+            "function"
+        ){
+          window
+            .AlignaActions
+            .executeAction(
+              result.action
+            )
+            .catch(error => {
+              console.error(
+                "AI action failed",
+                error
+              );
+
+              aiAddMessage(
+                "bot error",
+                "I prepared a change, but the app could not open it for confirmation."
+              );
+            });
+        }else{
+          console.error(
+            "AlignaActions is unavailable"
+          );
+
+          aiAddMessage(
+            "bot error",
+            "The assistant prepared an action, but the action system is unavailable."
+          );
+        }
+      }
     }else{
       const detail =
         String(
@@ -4774,6 +7156,11 @@ window.onAiAnswer =
         "error"
       );
 
+      /*
+       * Show the readable message in the UI,
+       * but preserve the real error in DevTools
+       * and Logcat.
+       */
       element.textContent =
         explainAiError(
           detail
@@ -4786,6 +7173,75 @@ window.onAiAnswer =
 
     requestAiModelStatus();
   };
+  function updateAiHeading(){
+  const heading =
+    document.querySelector(
+      "#aiSheet h2"
+    );
+
+  const subtitle =
+    document.querySelector(
+      "#aiSheet .aisub"
+    );
+
+  const activeView =
+    document
+      .querySelector(".tab.on")
+      ?.dataset.v ||
+    "today";
+
+  const labels = {
+    today: {
+      title:
+        "Ask Aligna",
+
+      subtitle:
+        "Guidance for today’s meals, reminders and priorities."
+    },
+
+    ideas: {
+      title:
+        "Meal Assistant",
+
+      subtitle:
+        "Create meals, update groceries or adjust your weekly plan."
+    },
+
+    train: {
+      title:
+        "Training Assistant",
+
+      subtitle:
+        "Adjust workouts, understand exercises or build a new plan."
+    },
+
+    face: {
+      title:
+        "Facial Routine Assistant",
+
+      subtitle:
+        "Guidance for your routine, technique and consistency."
+    },
+
+    progress: {
+      title:
+        "Progress Assistant",
+
+      subtitle:
+        "Review your recent activity and decide what to improve next."
+    }
+  };
+
+  const selected =
+    labels[activeView] ||
+    labels.today;
+
+  heading.textContent =
+    selected.title;
+
+  subtitle.textContent =
+    selected.subtitle;
+}
 
 function openAI(){
   document
@@ -4803,7 +7259,8 @@ function openAI(){
     .classList.add(
       "show"
     );
-
+    updateAiHeading();
+    renderAiSuggestions();
   requestAiModelStatus();
 
   setTimeout(() => {
@@ -4964,12 +7421,78 @@ function closeAI(){
     document.getElementById("aiScrim").onclick=closeAI;
     document.getElementById("aiSend").onclick=()=>sendToAI(document.getElementById("aiInput").value);
     document.getElementById("aiInput").addEventListener("keydown",e=>{ if(e.key==="Enter") sendToAI(e.target.value); });
-    [["What should I eat right now?","eat now"],["Give me a tip for today's workout","workout tip"],["How's my progress looking?","progress check"]]
-      .forEach(([q])=>{
-        const b=document.createElement("button"); b.textContent=q;
-        b.onclick=()=>sendToAI(q);
-        document.getElementById("aiSuggest").appendChild(b);
-      });
+    function suggestionsForView(view){
+  const suggestions = {
+    today: [
+      "What should I eat right now?",
+      "What is my next task?",
+      "Show my personalised plan"
+    ],
+
+    ideas: [
+      "Create a three-meal high-protein plan",
+      "Show my grocery list",
+      "Add bananas to my grocery list"
+    ],
+
+    train: [
+      "Adjust my current workout",
+      "Create a three-day beginner workout",
+      "What exercise should I do next?"
+    ],
+
+    face: [
+      "Explain today's facial routine",
+      "Which exercise should I start with?",
+      "Show my progress"
+    ],
+
+    progress: [
+      "How is my progress looking?",
+      "What should I improve this week?",
+      "Open my workout plan"
+    ]
+  };
+
+  return suggestions[view] ||
+    suggestions.today;
+}
+
+function renderAiSuggestions(){
+  const container =
+    document.getElementById(
+      "aiSuggest"
+    );
+
+  container.innerHTML = "";
+
+  const activeView =
+    document
+      .querySelector(".tab.on")
+      ?.dataset.v ||
+    "today";
+
+  suggestionsForView(
+    activeView
+  ).forEach(question => {
+    const button =
+      document.createElement(
+        "button"
+      );
+
+    button.textContent =
+      question;
+
+    button.onclick = () =>
+      sendToAI(question);
+
+    container.appendChild(
+      button
+    );
+  });
+}
+renderAiSuggestions();
+  
     document.getElementById("closeSettings").onclick=async()=>{
       const newWake=document.getElementById("setWake").value||"08:00";
       const wakeChanged = newWake!==S.wake;
@@ -5084,9 +7607,29 @@ document
     setInterval(renderDayStrip,60000);
   })();
 
-  if("serviceWorker" in navigator){
-    window.addEventListener("load",()=>{ navigator.serviceWorker.register("service-worker.js").catch(()=>{}); });
-  }
+  if(
+  "serviceWorker" in navigator &&
+  (
+    location.protocol === "http:" ||
+    location.protocol === "https:"
+  )
+){
+  window.addEventListener(
+    "load",
+    () => {
+      navigator.serviceWorker
+        .register(
+          "service-worker.js"
+        )
+        .catch(error => {
+          console.warn(
+            "Service worker registration failed",
+            error
+          );
+        });
+    }
+  );
+}
 
 </script>
 <script>
@@ -5336,6 +7879,122 @@ document
         }
       }
     );
+    async function applyAiMealPlan(payload){
+  const references =
+    extractMealReferences(
+      payload
+    );
+
+  const resolvedIndexes = [
+    ...new Set(
+      references
+        .map(reference =>
+          resolveMealIndex(
+            reference
+          )
+        )
+        .filter(index =>
+          Number.isInteger(index) &&
+          index >= 0 &&
+          index < IDEAS.length
+        )
+    )
+  ];
+
+  if(!resolvedIndexes.length){
+    throw new Error(
+      "The suggested plan did not contain meals available in Aligna."
+    );
+  }
+
+  /*
+   * Replace the existing weekly plan with
+   * the confirmed AI-generated plan.
+   */
+  S.weekPlan =
+    resolvedIndexes;
+
+  /*
+   * Reset checked grocery items because
+   * the ingredients have changed.
+   */
+  S.groceryChecked = {};
+
+  await save();
+
+  renderIdeas(
+    currentFilter
+  );
+
+  renderWeekPlan();
+
+  /*
+   * Open the real Meals/Ideas page.
+   */
+  switchView(
+    "ideas"
+  );
+
+  if(
+    typeof closeAI ===
+    "function"
+  ){
+    closeAI();
+  }
+
+  window.dispatchEvent(
+    new CustomEvent(
+      "aligna-meal-plan-applied",
+      {
+        detail: {
+          indexes:
+            resolvedIndexes,
+
+          meals:
+            resolvedIndexes.map(
+              index => ({
+                id:
+                  IDEAS[index].id,
+
+                name:
+                  IDEAS[index].n
+              })
+            )
+        }
+      }
+    )
+  );
+}
+    window.addEventListener(
+  "aligna-save-meal-plan",
+  event => {
+    applyAiMealPlan(
+      event.detail || {}
+    ).catch(error => {
+      console.error(
+        "Could not apply AI meal plan",
+        error
+      );
+
+      aiAddMessage(
+        "bot error",
+        error?.message ||
+        "The meal plan could not be added."
+      );
+    });
+  }
+);
+window.addEventListener(
+
+"aligna-main-state-refresh",
+
+() => {
+
+  renderWeekPlan();
+
+}
+
+);
   })();
 </script>
 

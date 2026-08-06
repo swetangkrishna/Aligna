@@ -259,6 +259,11 @@
       }
   
       writePersonalisedState(state);
+      window.dispatchEvent(
+        new CustomEvent(
+          "aligna-main-state-refresh"
+        )
+      );
       renderPersonalisedPage();
   
       showToast(
@@ -712,8 +717,16 @@
           state.workout
         );
   
-      const groceryItems =
-        state.groceries || [];
+        const groceryItems =
+        window.AlignaAppData &&
+        typeof window
+          .AlignaAppData
+          .getCombinedGroceryItems ===
+          "function"
+          ? window
+              .AlignaAppData
+              .getCombinedGroceryItems()
+          : state.groceries || [];
   
       content.innerHTML = `
         <section class="personalised-hero">
@@ -872,17 +885,29 @@
                             }
                           </div>
   
-                          <button
-                            type="button"
-                            data-remove-grocery="${escapeHtml(
-                              item.name
-                            )}"
-                            aria-label="Remove ${escapeHtml(
-                              item.name
-                            )}"
-                          >
-                            ×
-                          </button>
+                          ${
+  item.source === "ai"
+    ? `
+      <button
+        type="button"
+        data-remove-grocery="${escapeHtml(
+          item.name
+        )}"
+        aria-label="Remove ${escapeHtml(
+          item.name
+        )}"
+      >
+        ×
+      </button>
+    `
+    : `
+      <span
+        class="personalised-grocery-source"
+      >
+        Meal plan
+      </span>
+    `
+}
                         </div>
                       `
                     )
@@ -1086,6 +1111,20 @@
       openPersonalisedPage
     );
   
+    window.addEventListener(
+        "aligna-meal-plan-changed",
+        () => {
+          renderPersonalisedPage();
+        }
+      );
+      
+      window.addEventListener(
+        "aligna-meal-plan-applied",
+        () => {
+          renderPersonalisedPage();
+        }
+      );
+      
     window.AlignaPersonalised = {
       open: openPersonalisedPage,
       close: closePersonalisedPage,

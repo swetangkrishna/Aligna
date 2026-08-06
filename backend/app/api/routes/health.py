@@ -1,39 +1,24 @@
-from fastapi import (
-    APIRouter,
-    HTTPException,
-    status,
-)
+from fastapi import APIRouter, HTTPException, status
 
-from app.api.dependencies import (
-    ModelClientDependency,
-    SettingsDependency,
-)
+from app.core.config import get_settings
+from app.services.model_client import ModelClient
 
 
-router = APIRouter(
-    prefix="/health",
-    tags=["health"],
-)
+router = APIRouter()
 
 
-@router.get("")
-async def health(
-    settings: SettingsDependency,
-) -> dict[str, str]:
+@router.get("/health")
+async def health() -> dict[str, str]:
     return {
         "status": "healthy",
-        "service": settings.app_name,
-        "environment": settings.app_environment,
-        "model_provider": settings.model_provider,
-        "model": settings.model_name,
     }
 
 
-@router.get("/ready")
-async def readiness(
-    settings: SettingsDependency,
-    model_client: ModelClientDependency,
-) -> dict[str, str]:
+@router.get("/health/ready")
+async def readiness() -> dict[str, str]:
+    settings = get_settings()
+    model_client = ModelClient(settings)
+
     model_available = (
         await model_client.check_health()
     )
@@ -54,6 +39,6 @@ async def readiness(
 
     return {
         "status": "ready",
-        "model_provider": settings.model_provider,
         "model": settings.model_name,
+        "provider": settings.model_provider,
     }
