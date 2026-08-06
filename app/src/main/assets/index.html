@@ -12,6 +12,442 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
+    .personalised-home-button {
+  display: grid;
+  width: calc(100% - 40px);
+  min-height: 68px;
+  grid-template-columns:
+    42px
+    1fr
+    auto;
+  align-items: center;
+  gap: 12px;
+  margin: 14px 20px 0;
+  padding: 12px 14px;
+  border: 1px solid #e5def1;
+  border-radius: 18px;
+  background: #ffffff;
+  color: #302a40;
+  text-align: left;
+  box-shadow:
+    0 6px 20px
+    rgba(36, 31, 51, 0.07);
+}
+
+.personalised-home-button > span:nth-child(2) {
+  display: grid;
+  gap: 2px;
+}
+
+.personalised-home-button strong {
+  font-size: 14px;
+}
+
+.personalised-home-button small {
+  color: #817991;
+  font-size: 12px;
+}
+
+.personalised-home-icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 14px;
+  background: #ece7f8;
+  color: #4b3b87;
+  font-size: 19px;
+}
+    .aligna-action-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 96px;
+  z-index: 15000;
+  max-width: calc(100% - 40px);
+  padding: 11px 16px;
+  border-radius: 999px;
+  background: #241f33;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0;
+  pointer-events: none;
+  transform:
+    translate(-50%, 12px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.aligna-action-toast.visible {
+  opacity: 1;
+  transform:
+    translate(-50%, 0);
+}
+
+.personalised-page-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 11000;
+  overflow-y: auto;
+  background: #f5f3fb;
+}
+
+.personalised-page-overlay.hidden {
+  display: none;
+}
+
+.personalised-open {
+  overflow: hidden;
+}
+
+.personalised-page {
+  width: min(100%, 480px);
+  min-height: 100%;
+  margin: 0 auto;
+  padding:
+    env(safe-area-inset-top)
+    0
+    calc(
+      32px +
+      env(safe-area-inset-bottom)
+    );
+}
+
+.personalised-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 22px 20px 14px;
+}
+
+.personalised-header h2 {
+  margin: 1px 0 0;
+  color: #241f33;
+  font-family:
+    "Bricolage Grotesque",
+    sans-serif;
+  font-size: 26px;
+}
+
+.personalised-back {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: none;
+  place-items: center;
+  border: 0;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #4b3b87;
+  box-shadow:
+    0 5px 18px
+    rgba(36, 31, 51, 0.08);
+  font-size: 21px;
+}
+
+.personalised-content {
+  display: grid;
+  gap: 16px;
+  padding: 0 20px;
+}
+
+.personalised-hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 22px;
+  border-radius: 24px;
+  background:
+    linear-gradient(
+      145deg,
+      #4b3b87,
+      #2e2359
+    );
+  color: #ffffff;
+  box-shadow:
+    0 16px 35px
+    rgba(46, 35, 89, 0.22);
+}
+
+.personalised-hero h3 {
+  max-width: 250px;
+  margin: 3px 0 7px;
+  font-family:
+    "Bricolage Grotesque",
+    sans-serif;
+  font-size: 23px;
+  line-height: 1.08;
+}
+
+.personalised-hero p {
+  max-width: 270px;
+  margin: 0;
+  color: rgba(
+    255,
+    255,
+    255,
+    0.78
+  );
+  font-size: 13px;
+}
+
+.personalised-spark {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  flex: none;
+  place-items: center;
+  border-radius: 16px;
+  background: rgba(
+    255,
+    255,
+    255,
+    0.13
+  );
+  font-size: 22px;
+}
+
+.personalised-block {
+  padding: 18px;
+  border-radius: 21px;
+  background: #ffffff;
+  box-shadow:
+    0 7px 24px
+    rgba(36, 31, 51, 0.07);
+}
+
+.personalised-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 13px;
+}
+
+.personalised-section-head h3 {
+  margin: 1px 0 0;
+  color: #241f33;
+  font-size: 17px;
+}
+
+.personalised-eyebrow {
+  margin: 0;
+  color: #8a829d;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.personalised-text-button {
+  border: 0;
+  background: transparent;
+  color: #4b3b87;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.personalised-plan-card {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 14px;
+  border: 1px solid #e7e1f2;
+  border-radius: 17px;
+  background: #faf8fd;
+}
+
+.personalised-card-icon {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  flex: none;
+  place-items: center;
+  border-radius: 14px;
+  background: #ece7f8;
+  font-size: 21px;
+}
+
+.personalised-card-copy {
+  min-width: 0;
+}
+
+.personalised-card-copy h4 {
+  margin: 0 0 3px;
+  color: #2d2740;
+  font-size: 15px;
+}
+
+.personalised-card-copy p {
+  margin: 0;
+  color: #7c7592;
+  font-size: 12.5px;
+}
+
+.personalised-count {
+  display: grid;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 8px;
+  place-items: center;
+  border-radius: 999px;
+  background: #ece7f8;
+  color: #4b3b87;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.personalised-grocery-list {
+  display: grid;
+  gap: 8px;
+}
+
+.personalised-grocery-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 12px;
+  border: 1px solid #ebe5f3;
+  border-radius: 13px;
+}
+
+.personalised-grocery-item div {
+  display: grid;
+  gap: 2px;
+}
+
+.personalised-grocery-item strong {
+  color: #302a40;
+  font-size: 13.5px;
+}
+
+.personalised-grocery-item span {
+  color: #8a8298;
+  font-size: 12px;
+}
+
+.personalised-grocery-item button {
+  width: 29px;
+  height: 29px;
+  border: 0;
+  border-radius: 10px;
+  background: #f2eef8;
+  color: #706783;
+  font-size: 18px;
+}
+
+.personalised-empty {
+  margin: 0;
+  padding: 12px 3px;
+  color: #8a8298;
+  font-size: 13px;
+}
+
+.personalised-ai-button {
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 0;
+  border-radius: 16px;
+  background: #4b3b87;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 800;
+}
+    .ai-action-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 12000;
+  display: grid;
+  place-items: end center;
+  padding: 18px;
+  background: rgba(26, 20, 42, 0.42);
+  backdrop-filter: blur(4px);
+}
+
+.ai-action-overlay.hidden {
+  display: none;
+}
+
+.ai-action-card {
+  width: min(100%, 430px);
+  box-sizing: border-box;
+  padding: 24px;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow:
+    0 24px 70px rgba(28, 18, 58, 0.25);
+}
+
+.ai-action-icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  margin-bottom: 14px;
+  border-radius: 14px;
+  background: #f0ebff;
+  color: #513b99;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.ai-action-card h3 {
+  margin: 0;
+  color: #211a35;
+  font-size: 21px;
+}
+
+.ai-action-card p {
+  margin: 8px 0 16px;
+  color: #746c82;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.ai-action-preview {
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 14px;
+  border: 1px solid #e7e0f2;
+  border-radius: 15px;
+  background: #faf8fd;
+  color: #40384f;
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.ai-action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.ai-action-secondary,
+.ai-action-primary {
+  min-height: 46px;
+  border-radius: 13px;
+  font: inherit;
+  font-weight: 750;
+}
+
+.ai-action-secondary {
+  border: 1px solid #ded7eb;
+  background: #ffffff;
+  color: #51495e;
+}
+
+.ai-action-primary {
+  border: 0;
+  background: #513b99;
+  color: #ffffff;
+}
     .auth-overlay {
   position: fixed;
   inset: 0;
@@ -27,6 +463,10 @@
       transparent 46%
     ),
     #f7f5fc;
+}
+
+.ai-debug-panel {
+  display: none;
 }
 
 .auth-overlay.hidden {
@@ -638,8 +1078,33 @@
         <div class="countdown" id="cd"><span class="t" id="cdTime">—</span><span class="u" id="cdUnit"></span></div>
         <div class="pips" id="pips"></div>
       </div>
-    </section>
+      <button
+  class="personalised-home-button"
+  type="button"
+  onclick="
+    window.dispatchEvent(
+      new CustomEvent(
+        'aligna-personalised-open'
+      )
+    )
+  "
+>
+  <span class="personalised-home-icon">
+    ✦
+  </span>
 
+  <span>
+    <strong>For You</strong>
+    <small>
+      Personalised meals and training
+    </small>
+  </span>
+
+  <span aria-hidden="true">
+    →
+  </span>
+</button>
+    </section>
     <section>
       <p class="eyebrow">Today's nourishment</p>
       <div id="timeline"></div>
@@ -868,19 +1333,23 @@
   <h2>Ask Aligna</h2>
 
   <p class="aisub">
-    Runs fully on your device — private, works offline, and knows today's plan.
-  </p>
-
-  <div class="aistatus" id="aiStatus">
-    Checking the on-device model…
-  </div>
-
-  <div id="aiNoModel" class="aiwarn hidden">
-    <p>
-      <b>On-device model not installed yet.</b>
-      Place the Gemma model in Aligna's private models directory.
+    Personalised guidance for your meals, training and daily plan.
     </p>
-  </div>
+    <details class="ai-debug-panel">
+
+      <summary>Developer information</summary>
+    
+      <div class="aistatus" id="aiStatus">
+        Checking the on-device model…
+      </div>
+      <div id="aiNoModel" class="aiwarn hidden">
+        <p>
+          <b>On-device model not installed yet.</b>
+          Place the Gemma model in Aligna's private models directory.
+        </p>
+      </div>
+    
+    </details>
 
   <div id="aiMessages" class="aimessages"></div>
 
@@ -900,7 +1369,226 @@
     </button>
   </div>
 </div>
+<div
+  id="ai-action-overlay"
+  class="ai-action-overlay hidden"
+>
+  <section class="ai-action-card">
+    <div class="ai-action-icon">✦</div>
 
+    <h3 id="ai-action-title">
+      Apply this change?
+    </h3>
+
+    <p id="ai-action-description">
+      Aligna would like to update your plan.
+    </p>
+
+    <div
+      id="ai-action-preview"
+      class="ai-action-preview"
+    ></div>
+
+    <div class="ai-action-buttons">
+      <button
+        id="ai-action-cancel"
+        class="ai-action-secondary"
+        type="button"
+      >
+        Not now
+      </button>
+
+      <button
+        id="ai-action-confirm"
+        class="ai-action-primary"
+        type="button"
+      >
+        Apply change
+      </button>
+    </div>
+  </section>
+</div>
+<script src="js/aligna-actions.js"></script>
+<script src="js/aligna-action-adapter.js"></script>
+<script>
+  (() => {
+    const overlay =
+      document.getElementById(
+        "ai-action-overlay"
+      );
+
+    const title =
+      document.getElementById(
+        "ai-action-title"
+      );
+
+    const description =
+      document.getElementById(
+        "ai-action-description"
+      );
+
+    const preview =
+      document.getElementById(
+        "ai-action-preview"
+      );
+
+    const cancelButton =
+      document.getElementById(
+        "ai-action-cancel"
+      );
+
+    const confirmButton =
+      document.getElementById(
+        "ai-action-confirm"
+      );
+
+    let pendingAction = null;
+
+    const actionLabels = {
+      save_workout_plan: {
+        title: "Save this workout plan?",
+        description:
+          "This will replace or update your personalised training plan."
+      },
+
+      save_meal_plan: {
+        title: "Save this meal plan?",
+        description:
+          "This will add the suggested meals to your personalised plan."
+      },
+
+      replace_meal: {
+        title: "Replace this meal?",
+        description:
+          "The selected meal will be replaced with Aligna's suggestion."
+      },
+
+      add_grocery_item: {
+        title: "Add this grocery item?",
+        description:
+          "The item will be added to your shopping list."
+      },
+
+      remove_grocery_item: {
+        title: "Remove this grocery item?",
+        description:
+          "The item will be removed from your shopping list."
+      },
+
+      schedule_reminder: {
+        title: "Schedule this reminder?",
+        description:
+          "Aligna will create a reminder on this device."
+      },
+
+      mark_workout_complete: {
+        title: "Complete this workout?",
+        description:
+          "The workout will be added to your progress history."
+      },
+
+      update_user_goal: {
+        title: "Update your goal?",
+        description:
+          "This will change the goal used for future recommendations."
+      }
+    };
+
+    function openConfirmation(action) {
+      pendingAction = action;
+
+      const labels =
+        actionLabels[action.type] || {
+          title: "Apply this change?",
+          description:
+            "Aligna would like to update your plan."
+        };
+
+      title.textContent = labels.title;
+
+      description.textContent =
+        labels.description;
+
+      preview.textContent =
+        JSON.stringify(
+          action.payload,
+          null,
+          2
+        );
+
+      overlay.classList.remove("hidden");
+    }
+
+    function closeConfirmation() {
+      overlay.classList.add("hidden");
+      pendingAction = null;
+      preview.textContent = "";
+    }
+
+    window.addEventListener(
+      "aligna-ai-action-confirmation",
+      event => {
+        openConfirmation(
+          event.detail
+        );
+      }
+    );
+
+    cancelButton.addEventListener(
+      "click",
+      closeConfirmation
+    );
+
+    confirmButton.addEventListener(
+      "click",
+      async () => {
+        if (!pendingAction) {
+          return;
+        }
+
+        confirmButton.disabled = true;
+        confirmButton.textContent =
+          "Applying…";
+
+        try {
+          await window
+            .AlignaActions
+            .executeConfirmedAction(
+              pendingAction
+            );
+
+          window.dispatchEvent(
+            new CustomEvent(
+              "aligna-ai-action-completed",
+              {
+                detail: pendingAction
+              }
+            )
+          );
+
+          closeConfirmation();
+        } catch (error) {
+          description.textContent =
+            error?.message ||
+            "The change could not be applied.";
+        } finally {
+          confirmButton.disabled = false;
+          confirmButton.textContent =
+            "Apply change";
+        }
+      }
+    );
+
+    overlay.addEventListener(
+      "click",
+      event => {
+        if (event.target === overlay) {
+          closeConfirmation();
+        }
+      }
+    );
+  })();
+</script>
 <script>
   /* ---------- storage wrapper: localStorage on device, memory fallback ---------- */
   const Store = {
@@ -4650,5 +5338,6 @@ document
     );
   })();
 </script>
+
 </body>
 </html>
