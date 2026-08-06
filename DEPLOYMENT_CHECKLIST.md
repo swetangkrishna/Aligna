@@ -87,3 +87,7 @@ This document records development-only settings and production requirements.
 - JWT access token duration: 30 minutes
 - Email verification: not implemented
 - Refresh tokens: not implemented
+
+- [ ] Remove the development `OLLAMA_HOST=0.0.0.0:11434` setting.
+- [ ] Do not expose the production model server on a public interface.
+- [ ] Restrict model-server access to the backend private network.

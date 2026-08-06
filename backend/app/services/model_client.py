@@ -21,9 +21,7 @@ class ModelClient:
     ) -> None:
         self._settings = settings
 
-    async def check_health(
-        self,
-    ) -> bool:
+    async def check_health(self) -> bool:
         base_url = str(
             self._settings.model_base_url
         ).rstrip("/")
@@ -37,6 +35,7 @@ class ModelClient:
 
         try:
             async with httpx.AsyncClient(
+                trust_env=False,
                 timeout=timeout,
             ) as client:
                 response = await client.get(
@@ -49,9 +48,24 @@ class ModelClient:
                     },
                 )
 
+            logger.info(
+                "Model health response "
+                "endpoint=%s status=%s",
+                models_endpoint,
+                response.status_code,
+            )
+
             return response.is_success
 
-        except httpx.HTTPError:
+        except Exception as error:
+            logger.exception(
+                "Model health check failed "
+                "endpoint=%s error_type=%s error=%s",
+                models_endpoint,
+                type(error).__name__,
+                str(error),
+            )
+
             return False
 
     async def complete(
@@ -89,6 +103,7 @@ class ModelClient:
 
         try:
             async with httpx.AsyncClient(
+                trust_env=False,
                 timeout=timeout,
             ) as client:
                 response = await client.post(
@@ -109,12 +124,11 @@ class ModelClient:
             ) from error
 
         except httpx.HTTPStatusError as error:
-            response_text = error.response.text[:500]
-
             logger.error(
-                "Model server returned status=%s body=%s",
+                "Model server returned "
+                "status=%s body=%s",
                 error.response.status_code,
-                response_text,
+                error.response.text[:500],
             )
 
             raise ModelServiceError(
@@ -123,7 +137,11 @@ class ModelClient:
 
         except httpx.HTTPError as error:
             logger.exception(
-                "Could not connect to model server",
+                "Could not connect to model server "
+                "endpoint=%s error_type=%s error=%s",
+                endpoint,
+                type(error).__name__,
+                str(error),
             )
 
             raise ModelServiceError(

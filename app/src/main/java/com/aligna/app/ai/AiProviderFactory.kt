@@ -3,33 +3,46 @@ package com.aligna.app.ai
 import android.content.Context
 import com.aligna.app.BuildConfig
 import com.aligna.app.GemmaEngine
+import com.aligna.app.auth.AuthManager
 
 object AiProviderFactory {
 
     fun create(
         context: Context
     ): AiProvider {
+        val appContext =
+            context.applicationContext
+
         return when (
             BuildConfig.AI_PROVIDER
                 .trim()
                 .lowercase()
         ) {
-            "on_device" -> {
-                OnDeviceGemmaProvider(
-                    GemmaEngine(
-                        context.applicationContext
-                    )
+            "remote" -> {
+                val authManager =
+                    AuthManager(appContext)
+
+                RemoteAiProvider(
+                    accessTokenProvider = {
+                        authManager.getAccessToken()
+                    },
+                    onSessionExpired = {
+                        authManager.logout()
+                    }
                 )
             }
 
-            "remote" -> {
-                RemoteAiProvider()
+            "on_device",
+            "on-device",
+            "gemma" -> {
+                OnDeviceGemmaProvider(
+                    GemmaEngine(appContext)
+                )
             }
 
             else -> {
-                throw IllegalStateException(
-                    "Unsupported AI provider: " +
-                            BuildConfig.AI_PROVIDER
+                OnDeviceGemmaProvider(
+                    GemmaEngine(appContext)
                 )
             }
         }

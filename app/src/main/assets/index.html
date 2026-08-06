@@ -12,6 +12,159 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
+    .auth-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(112, 82, 190, 0.25),
+      transparent 46%
+    ),
+    #f7f5fc;
+}
+
+.auth-overlay.hidden {
+  display: none;
+}
+
+.auth-card {
+  width: min(100%, 420px);
+  padding: 28px;
+  border: 1px solid rgba(75, 59, 135, 0.12);
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow:
+    0 24px 70px rgba(44, 31, 92, 0.14);
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.auth-logo {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 15px;
+  background: #4b3b87;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.auth-brand h1 {
+  margin: 0;
+  color: #211943;
+  font-size: 25px;
+}
+
+.auth-brand p {
+  margin: 4px 0 0;
+  color: #706b80;
+  font-size: 14px;
+}
+
+.auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 22px;
+  padding: 5px;
+  border-radius: 14px;
+  background: #f1eef8;
+}
+
+.auth-tab {
+  padding: 10px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #665f78;
+  font: inherit;
+  font-weight: 700;
+}
+
+.auth-tab.active {
+  background: #ffffff;
+  color: #4b3b87;
+  box-shadow:
+    0 4px 12px rgba(44, 31, 92, 0.08);
+}
+
+.auth-form {
+  display: grid;
+  gap: 15px;
+}
+
+.auth-form.hidden {
+  display: none;
+}
+
+.auth-form label {
+  display: grid;
+  gap: 7px;
+  color: #352d4c;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.auth-form input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px 14px;
+  border: 1px solid #ded9ea;
+  border-radius: 12px;
+  outline: none;
+  background: #fcfbfe;
+  color: #211943;
+  font: inherit;
+}
+
+.auth-form input:focus {
+  border-color: #6753ae;
+  box-shadow:
+    0 0 0 3px rgba(103, 83, 174, 0.12);
+}
+
+.auth-submit {
+  margin-top: 4px;
+  padding: 14px;
+  border: 0;
+  border-radius: 13px;
+  background: #4b3b87;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 800;
+}
+
+.auth-submit:disabled {
+  opacity: 0.65;
+}
+
+.auth-password-help {
+  margin: -4px 0 0;
+  color: #777184;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.auth-message {
+  min-height: 21px;
+  margin: 15px 0 0;
+  color: #b42318;
+  font-size: 13px;
+  text-align: center;
+}
     :root{
       --bg:#F5F3FB;
       --surface:#FFFFFF;
@@ -212,6 +365,8 @@
     .switch:after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.2s}
     .switch.on:after{left:23px}
     .sheet .done-btn{width:100%;border:none;background:var(--ink);color:var(--bg);border-radius:13px;padding:14px;font-family:inherit;font-weight:700;font-size:15px;margin-top:6px;cursor:pointer}
+    .sheet .done-btn2{width:100%;border:none;background:#852727ac;color:var(--bg);border-radius:13px;padding:13px;font-family:inherit;font-weight:700;font-size:15px;margin-top:6px;cursor:pointer}
+
     .pillbtn{border:1.5px solid var(--line);background:var(--surface-2);border-radius:10px;padding:8px 12px;font-family:inherit;font-weight:600;font-size:13px;color:var(--ink);cursor:pointer}
 
     /* train */
@@ -329,6 +484,126 @@
   </style>
 </head>
 <body>
+  <div id="auth-overlay" class="auth-overlay">
+    <section class="auth-card">
+      <header class="auth-brand">
+        <div class="auth-logo">A</div>
+  
+        <div>
+          <h1>Aligna</h1>
+          <p>Your personalised fitness companion</p>
+        </div>
+      </header>
+  
+      <div class="auth-tabs">
+        <button
+          id="auth-login-tab"
+          class="auth-tab active"
+          type="button"
+        >
+          Sign in
+        </button>
+  
+        <button
+          id="auth-register-tab"
+          class="auth-tab"
+          type="button"
+        >
+          Create account
+        </button>
+      </div>
+  
+      <form id="auth-login-form" class="auth-form">
+        <label>
+          Email
+  
+          <input
+            id="auth-login-email"
+            type="email"
+            autocomplete="email"
+            required
+          />
+        </label>
+  
+        <label>
+          Password
+  
+          <input
+            id="auth-login-password"
+            type="password"
+            autocomplete="current-password"
+            required
+          />
+        </label>
+  
+        <button
+          id="auth-login-submit"
+          class="auth-submit"
+          type="submit"
+        >
+          Sign in
+        </button>
+      </form>
+  
+      <form
+        id="auth-register-form"
+        class="auth-form hidden"
+      >
+        <label>
+          Full name
+  
+          <input
+            id="auth-register-name"
+            type="text"
+            autocomplete="name"
+            maxlength="150"
+          />
+        </label>
+  
+        <label>
+          Email
+  
+          <input
+            id="auth-register-email"
+            type="email"
+            autocomplete="email"
+            required
+          />
+        </label>
+  
+        <label>
+          Password
+  
+          <input
+            id="auth-register-password"
+            type="password"
+            autocomplete="new-password"
+            minlength="10"
+            required
+          />
+        </label>
+  
+        <p class="auth-password-help">
+          Use at least 10 characters, including an
+          uppercase letter and a number.
+        </p>
+  
+        <button
+          id="auth-register-submit"
+          class="auth-submit"
+          type="submit"
+        >
+          Create account
+        </button>
+      </form>
+  
+      <p
+        id="auth-message"
+        class="auth-message"
+        role="status"
+      ></p>
+    </section>
+  </div>
 <div class="app">
   <header>
     <div class="brand">
@@ -343,11 +618,13 @@
       <button class="gear" id="openSettings" aria-label="Settings">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </button>
+      
     </div>
     <div class="daystrip">
       <span class="big" id="dayCount">Day 1 of your journey</span>
       <span class="sub" id="dayDate"></span>
     </div>
+    
   </header>
 
   <!-- TODAY -->
@@ -521,6 +798,7 @@
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8M21 7v4m0-4h-4"/></svg>
       Progress
     </button>
+    
   </nav>
 </div>
 
@@ -577,7 +855,10 @@
     <button class="pillbtn" id="resetDay">Reset today's checkmarks</button>
   </div>
   <button class="done-btn" id="closeSettings">Save</button>
-</div>
+  <button class="done-btn2" id="sign-out"  onclick="window.alignaLogout()">
+  Sign out
+  </button>
+  </div>
 
 <!-- AI CHAT SHEET -->
 <!-- AI CHAT SHEET -->
@@ -4119,6 +4400,255 @@ document
     window.addEventListener("load",()=>{ navigator.serviceWorker.register("service-worker.js").catch(()=>{}); });
   }
 
+</script>
+<script>
+  (() => {
+    const overlay =
+      document.getElementById("auth-overlay");
+
+    const loginTab =
+      document.getElementById("auth-login-tab");
+
+    const registerTab =
+      document.getElementById("auth-register-tab");
+
+    const loginForm =
+      document.getElementById("auth-login-form");
+
+    const registerForm =
+      document.getElementById("auth-register-form");
+
+    const loginButton =
+      document.getElementById("auth-login-submit");
+
+    const registerButton =
+      document.getElementById("auth-register-submit");
+
+    const message =
+      document.getElementById("auth-message");
+
+    function selectMode(mode) {
+      const loginSelected =
+        mode === "login";
+
+      loginTab.classList.toggle(
+        "active",
+        loginSelected
+      );
+
+      registerTab.classList.toggle(
+        "active",
+        !loginSelected
+      );
+
+      loginForm.classList.toggle(
+        "hidden",
+        !loginSelected
+      );
+
+      registerForm.classList.toggle(
+        "hidden",
+        loginSelected
+      );
+
+      message.textContent = "";
+    }
+
+    function setLoading(loading) {
+      loginButton.disabled = loading;
+      registerButton.disabled = loading;
+
+      loginButton.textContent =
+        loading ? "Signing in…" : "Sign in";
+
+      registerButton.textContent =
+        loading
+          ? "Creating account…"
+          : "Create account";
+    }
+
+    function showApp(user) {
+      overlay.classList.add("hidden");
+
+      document.body.dataset.signedIn =
+        "true";
+
+      window.dispatchEvent(
+        new CustomEvent(
+          "aligna-session-changed",
+          {
+            detail: {
+              signedIn: true,
+              user
+            }
+          }
+        )
+      );
+    }
+
+    function showLogin(text = "") {
+      overlay.classList.remove("hidden");
+
+      document.body.dataset.signedIn =
+        "false";
+
+      message.textContent = text;
+      setLoading(false);
+    }
+
+    loginTab.addEventListener(
+      "click",
+      () => selectMode("login")
+    );
+
+    registerTab.addEventListener(
+      "click",
+      () => selectMode("register")
+    );
+
+    loginForm.addEventListener(
+      "submit",
+      event => {
+        event.preventDefault();
+
+        if (!window.AlignaAuth) {
+          showLogin(
+            "Native authentication is unavailable."
+          );
+          return;
+        }
+
+        setLoading(true);
+        message.textContent = "";
+
+        window.AlignaAuth.login(
+          document
+            .getElementById(
+              "auth-login-email"
+            )
+            .value,
+          document
+            .getElementById(
+              "auth-login-password"
+            )
+            .value
+        );
+      }
+    );
+
+    registerForm.addEventListener(
+      "submit",
+      event => {
+        event.preventDefault();
+
+        if (!window.AlignaAuth) {
+          showLogin(
+            "Native authentication is unavailable."
+          );
+          return;
+        }
+
+        setLoading(true);
+        message.textContent = "";
+
+        window.AlignaAuth.register(
+          document
+            .getElementById(
+              "auth-register-email"
+            )
+            .value,
+          document
+            .getElementById(
+              "auth-register-password"
+            )
+            .value,
+          document
+            .getElementById(
+              "auth-register-name"
+            )
+            .value
+        );
+      }
+    );
+
+    window.addEventListener(
+      "aligna-auth-login",
+      event => {
+        setLoading(false);
+
+        if (event.detail.success) {
+          loginForm.reset();
+          showApp(event.detail.data.user);
+        } else {
+          showLogin(
+            event.detail.error ||
+              "Unable to sign in."
+          );
+        }
+      }
+    );
+
+    window.addEventListener(
+      "aligna-auth-register",
+      event => {
+        setLoading(false);
+
+        if (event.detail.success) {
+          registerForm.reset();
+          showApp(event.detail.data.user);
+        } else {
+          showLogin(
+            event.detail.error ||
+              "Unable to create account."
+          );
+        }
+      }
+    );
+
+    window.addEventListener(
+      "aligna-auth-session",
+      event => {
+        if (event.detail.success) {
+          showApp(event.detail.data.user);
+        } else {
+          showLogin();
+        }
+      }
+    );
+
+    window.addEventListener(
+      "aligna-auth-logout",
+      () => {
+        showLogin("You have signed out.");
+      }
+    );
+
+    window.addEventListener(
+      "aligna-auth-expired",
+      () => {
+        showLogin(
+          "Your session expired. Please sign in again."
+        );
+      }
+    );
+
+    window.alignaLogout = () => {
+      window.AlignaAuth?.logout();
+    };
+
+    window.addEventListener(
+      "DOMContentLoaded",
+      () => {
+        if (window.AlignaAuth) {
+          window.AlignaAuth.restoreSession();
+        } else {
+          showLogin(
+            "Native authentication is unavailable."
+          );
+        }
+      }
+    );
+  })();
 </script>
 </body>
 </html>

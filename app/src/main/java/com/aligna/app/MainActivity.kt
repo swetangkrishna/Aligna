@@ -18,12 +18,16 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import java.util.Calendar
 import android.content.pm.ApplicationInfo
+import com.aligna.app.auth.AuthBridge
+import com.aligna.app.auth.AuthManager
 
 class MainActivity : Activity() {
 
     private lateinit var webView: WebView
     private lateinit var aiManager: AlignaAiManager
     private lateinit var aiBridge: AlignaAiBridge
+    private lateinit var authManager: AuthManager
+    private lateinit var authBridge: AuthBridge
 
     override fun onCreate(
         savedInstanceState: Bundle?
@@ -42,6 +46,21 @@ class MainActivity : Activity() {
             webView
         )
 
+        authManager =
+            AuthManager(
+                applicationContext
+            )
+
+        authBridge =
+            AuthBridge(
+                webView = webView,
+                authManager = authManager
+            )
+
+        webView.addJavascriptInterface(
+            authBridge,
+            "AlignaAuth"
+        )
         aiManager =
             AlignaAiManager(
                 applicationContext
@@ -191,6 +210,10 @@ class MainActivity : Activity() {
             aiBridge.close()
         }
 
+        if (::authBridge.isInitialized) {
+            authBridge.close()
+        }
+        
         if (::aiManager.isInitialized) {
             aiManager.close()
         }
