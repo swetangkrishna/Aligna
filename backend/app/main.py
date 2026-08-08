@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.middleware import RequestContextMiddleware
 from app.api.routes import (
+    app_state,
     auth,
     chat,
     health,
@@ -55,6 +56,10 @@ app.add_middleware(
         "Authorization",
         "Content-Type",
     ],
+)
+app.include_router(
+    app_state.router,
+    prefix=settings.api_v1_prefix,
 )
 
 app.include_router(

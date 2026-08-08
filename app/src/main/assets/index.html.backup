@@ -275,59 +275,6 @@
   color: #4b3b87;
   font-size: 19px;
 }
-.aligna-debug-panel {
-  position: fixed;
-  z-index: 99999;
-  right: 8px;
-  bottom: 82px;
-  left: 8px;
-  max-height: 48vh;
-  overflow: hidden;
-  border: 1px solid #554093;
-  border-radius: 14px;
-  background: rgba(
-    20,
-    17,
-    31,
-    0.96
-  );
-  color: #f4f1ff;
-  box-shadow:
-    0 12px 40px
-    rgba(0, 0, 0, 0.3);
-}
-
-.aligna-debug-panel.hidden {
-  display: none;
-}
-
-.aligna-debug-head {
-  display: flex;
-  align-items: center;
-  justify-content:
-    space-between;
-  padding: 9px 11px;
-  border-bottom:
-    1px solid
-    rgba(255,255,255,0.15);
-}
-
-.aligna-debug-head button {
-  margin-left: 5px;
-  border: 0;
-  border-radius: 7px;
-  padding: 5px 8px;
-}
-
-#alignaDebugOutput {
-  max-height: 38vh;
-  margin: 0;
-  padding: 10px;
-  overflow: auto;
-  font-size: 10px;
-  line-height: 1.45;
-  white-space: pre-wrap;
-}
     .aligna-action-toast {
   position: fixed;
   left: 50%;
@@ -1692,8 +1639,8 @@
             </h3>
     
             <p>
-              Aligna subtracts what you already
-              have from what your meals require.
+              These items will be excluded
+              from your grocery list.
             </p>
           </div>
     
@@ -2084,36 +2031,6 @@ class="active-workout-header"
     </div>
   </section>
 </div>
-<div
-  id="alignaDebugPanel"
-  class="aligna-debug-panel hidden"
->
-  <div class="aligna-debug-head">
-    <strong>
-      Aligna Debug
-    </strong>
-
-    <div>
-      <button
-        id="alignaDebugClear"
-        type="button"
-      >
-        Clear
-      </button>
-
-      <button
-        id="alignaDebugClose"
-        type="button"
-      >
-        ×
-      </button>
-    </div>
-  </div>
-
-  <pre
-    id="alignaDebugOutput"
-  ></pre>
-</div>
 <script src="js/aligna-actions.js"></script>
 <script src="js/aligna-action-adapter.js"></script>
 <script src="js/aligna-state-sync.js"></script>
@@ -2170,29 +2087,6 @@ class="active-workout-header"
           "The selected meal will be replaced with Aligna's suggestion."
       },
 
-      add_kitchen_item: {
-        title:
-          "Add this kitchen item?",
-
-        description:
-          "The item will be recorded as already available at home and removed from your grocery requirements."
-      },
-
-      remove_kitchen_item: {
-        title:
-          "Remove this kitchen item?",
-
-        description:
-          "The item will be removed from your kitchen inventory and may return to your grocery list."
-      },
-
-      mark_grocery_as_owned: {
-        title:
-          "Already have this item?",
-
-        description:
-          "The item will move from your grocery list into your kitchen inventory."
-      },
       add_grocery_item: {
         title: "Add this grocery item?",
         description:
@@ -2224,154 +2118,6 @@ class="active-workout-header"
       }
     };
 
-    const alignaDebugEntries =
-  [];
-
-function appendAlignaDebug(
-  entry
-){
-  alignaDebugEntries.push(
-    entry
-  );
-
-  if(
-    alignaDebugEntries.length >
-    100
-  ){
-    alignaDebugEntries.shift();
-  }
-
-  const output =
-    document.getElementById(
-      "alignaDebugOutput"
-    );
-
-  if(output){
-    output.textContent =
-      alignaDebugEntries
-        .map(item =>
-          JSON.stringify(
-            item,
-            null,
-            2
-          )
-        )
-        .join(
-          "\n\n"
-        );
-
-    output.scrollTop =
-      output.scrollHeight;
-  }
-}
-
-window.addEventListener(
-  "aligna-debug",
-  event => {
-    appendAlignaDebug(
-      event.detail
-    );
-  }
-);
-
-window.AlignaDebug = {
-  open(){
-    document
-      .getElementById(
-        "alignaDebugPanel"
-      )
-      ?.classList
-      .remove(
-        "hidden"
-      );
-  },
-
-  close(){
-    document
-      .getElementById(
-        "alignaDebugPanel"
-      )
-      ?.classList
-      .add(
-        "hidden"
-      );
-  },
-
-  clear(){
-    alignaDebugEntries
-      .splice(
-        0
-      );
-
-    const output =
-      document.getElementById(
-        "alignaDebugOutput"
-      );
-
-    if(output){
-      output.textContent =
-        "";
-    }
-  },
-
-  snapshot(){
-    const snapshot = {
-      kitchenInventory:
-        getKitchenInventory(),
-
-      groceryItems:
-        getCombinedGroceryItems(),
-
-      personalisedGroceries:
-        window.AlignaAppData
-          ?.getAiGroceryItems
-          ? window
-              .AlignaAppData
-              .getAiGroceryItems()
-          : [],
-
-      weekPlan:
-        S.weekPlan || []
-    };
-
-    appendAlignaDebug({
-      source:
-        "manual",
-
-      stage:
-        "state-snapshot",
-
-      data:
-        snapshot
-    });
-
-    return snapshot;
-  }
-};
-
-document
-  .getElementById(
-    "alignaDebugClose"
-  )
-  ?.addEventListener(
-    "click",
-    () =>
-      window
-        .AlignaDebug
-        .close()
-  );
-
-document
-  .getElementById(
-    "alignaDebugClear"
-  )
-  ?.addEventListener(
-    "click",
-    () =>
-      window
-        .AlignaDebug
-        .clear()
-  );
     function formatActionPreview(action) {
   const payload =
     action?.payload || {};
@@ -2382,87 +2128,6 @@ document
     );
 
   switch(action?.type){
-    case "add_kitchen_item":
-  return `
-    <div class="action-preview-row">
-      <div class="action-preview-emoji">
-        🏠
-      </div>
-
-      <div class="action-preview-copy">
-        <strong>
-          ${safe(
-            payload.name ||
-            payload.item ||
-            "Kitchen item"
-          )}
-        </strong>
-
-        <span>
-          Add to kitchen inventory
-        </span>
-
-        ${
-          payload.quantity
-            ? `
-              <em>
-                Quantity:
-                ${safe(
-                  payload.quantity
-                )}
-              </em>
-            `
-            : ""
-        }
-      </div>
-    </div>
-  `;
-
-case "remove_kitchen_item":
-  return `
-    <div class="action-preview-row">
-      <div class="action-preview-emoji">
-        🏠
-      </div>
-
-      <div class="action-preview-copy">
-        <strong>
-          ${safe(
-            payload.name ||
-            payload.item ||
-            "Kitchen item"
-          )}
-        </strong>
-
-        <span>
-          Remove from kitchen inventory
-        </span>
-      </div>
-    </div>
-  `;
-
-case "mark_grocery_as_owned":
-  return `
-    <div class="action-preview-row">
-      <div class="action-preview-emoji">
-        ✓
-      </div>
-
-      <div class="action-preview-copy">
-        <strong>
-          ${safe(
-            payload.name ||
-            payload.item ||
-            "Grocery item"
-          )}
-        </strong>
-
-        <span>
-          Move from grocery list to kitchen inventory
-        </span>
-      </div>
-    </div>
-  `;
     case "add_grocery_item":
       return `
         <div class="action-preview-row">
@@ -2800,38 +2465,30 @@ case "mark_grocery_as_owned":
       description.textContent =
         labels.description;
         const confirmLabels = {
-              add_kitchen_item:
-                "Add to kitchen",
+  add_grocery_item:
+    "Add item",
 
-              remove_kitchen_item:
-                "Remove from kitchen",
+  remove_grocery_item:
+    "Remove item",
 
-              mark_grocery_as_owned:
-                "Mark as owned",
-                add_grocery_item:
-                  "Add item",
+  save_workout_plan:
+    "Save workout",
 
-                remove_grocery_item:
-                  "Remove item",
+  save_meal_plan:
+    "Save meals",
 
-                save_workout_plan:
-                  "Save workout",
+  replace_meal:
+    "Replace meal",
 
-                save_meal_plan:
-                  "Save meals",
+  schedule_reminder:
+    "Set reminder",
 
-                replace_meal:
-                  "Replace meal",
+  mark_workout_complete:
+    "Mark complete",
 
-                schedule_reminder:
-                  "Set reminder",
-
-                mark_workout_complete:
-                  "Mark complete",
-
-                update_user_goal:
-                  "Update goal"
-              };
+  update_user_goal:
+    "Update goal"
+};
 
 confirmButton.textContent =
   confirmLabels[action.type] ||
@@ -2843,232 +2500,12 @@ confirmButton.textContent =
 
       overlay.classList.remove("hidden");
     }
-    function actionSuccessMessage(
-  action
-){
-  const name =
-    action?.payload?.name ||
-    action?.payload?.item ||
-    "Item";
-
-  switch(action?.type){
-    case "add_kitchen_item":
-      return `${name} was added to your kitchen inventory.`;
-
-    case "remove_kitchen_item":
-      return `${name} was removed from your kitchen inventory.`;
-
-    case "mark_grocery_as_owned":
-      return `${name} was moved to your kitchen inventory.`;
-
-    case "add_grocery_item":
-      return `${name} was added to your grocery list.`;
-
-    case "remove_grocery_item":
-      return `${name} was removed from your grocery list.`;
-
-    case "save_meal_plan":
-      return "Your personalised meal plan was saved.";
-
-    case "save_workout_plan":
-      return "Your personalised workout plan was saved.";
-
-    case "replace_meal":
-      return "Your meal was replaced.";
-
-    case "schedule_reminder":
-      return "Your reminder was scheduled.";
-
-    case "mark_workout_complete":
-      return "Your workout was marked complete.";
-
-    case "update_user_goal":
-      return "Your goal was updated.";
-
-    default:
-      return "The requested update was completed.";
-  }
-}
 
     function closeConfirmation() {
       overlay.classList.add("hidden");
       pendingAction = null;
       preview.innerHTML = "";
     }
-
-    window.addEventListener(
-  "aligna-add-kitchen-item",
-  event => {
-    const payload =
-      event.detail || {};
-
-    console.log(
-      "[Kitchen] add event received",
-      payload
-    );
-
-    addKitchenItem({
-      name:
-        payload.name ||
-        payload.item,
-
-      quantity:
-        payload.quantity ||
-        "",
-
-      category:
-        payload.category ||
-        "Kitchen"
-    })
-      .then(() => {
-        console.log(
-          "[Kitchen] item added",
-          {
-            payload,
-
-            inventory:
-              getKitchenInventory()
-          }
-        );
-
-        renderKitchenInventory();
-        renderGrocery();
-
-        window.dispatchEvent(
-          new CustomEvent(
-            "aligna-debug",
-            {
-              detail: {
-                source:
-                  "kitchen",
-
-                stage:
-                  "add-complete",
-
-                data: {
-                  payload,
-
-                  inventory:
-                    getKitchenInventory(),
-
-                  groceries:
-                    getCombinedGroceryItems()
-                }
-              }
-            }
-          )
-        );
-      })
-      .catch(error => {
-        console.error(
-          "[Kitchen] add failed",
-          error
-        );
-
-        aiAddMessage(
-          "bot error",
-          error?.message ||
-          "The item could not be added to your kitchen."
-        );
-      });
-  }
-);
-
-window.addEventListener(
-  "aligna-remove-kitchen-item",
-  event => {
-    const payload =
-      event.detail || {};
-
-    const requestedName =
-      String(
-        payload.name ||
-        payload.item ||
-        ""
-      ).trim();
-
-    const requestedId =
-      String(
-        payload.id ||
-        payload.itemId ||
-        ""
-      ).trim();
-
-    const item =
-      getKitchenInventory()
-        .find(entry => {
-          if(
-            requestedId &&
-            entry.id ===
-              requestedId
-          ){
-            return true;
-          }
-
-          return (
-            normaliseIngredientName(
-              entry.name
-            ) ===
-            normaliseIngredientName(
-              requestedName
-            )
-          );
-        });
-
-    console.log(
-      "[Kitchen] remove event received",
-      {
-        payload,
-        resolvedItem:
-          item || null
-      }
-    );
-
-    if(!item){
-      aiAddMessage(
-        "bot error",
-        `${requestedName || "That item"} is not in your kitchen inventory.`
-      );
-
-      return;
-    }
-
-    removeKitchenItem(
-      item.id
-    ).catch(error => {
-      console.error(
-        "[Kitchen] remove failed",
-        error
-      );
-    });
-  }
-);
-window.addEventListener(
-  "aligna-mark-grocery-owned",
-  event => {
-    const payload =
-      event.detail || {};
-
-    addKitchenItem({
-      name:
-        payload.name ||
-        payload.item,
-
-      quantity:
-        payload.quantity ||
-        "",
-
-      category:
-        payload.category ||
-        "Kitchen"
-    }).catch(error => {
-      console.error(
-        "[Kitchen] could not mark grocery as owned",
-        error
-      );
-    });
-  }
-);
 
     window.addEventListener(
       "aligna-ai-action-confirmation",
@@ -3085,96 +2522,44 @@ window.addEventListener(
     );
 
     confirmButton.addEventListener(
-  "click",
-  async () => {
-    if(!pendingAction){
-      return;
-    }
+      "click",
+      async () => {
+        if (!pendingAction) {
+          return;
+        }
 
-    /*
-     * Preserve the action because
-     * closeConfirmation() clears
-     * pendingAction.
-     */
-    const completedAction =
-      pendingAction;
+        confirmButton.disabled = true;
+        confirmButton.textContent =
+          "Applying…";
 
-    confirmButton.disabled =
-      true;
+        try {
+          await window
+            .AlignaActions
+            .executeConfirmedAction(
+              pendingAction
+            );
 
-    confirmButton.textContent =
-      "Applying…";
+          window.dispatchEvent(
+            new CustomEvent(
+              "aligna-ai-action-completed",
+              {
+                detail: pendingAction
+              }
+            )
+          );
 
-    try{
-      await window
-        .AlignaActions
-        .executeConfirmedAction(
-          completedAction
-        );
-
-      window.dispatchEvent(
-        new CustomEvent(
-          "aligna-ai-action-completed",
-          {
-            detail:
-              completedAction
-          }
-        )
-      );
-
-      console.log(
-        "[AI Action] completed",
-        completedAction
-      );
-
-      window.dispatchEvent(
-        new CustomEvent(
-          "aligna-debug",
-          {
-            detail: {
-              source:
-                "confirmation",
-
-              stage:
-                "action-completed",
-
-              timestamp:
-                new Date()
-                  .toISOString(),
-
-              data:
-                completedAction
-            }
-          }
-        )
-      );
-
-      closeConfirmation();
-
-      aiAddMessage(
-        "bot",
-        actionSuccessMessage(
-          completedAction
-        )
-      );
-    }catch(error){
-      console.error(
-        "[AI Action] execution failed",
-        error
-      );
-
-      description.textContent =
-        error?.message ||
-        "The change could not be applied.";
-    }finally{
-      confirmButton.disabled =
-        false;
-
-      confirmButton.textContent =
-        "Apply change";
-    }
-  }
-);
+          closeConfirmation();
+        } catch (error) {
+          description.textContent =
+            error?.message ||
+            "The change could not be applied.";
+        } finally {
+          confirmButton.disabled = false;
+          confirmButton.textContent =
+            "Apply change";
+        }
+      }
+    );
 
     overlay.addEventListener(
       "click",
@@ -3813,116 +3198,6 @@ function findMealIndexByName(name){
       target.includes(mealName)
     );
   });
-}
-
-function inferKitchenActionFromQuestion(
-  question
-){
-  const text =
-    String(
-      question || ""
-    )
-      .trim()
-      .toLowerCase();
-
-  const kitchenMentioned =
-    text.includes(
-      "kitchen inventory"
-    ) ||
-    text.includes(
-      "pantry"
-    ) ||
-    text.includes(
-      "already have"
-    ) ||
-    text.includes(
-      "already own"
-    ) ||
-    text.includes(
-      "at home"
-    );
-
-  if(!kitchenMentioned){
-    return null;
-  }
-
-  const removeMatch =
-    text.match(
-      /(?:remove|delete|take)\s+(.+?)\s+from\s+(?:my\s+)?(?:kitchen inventory|pantry)/i
-    );
-
-  if(removeMatch){
-    return {
-      type:
-        "remove_kitchen_item",
-
-      requires_confirmation:
-        true,
-
-      payload: {
-        name:
-          removeMatch[1]
-            .trim()
-      }
-    };
-  }
-
-  const addMatch =
-    text.match(
-      /(?:add|put|save)\s+(.+?)\s+(?:to|in)\s+(?:my\s+)?(?:kitchen inventory|pantry)/i
-    );
-
-  if(addMatch){
-    return {
-      type:
-        "add_kitchen_item",
-
-      requires_confirmation:
-        true,
-
-      payload: {
-        name:
-          addMatch[1]
-            .trim(),
-
-        quantity:
-          "",
-
-        category:
-          "Kitchen"
-      }
-    };
-  }
-
-  const alreadyHaveMatch =
-    text.match(
-      /(?:i\s+)?already\s+(?:have|own)\s+(.+)/i
-    );
-
-  if(alreadyHaveMatch){
-    return {
-      type:
-        "mark_grocery_as_owned",
-
-      requires_confirmation:
-        true,
-
-      payload: {
-        name:
-          alreadyHaveMatch[1]
-            .replace(/[.!?]+$/, "")
-            .trim(),
-
-        quantity:
-          "",
-
-        category:
-          "Kitchen"
-      }
-    };
-  }
-
-  return null;
 }
 
 function resolveMealIndex(value){
@@ -6434,34 +5709,8 @@ if (
     if(!S.profile.primaryGoal){S.profile.primaryGoal ="general fitness";}
     if(!Array.isArray(S.kitchenInventory)){S.kitchenInventory = [];}
 
-    if(
-  !S.consumedMealSlots ||
-  typeof S.consumedMealSlots !==
-    "object"
-){
-  S.consumedMealSlots = {};
-}
-
-if(
-  !Array.isArray(
-    S.inventoryHistory
-  )
-){
-  S.inventoryHistory = [];
-}
     // daily rollover: reset checks + water + sets, keep history + schedule prefs
-    if(
-  S.lastDay !==
-  todayKey()
-){
-  S.lastDay =
-    todayKey();
-
-  S.water = 0;
-  S.slots = null;
-  S.setProg = {};
-  S.consumedMealSlots = {};
-}
+    if(S.lastDay !== todayKey()){ S.lastDay = todayKey(); S.water = 0; S.slots = null; S.setProg = {}; }
     if(!S.slots){ buildSlots(); }
     if(!Array.isArray(S.weights)){
   S.weights = [];
@@ -6484,11 +5733,8 @@ S.weights =
       entry.kg >= 25 &&
       entry.kg <= 350
     );
-    await save(
-  false
-);
+    await save();
   }
-
   async function save(
   syncToCloud = true
 ){
@@ -6497,20 +5743,8 @@ S.weights =
     JSON.stringify(S)
   );
 
-  const signedIn =
-    window.AlignaAuth &&
-    typeof window
-      .AlignaAuth
-      .isSignedIn ===
-      "function"
-      ? window
-          .AlignaAuth
-          .isSignedIn()
-      : false;
-
   if(
     syncToCloud &&
-    signedIn &&
     window.AlignaCloudSync &&
     typeof window
       .AlignaCloudSync
@@ -6554,10 +5788,7 @@ S.weights =
       false
     );
 
-    renderDayStrip();
-renderNext();
-renderTimeline();
-renderWater();
+    renderToday();
     renderIdeas(
       currentFilter
     );
@@ -6817,444 +6048,6 @@ window.dispatchEvent(
     )
     .trim();
 }
-function parseIngredientQuantity(
-  quantity
-){
-  const raw =
-    String(
-      quantity || ""
-    )
-      .trim()
-      .toLowerCase();
-
-  if(!raw){
-    return {
-      amount: null,
-      unit: ""
-    };
-  }
-
-  function parseNumberPart(
-    value
-  ){
-    const text =
-      String(value || "")
-        .trim();
-
-    if(!text){
-      return null;
-    }
-
-    /*
-     * Mixed fraction:
-     * 1 1/2
-     */
-    const mixed =
-      text.match(
-        /^(\d+)\s+(\d+)\/(\d+)$/
-      );
-
-    if(mixed){
-      const whole =
-        Number(
-          mixed[1]
-        );
-
-      const numerator =
-        Number(
-          mixed[2]
-        );
-
-      const denominator =
-        Number(
-          mixed[3]
-        );
-
-      if(
-        denominator === 0
-      ){
-        return null;
-      }
-
-      return (
-        whole +
-        numerator /
-          denominator
-      );
-    }
-
-    /*
-     * Fraction:
-     * 1/2
-     */
-    const fraction =
-      text.match(
-        /^(\d+)\/(\d+)$/
-      );
-
-    if(fraction){
-      const numerator =
-        Number(
-          fraction[1]
-        );
-
-      const denominator =
-        Number(
-          fraction[2]
-        );
-
-      if(
-        denominator === 0
-      ){
-        return null;
-      }
-
-      return (
-        numerator /
-        denominator
-      );
-    }
-
-    /*
-     * Normal decimal/integer.
-     */
-    const numeric =
-      Number(text);
-
-    return Number.isFinite(
-      numeric
-    )
-      ? numeric
-      : null;
-  }
-
-  /*
-   * Match:
-   * 2 eggs
-   * 1/2 cup
-   * 1 1/2 tbsp
-   * 30g
-   */
-  const match =
-    raw.match(
-      /^(\d+\s+\d+\/\d+|\d+\/\d+|\d+(?:\.\d+)?)\s*(.*)$/
-    );
-
-  if(!match){
-    return {
-      amount: null,
-      unit: raw
-    };
-  }
-
-  return {
-    amount:
-      parseNumberPart(
-        match[1]
-      ),
-
-    unit:
-      String(
-        match[2] || ""
-      ).trim()
-  };
-}
-
-function formatQuantityAmount(
-  amount
-){
-  if(
-    amount === null ||
-    !Number.isFinite(
-      amount
-    )
-  ){
-    return "";
-  }
-
-  const knownFractions = [
-    {
-      value: 0.25,
-      text: "1/4"
-    },
-    {
-      value: 0.5,
-      text: "1/2"
-    },
-    {
-      value: 0.75,
-      text: "3/4"
-    }
-  ];
-
-  const whole =
-    Math.floor(
-      amount
-    );
-
-  const fraction =
-    amount - whole;
-
-  const known =
-    knownFractions.find(
-      item =>
-        Math.abs(
-          item.value -
-          fraction
-        ) < 0.001
-    );
-
-  if(
-    known &&
-    whole > 0
-  ){
-    return `${whole} ${known.text}`;
-  }
-
-  if(known){
-    return known.text;
-  }
-
-  if(
-    Math.abs(
-      amount -
-      Math.round(amount)
-    ) < 0.001
-  ){
-    return String(
-      Math.round(amount)
-    );
-  }
-
-  return String(
-    Number(
-      amount.toFixed(2)
-    )
-  );
-}
-
-function ingredientQuantityFromRecipe(
-  rawIngredient
-){
-  const parts =
-    String(
-      rawIngredient || ""
-    )
-      .split(",");
-
-  parts.shift();
-
-  return parseIngredientQuantity(
-    parts.join(",").trim()
-  );
-}
-
-function getKitchenQuantity(
-  ingredientName
-){
-  const target =
-    normaliseIngredientName(
-      ingredientName
-    );
-
-  const item =
-    getKitchenInventory()
-      .find(entry =>
-        normaliseIngredientName(
-          entry.name
-        ) === target
-      );
-
-  if(!item){
-    return {
-      amount: 0,
-      unit: ""
-    };
-  }
-
-  const parsed =
-    parseIngredientQuantity(
-      item.quantity
-    );
-
-  return {
-    amount:
-      parsed.amount ?? 0,
-
-    unit:
-      parsed.unit
-  };
-}
-
-function aggregateMealIngredients(){
-  const required =
-    new Map();
-
-  (S.weekPlan || [])
-    .forEach(index => {
-      const meal =
-        IDEAS[index];
-
-      if(
-        !meal ||
-        !Array.isArray(
-          meal.ing
-        )
-      ){
-        return;
-      }
-
-      meal.ing.forEach(
-        rawIngredient => {
-          const parts =
-            String(
-              rawIngredient
-            )
-              .split(",");
-
-          const name =
-            String(
-              parts.shift() || ""
-            ).trim();
-
-          if(!name){
-            return;
-          }
-
-          const quantity =
-            parseIngredientQuantity(
-              parts.join(",")
-                .trim()
-            );
-
-          const key =
-            normaliseIngredientName(
-              name
-            );
-
-          if(
-            !required.has(key)
-          ){
-            required.set(
-              key,
-              {
-                name,
-                amount:
-                  quantity.amount,
-                unit:
-                  quantity.unit
-              }
-            );
-
-            return;
-          }
-
-          const existing =
-            required.get(key);
-
-          /*
-           * Only sum directly when
-           * compatible numeric units exist.
-           */
-          if(
-            existing.amount !==
-              null &&
-            quantity.amount !==
-              null &&
-            normaliseIngredientName(
-              existing.unit
-            ) ===
-              normaliseIngredientName(
-                quantity.unit
-              )
-          ){
-            existing.amount +=
-              quantity.amount;
-          }
-        }
-      );
-    });
-
-  return [
-    ...required.values()
-  ];
-}
-
-function calculateMissingIngredient(
-  required
-){
-  const kitchen =
-    getKitchenQuantity(
-      required.name
-    );
-
-  /*
-   * Quantity isn't machine-readable.
-   * Fall back to ownership semantics.
-   */
-  if(
-    required.amount === null
-  ){
-    return kitchenHasIngredient(
-      required.name
-    )
-      ? null
-      : {
-          ...required
-        };
-  }
-
-  /*
-   * Units differ.
-   * Don't pretend the calculation
-   * is reliable.
-   */
-  if(
-    kitchen.amount > 0 &&
-    kitchen.unit &&
-    required.unit &&
-    normaliseIngredientName(
-      kitchen.unit
-    ) !==
-      normaliseIngredientName(
-        required.unit
-      )
-  ){
-    return {
-      ...required
-    };
-  }
-
-  const missing =
-    Math.max(
-      0,
-      required.amount -
-        kitchen.amount
-    );
-
-  if(missing <= 0){
-    return null;
-  }
-
-  return {
-    name:
-      required.name,
-
-    amount:
-      missing,
-
-    unit:
-      required.unit
-  };
-}
-
-function getMissingMealIngredients(){
-  return aggregateMealIngredients()
-    .map(
-      calculateMissingIngredient
-    )
-    .filter(Boolean);
-}
 
 function getKitchenInventory(){
   return Array.isArray(
@@ -7328,25 +6121,16 @@ async function addKitchenItem({
       );
 
   if(existing){
-    const cleanQuantity =
-  String(
-    quantity || ""
-  ).trim();
+    existing.quantity =
+      String(quantity || "")
+        .trim();
 
-if(cleanQuantity){
-  existing.quantity =
-    cleanQuantity;
-}
-
-const cleanCategory =
-  String(
-    category || ""
-  ).trim();
-
-if(cleanCategory){
-  existing.category =
-    cleanCategory;
-}
+    existing.category =
+      String(
+        category ||
+        existing.category ||
+        "Kitchen"
+      );
 
     existing.updatedAt =
       new Date()
@@ -7390,242 +6174,6 @@ if(cleanCategory){
   );
 }
 
-async function consumeKitchenIngredient(
-  name,
-  quantity
-){
-  const target =
-    normaliseIngredientName(
-      name
-    );
-
-  const item =
-    getKitchenInventory()
-      .find(entry =>
-        normaliseIngredientName(
-          entry.name
-        ) === target
-      );
-
-  if(!item){
-    return {
-      consumed:
-        false,
-
-      reason:
-        "not_in_inventory"
-    };
-  }
-
-  const stored =
-    parseIngredientQuantity(
-      item.quantity
-    );
-
-  const required =
-    parseIngredientQuantity(
-      quantity
-    );
-
-  /*
-   * We cannot safely calculate
-   * quantities if either side
-   * is non-numeric.
-   */
-  if(
-    stored.amount === null ||
-    required.amount === null
-  ){
-    return {
-      consumed:
-        false,
-
-      reason:
-        "quantity_not_numeric"
-    };
-  }
-
-  /*
-   * Don't subtract incompatible
-   * units.
-   */
-  if(
-    stored.unit &&
-    required.unit &&
-    normaliseIngredientName(
-      stored.unit
-    ) !==
-      normaliseIngredientName(
-        required.unit
-      )
-  ){
-    return {
-      consumed:
-        false,
-
-      reason:
-        "unit_mismatch"
-    };
-  }
-
-  const remaining =
-    Math.max(
-      0,
-      stored.amount -
-        required.amount
-    );
-
-  if(
-    remaining <= 0
-  ){
-    S.kitchenInventory =
-      getKitchenInventory()
-        .filter(entry =>
-          entry.id !==
-          item.id
-        );
-  }else{
-    item.quantity =
-      `${
-        formatQuantityAmount(
-          remaining
-        )
-      }${
-        stored.unit
-          ? ` ${stored.unit}`
-          : ""
-      }`;
-
-    item.updatedAt =
-      new Date()
-        .toISOString();
-  }
-
-  return {
-    consumed:
-      true,
-
-    remaining
-  };
-}
-
-async function consumeMealIngredients(
-  meal
-){
-  if(
-    !meal ||
-    !Array.isArray(
-      meal.ing
-    )
-  ){
-    return [];
-  }
-
-  const results =
-    [];
-
-  for(
-    const rawIngredient
-    of meal.ing
-  ){
-    const parts =
-      String(
-        rawIngredient
-      )
-        .split(",");
-
-    const name =
-      String(
-        parts.shift() || ""
-      ).trim();
-
-    const quantity =
-      parts
-        .join(",")
-        .trim();
-
-    if(!name){
-      continue;
-    }
-
-    const result =
-      await consumeKitchenIngredient(
-        name,
-        quantity
-      );
-
-    results.push({
-      name,
-      quantity,
-      ...result
-    });
-  }
-  /*
-
-   * ADD HISTORY HERE
-
-   */
-
-   S.inventoryHistory.push({
-
-id:
-
-  `inventory_event_${Date.now()}`,
-
-type:
-
-  "meal_consumed",
-
-mealId:
-
-  meal.id,
-
-mealName:
-
-  meal.n,
-
-timestamp:
-
-  new Date()
-
-    .toISOString(),
-
-ingredients:
-
-  results
-
-});
-
-if(
-
-S.inventoryHistory.length >
-
-500
-
-){
-
-S.inventoryHistory =
-
-  S.inventoryHistory
-
-    .slice(-500);
-
-}
-  await save();
-
-  renderKitchenInventory();
-  renderGrocery();
-  renderWeekPlan();
-
-  window.dispatchEvent(
-    new CustomEvent(
-      "aligna-kitchen-inventory-changed"
-    )
-  );
-
-  return results;
-}
-
 async function removeKitchenItem(
   itemId
 ){
@@ -7647,48 +6195,82 @@ async function removeKitchenItem(
   );
 }
 
-function getCombinedGroceryItems(){
+  function getCombinedGroceryItems(){
   const combined =
     new Map();
 
   /*
-   * Ingredients required for meals,
-   * minus kitchen inventory.
+   * Ingredients from meals added to
+   * S.weekPlan.
    */
-  getMissingMealIngredients()
-    .forEach(item => {
-      const key =
-        normaliseIngredientName(
-          item.name
-        );
+  (S.weekPlan || [])
+    .forEach(index => {
+      const meal =
+        IDEAS[index];
 
-      combined.set(
-        key,
-        {
-          name:
-            item.name,
+      if(
+        !meal ||
+        !Array.isArray(meal.ing)
+      ){
+        return;
+      }
 
-            quantity:
-  item.amount !== null
-    ? `${
-        formatQuantityAmount(
-          item.amount
-        )
-      }${
-        item.unit
-          ? ` ${item.unit}`
-          : ""
-      }`
-    : "",
+      meal.ing.forEach(rawIngredient => {
+        const parts =
+          String(rawIngredient)
+            .split(",");
 
-          source:
-            "meal_plan"
+        const name =
+          String(
+            parts.shift() || ""
+          ).trim();
+
+        const quantity =
+          parts
+            .join(",")
+            .trim();
+
+        if(!name){
+          return;
         }
-      );
+
+        const key =
+          name.toLowerCase();
+
+        if(!combined.has(key)){
+          combined.set(
+            key,
+            {
+              name,
+              quantity,
+              source:
+                "meal_plan"
+            }
+          );
+        }else if(quantity){
+          const existing =
+            combined.get(key);
+
+          if(
+            existing.quantity &&
+            !existing.quantity.includes(
+              quantity
+            )
+          ){
+            existing.quantity +=
+              ` · ${quantity}`;
+          }else if(
+            !existing.quantity
+          ){
+            existing.quantity =
+              quantity;
+          }
+        }
+      });
     });
 
   /*
-   * Explicit AI grocery items.
+   * Items added directly through AI.
    */
   getAiGroceryItems()
     .forEach(item => {
@@ -7703,31 +6285,15 @@ function getCombinedGroceryItems(){
         return;
       }
 
-      /*
-       * Don't add an AI grocery
-       * when it is already owned.
-       */
-      if(
-        kitchenHasIngredient(
-          name
-        )
-      ){
-        return;
-      }
-
       const key =
-        normaliseIngredientName(
-          name
-        );
+        name.toLowerCase();
 
       const quantity =
         String(
           item.quantity || ""
         ).trim();
 
-      if(
-        combined.has(key)
-      ){
+      if(combined.has(key)){
         const existing =
           combined.get(key);
 
@@ -7736,6 +6302,9 @@ function getCombinedGroceryItems(){
             quantity;
         }
 
+        /*
+         * Direct AI items remain removable.
+         */
         existing.source =
           "ai";
       }else{
@@ -7747,9 +6316,7 @@ function getCombinedGroceryItems(){
               `grocery-${key}`,
 
             name,
-
             quantity,
-
             checked:
               Boolean(
                 item.checked
@@ -7762,119 +6329,36 @@ function getCombinedGroceryItems(){
       }
     });
 
-  return [
-    ...combined.values()
-  ];
-}
+    return [
+  ...combined.values()
+]
+  .map(item => ({
+    ...item,
 
-
-async function markGroceryBought(
-  groceryItem
-){
-  const existing =
-    getKitchenInventory()
-      .find(item =>
-        normaliseIngredientName(
-          item.name
-        ) ===
-        normaliseIngredientName(
-          groceryItem.name
-        )
-      );
-
-  if(existing){
-    const oldQuantity =
-      parseIngredientQuantity(
-        existing.quantity
-      );
-
-    const boughtQuantity =
-      parseIngredientQuantity(
-        groceryItem.quantity
-      );
-
-    if(
-      oldQuantity.amount !== null &&
-      boughtQuantity.amount !== null &&
-      normaliseIngredientName(
-        oldQuantity.unit
-      ) ===
-      normaliseIngredientName(
-        boughtQuantity.unit
+    alreadyInKitchen:
+      kitchenHasIngredient(
+        item.name
       )
-    ){
-      existing.quantity =
-        `${
-          oldQuantity.amount +
-          boughtQuantity.amount
-        }${
-          oldQuantity.unit
-            ? ` ${oldQuantity.unit}`
-            : ""
-        }`;
-
-      existing.updatedAt =
-        new Date()
-          .toISOString();
-    }else{
-      existing.quantity =
-        groceryItem.quantity ||
-        existing.quantity;
-    }
-  }else{
-    await addKitchenItem({
-      name:
-        groceryItem.name,
-
-      quantity:
-        groceryItem.quantity ||
-        "",
-
-      category:
-        "Kitchen"
-    });
-  }
-
-  if(
-    groceryItem.source === "ai"
-  ){
-    window.dispatchEvent(
-      new CustomEvent(
-        "aligna-remove-grocery-item",
-        {
-          detail: {
-            name:
-              groceryItem.name
-          }
-        }
-      )
-    );
-  }
-
-  await save();
-
-  renderKitchenInventory();
-  renderGrocery();
-  renderWeekPlan();
-
-  window.dispatchEvent(
-    new CustomEvent(
-      "aligna-kitchen-inventory-changed"
-    )
+  }))
+  .filter(item =>
+    !item.alreadyInKitchen
   );
 }
+
+
+
 window.AlignaAppData = {
-  ...(
-    window.AlignaAppData ||
-    {}
-  ),
 
-  getCombinedGroceryItems,
-  getKitchenInventory,
-  getAiGroceryItems,
+...(
 
-  addKitchenItem,
-  removeKitchenItem
+  window.AlignaAppData ||
+
+  {}
+
+),
+
+getCombinedGroceryItems
+
 };
 
 function renderKitchenInventory(){
@@ -7975,168 +6459,68 @@ function renderKitchenInventory(){
     });
 }
 
-function renderGrocery(){
-  const box =
-    document.getElementById(
-      "groceryBox"
-    );
+  function renderGrocery(){
+    const box=document.getElementById("groceryBox");
+    const plan=S.weekPlan||[];
+    const aiItems =
+  getAiGroceryItems();
 
-  const groceryItems =
-    getCombinedGroceryItems();
-
-  if(
-    !groceryItems.length
-  ){
-    box.classList.add(
-      "hidden"
-    );
-
-    return;
-  }
-
-  box.classList.remove(
-    "hidden"
-  );
-
-  if(!S.groceryChecked){
-    S.groceryChecked = {};
-  }
-
-  const listEl =
-    document.getElementById(
-      "groceryList"
-    );
-
-  listEl.innerHTML = "";
-
-  groceryItems.forEach(
-    (groceryItem, index) => {
-      const displayName =
-        groceryItem.quantity
-          ? `${groceryItem.name} · ${groceryItem.quantity}`
-          : groceryItem.name;
-
-      const checked =
-        !!S.groceryChecked[
-          displayName
-        ];
-
-      const row =
-        document.createElement(
-          "div"
-        );
-
-      row.className =
-        "gitem" +
-        (
-          checked
-            ? " checked"
-            : ""
-        );
-
-      row.innerHTML = `
-        <button
-          class="gcheck"
-          data-check-grocery
-          type="button"
-        >
-          ✓
-        </button>
-
-        <span style="flex:1">
-          ${escapeHtml(
-            displayName
-          )}
-        </span>
-
-        <button
-          type="button"
-          class="pillbtn"
-          data-bought-grocery="${index}"
-          style="
-            padding:5px 8px;
-            font-size:10px;
-          "
-        >
-          Bought
-        </button>
-      `;
-
-      row
-        .querySelector(
-          "[data-check-grocery]"
-        )
-        .onclick = () => {
-          S.groceryChecked[
-            displayName
-          ] =
-            !S.groceryChecked[
-              displayName
-            ];
-
-          save();
-
-          renderGrocery();
-          renderWeekPlan();
-        };
-
-      listEl.appendChild(
-        row
-      );
-    }
-  );
-
-  listEl
-    .querySelectorAll(
-      "[data-bought-grocery]"
-    )
-    .forEach(button => {
-      button.onclick =
-        async event => {
-          event.stopPropagation();
-
-          const index =
-            Number(
-              button.dataset
-                .boughtGrocery
-            );
-
-          const groceryItem =
-            groceryItems[index];
-
-          if(!groceryItem){
-            return;
-          }
-
-          await markGroceryBought(
-            groceryItem
-          );
-        };
-    });
-
-  const left =
-    groceryItems.filter(
-      item => {
-        const displayName =
-          item.quantity
-            ? `${item.name} · ${item.quantity}`
-            : item.name;
-
-        return !S.groceryChecked[
-          displayName
-        ];
-      }
-    ).length;
-
-  document
-    .getElementById(
-      "groceryCount"
-    )
-    .textContent =
-      left === 0
-        ? "all set ✓"
-        : `${left} to get`;
+if(
+  !plan.length &&
+  !aiItems.length
+){
+  box.classList.add("hidden");
+  return;
 }
+    box.classList.remove("hidden");
+    if(!S.groceryChecked) S.groceryChecked={};
+    // aggregate unique ingredient names across planned recipes
+    const recipeNames =
+  plan.flatMap(
+    idx =>
+      IDEAS[idx].ing.map(
+        ingName
+      )
+  );
+
+const aiNames =
+  getAiGroceryItems()
+    .map(item =>
+      item.quantity
+        ? `${item.name} · ${item.quantity}`
+        : item.name
+    );
+
+    const names = [
+  ...new Set([
+    ...recipeNames,
+    ...aiNames
+  ])
+].filter(name => {
+  const ingredientName =
+    String(name)
+      .split("·")[0]
+      .trim();
+
+  return !kitchenHasIngredient(
+    ingredientName
+  );
+});
+    const listEl=document.getElementById("groceryList"); listEl.innerHTML="";
+    names.forEach(name=>{
+      const checked = !!S.groceryChecked[name];
+      const row=document.createElement("div");
+      row.className="gitem"+(checked?" checked":"");
+      row.innerHTML=`<button class="gcheck">✓</button><span>${name}</span>`;
+      row.querySelector("button").onclick=()=>{
+        S.groceryChecked[name]=!S.groceryChecked[name];
+        save(); renderGrocery(); renderWeekPlan();
+      };
+      listEl.appendChild(row);
+    });
+    const left=names.filter(n=>!S.groceryChecked[n]).length;
+    document.getElementById("groceryCount").textContent = left===0?"all set ✓":(left+" to get");
+  }
 
   function renderProgress(){
     const done = S.slots.filter(s=>s.done);
@@ -8252,82 +6636,10 @@ function renderGrocery(){
     }catch(e){}
   }
 
-  async function toggleSlot(
-  id
-){
-  const slot =
-    S.slots.find(
-      item =>
-        item.id === id
-    );
-
-  if(!slot){
-    return;
+  function toggleSlot(id){
+    const s=S.slots.find(x=>x.id===id); s.done=!s.done; save();
+    renderNext(); renderTimeline(); if(!document.getElementById("view-progress").classList.contains("hidden")) renderProgress();
   }
-
-  const wasDone =
-    Boolean(
-      slot.done
-    );
-
-  slot.done =
-    !slot.done;
-
-  /*
-   * Only consume inventory when
-   * transitioning from not done
-   * to done.
-   */
-  if(
-    !wasDone &&
-    slot.done &&
-    slot.kind === "food"
-  ){
-    const consumptionKey =
-      `${todayKey()}:${slot.id}`;
-
-    if(
-      !S.consumedMealSlots[
-        consumptionKey
-      ]
-    ){
-      const meal =
-        IDEAS[
-          slot.idea
-        ];
-
-      if(meal){
-        await consumeMealIngredients(
-          meal
-        );
-
-        S.consumedMealSlots[
-          consumptionKey
-        ] = true;
-      }
-    }
-  }
-
-  await save();
-
-  renderNext();
-  renderTimeline();
-  renderGrocery();
-  renderKitchenInventory();
-
-  if(
-    !document
-      .getElementById(
-        "view-progress"
-      )
-      .classList
-      .contains(
-        "hidden"
-      )
-  ){
-    renderProgress();
-  }
-}
   function shuffleSlot(id){
     const s=S.slots.find(x=>x.id===id);
     const pool=s.kind==="food"?FOODS:DRINKS;
@@ -8925,9 +7237,6 @@ personalisedWorkout:
     kitchenInventory:
   getKitchenInventory()
     .map(item => ({
-      id:
-        item.id,
-
       name:
         item.name,
 
@@ -8936,32 +7245,40 @@ personalisedWorkout:
 
       category:
         item.category ||
-        "Kitchen",
+        "Kitchen"
+    }))
+    .slice(0, 100),
 
-      updatedAt:
-        item.updatedAt ||
-        null
-    })),
+groceryItems:
+  (() => {
+    const recipeItems =
+      (S.weekPlan || [])
+        .flatMap(index =>
+          IDEAS[index]?.ing || []
+        )
+        .map(ingName);
 
-    groceryRequirements:
+    const aiItems =
+      getAiGroceryItems()
+        .map(item => ({
+          name:
+            item.name,
 
-  getCombinedGroceryItems()
+          quantity:
+            item.quantity || ""
+        }));
 
-    .map(item => ({
+    return {
+      recipeItems: [
+        ...new Set(
+          recipeItems
+        )
+      ].slice(0, 30),
 
-      name:
-
-        item.name,
-
-      quantity:
-
-        item.quantity || "",
-
-      source:
-
-        item.source
-
-    })),
+      aiItems:
+        aiItems.slice(0, 30)
+    };
+  })(),
 
 progressSummary: {
   workoutsThisWeek:
@@ -8996,47 +7313,6 @@ progressSummary: {
     getValidWeightEntries()
       .slice(-1)[0] || null
 },
-consumedMealsToday:
-
-  (S.slots || [])
-
-    .filter(slot =>
-
-      slot.done &&
-
-      slot.kind ===
-
-        "food"
-
-    )
-
-    .map(slot => ({
-
-      slotId:
-
-        slot.id,
-
-      mealId:
-
-        IDEAS[
-
-          slot.idea
-
-        ]?.id ||
-
-        null,
-
-      name:
-
-        IDEAS[
-
-          slot.idea
-
-        ]?.n ||
-
-        slot.name
-
-    })),
 
     nextScheduledItem:
       next
@@ -9102,6 +7378,12 @@ consumedMealsToday:
         .filter(Boolean)
         .slice(0, 10),
 
+    completedMealsToday:
+      (S.slots || [])
+        .filter(slot =>
+          slot.done
+        )
+        .length
   };
 }
 
@@ -9701,13 +7983,8 @@ function sendToAI(text){
   const requestId =
     `qa_${++aiRequestCounter}_${Date.now()}`;
 
-    aiPending[requestId] = {
-  element:
-    thinking,
-
-  question:
-    clean
-};
+  aiPending[requestId] =
+    thinking;
 
   try{
     const profileJson =
@@ -9750,20 +8027,6 @@ function sendToAI(text){
       }
     );
 
-    console.log(
-  "[AI] sending native request",
-  {
-    requestId,
-    question:
-      clean,
-
-    pending:
-      aiPending[
-        requestId
-      ]
-  }
-);
-
     window.AlignaAI.askQuestion(
       requestId,
       clean,
@@ -9801,18 +8064,13 @@ function sendToAI(text){
 window.onAiAnswer =
   function(result){
     console.log(
-      "FULL ALIGNA AI RESULT",
-      JSON.stringify(
-        result,
-        null,
-        2
-      )
-    );
-
+  "FULL ALIGNA AI RESULT",
+  JSON.stringify(result, null, 2)
+);
     const requestId =
       result?.requestId;
 
-    const pending =
+    const element =
       aiPending[
         requestId
       ];
@@ -9821,7 +8079,7 @@ window.onAiAnswer =
       false
     );
 
-    if(!pending){
+    if(!element){
       console.warn(
         "Received AI response for unknown request",
         result
@@ -9830,46 +8088,13 @@ window.onAiAnswer =
       return;
     }
 
-    const element =
-      pending.element;
-
-    /*
-     * A local model can occasionally return
-     * the correct sentence but omit the
-     * structured action. Infer only clear
-     * kitchen commands as a fallback.
-     */
-    if(
-      !result.action
-    ){
-      const inferredAction =
-        inferKitchenActionFromQuestion(
-          pending.question
-        );
-
-      if(inferredAction){
-        console.warn(
-          "[AI Fallback] inferred kitchen action",
-          inferredAction
-        );
-
-        result.action =
-          inferredAction;
-      }
-    }
-
     element.classList.remove(
       "thinking"
     );
 
-    if(
-      result?.success === true
-    ){
-      aiModelWarmed =
-        true;
-
-      aiModelInstalled =
-        true;
+    if(result?.success === true){
+      aiModelWarmed = true;
+      aiModelInstalled = true;
 
       element.textContent =
         String(
@@ -9889,43 +8114,6 @@ window.onAiAnswer =
             .executeAction ===
             "function"
         ){
-          console.log(
-            "[AI Response] action before execution",
-            result.action
-          );
-
-          window.dispatchEvent(
-            new CustomEvent(
-              "aligna-debug",
-              {
-                detail: {
-                  source:
-                    "ai-response",
-
-                  stage:
-                    "before-action-execution",
-
-                  timestamp:
-                    new Date()
-                      .toISOString(),
-
-                  data: {
-                    message:
-                      result.answer ||
-                      null,
-
-                    action:
-                      result.action,
-
-                    originalQuestion:
-                      pending.question ||
-                      null
-                  }
-                }
-              }
-            )
-          );
-
           window
             .AlignaActions
             .executeAction(
@@ -9969,6 +8157,11 @@ window.onAiAnswer =
         "error"
       );
 
+      /*
+       * Show the readable message in the UI,
+       * but preserve the real error in DevTools
+       * and Logcat.
+       */
       element.textContent =
         explainAiError(
           detail
@@ -9981,7 +8174,6 @@ window.onAiAnswer =
 
     requestAiModelStatus();
   };
-  
   function updateAiHeading(){
   const heading =
     document.querySelector(
@@ -10052,6 +8244,34 @@ window.onAiAnswer =
     selected.subtitle;
 }
 
+function openAI(){
+  document
+    .getElementById(
+      "aiScrim"
+    )
+    .classList.add(
+      "show"
+    );
+
+  document
+    .getElementById(
+      "aiSheet"
+    )
+    .classList.add(
+      "show"
+    );
+    updateAiHeading();
+    renderAiSuggestions();
+  requestAiModelStatus();
+
+  setTimeout(() => {
+    document
+      .getElementById(
+        "aiInput"
+      )
+      .focus();
+  }, 250);
+}
 
 function closeAI(){
   document
@@ -10274,7 +8494,7 @@ if(kitchenForm){
     }
   );
 }
-function suggestionsForView(view){
+    function suggestionsForView(view){
   const suggestions = {
     today: [
       "What should I eat right now?",
@@ -10317,10 +8537,6 @@ function renderAiSuggestions(){
       "aiSuggest"
     );
 
-  if(!container){
-    return;
-  }
-
   container.innerHTML = "";
 
   const activeView =
@@ -10348,36 +8564,7 @@ function renderAiSuggestions(){
     );
   });
 }
-
-
-function openAI(){
-  document
-    .getElementById(
-      "aiScrim"
-    )
-    .classList.add(
-      "show"
-    );
-
-  document
-    .getElementById(
-      "aiSheet"
-    )
-    .classList.add(
-      "show"
-    );
-    updateAiHeading();
-    renderAiSuggestions();
-  requestAiModelStatus();
-
-  setTimeout(() => {
-    document
-      .getElementById(
-        "aiInput"
-      )
-      .focus();
-  }, 250);
-}
+renderAiSuggestions();
   
     document.getElementById("closeSettings").onclick=async()=>{
       const newWake=document.getElementById("setWake").value||"08:00";

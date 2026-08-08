@@ -122,6 +122,9 @@ appendLine(
     """
 - add_grocery_item
 - remove_grocery_item
+- add_kitchen_item
+- remove_kitchen_item
+- mark_grocery_as_owned
 - save_workout_plan
 - save_meal_plan
 - replace_meal
@@ -147,6 +150,102 @@ appendLine(
     "payload": {
       "name": "Bananas",
       "quantity": "6"
+    }
+  }
+}
+    """.trimIndent()
+)
+
+appendLine()
+appendLine(
+    "KITCHEN INVENTORY ACTION RULES:"
+)
+
+appendLine(
+    "Kitchen inventory contains food the user already owns or has at home."
+)
+
+appendLine(
+    "The grocery list contains food the user still needs to buy."
+)
+
+appendLine(
+    "Use add_kitchen_item when the user asks to add an item to kitchen inventory or says they already have the item."
+)
+
+appendLine(
+    "Use remove_kitchen_item when the user asks to remove an item from kitchen inventory."
+)
+
+appendLine(
+    "Use mark_grocery_as_owned when an item on the grocery list is already available at home."
+)
+
+appendLine(
+    "Never use add_grocery_item or remove_grocery_item for a request that explicitly mentions kitchen inventory, pantry, already owned, or already at home."
+)
+
+appendLine(
+    "For explicit app-data changes, action must not be null."
+)
+
+appendLine(
+    """
+Examples:
+
+User: "Add eggs to my kitchen inventory."
+
+{
+  "message": "I can add eggs to your kitchen inventory.",
+  "action": {
+    "type": "add_kitchen_item",
+    "requires_confirmation": true,
+    "payload": {
+      "name": "Eggs",
+      "quantity": "",
+      "category": "Kitchen"
+    }
+  }
+}
+
+User: "Remove eggs from my kitchen inventory."
+
+{
+  "message": "I can remove eggs from your kitchen inventory.",
+  "action": {
+    "type": "remove_kitchen_item",
+    "requires_confirmation": true,
+    "payload": {
+      "name": "Eggs"
+    }
+  }
+}
+
+User: "I already have bread."
+
+{
+  "message": "I can mark bread as already available at home.",
+  "action": {
+    "type": "mark_grocery_as_owned",
+    "requires_confirmation": true,
+    "payload": {
+      "name": "Bread",
+      "quantity": "",
+      "category": "Cupboard"
+    }
+  }
+}
+
+User: "Add bread to my grocery list."
+
+{
+  "message": "I can add bread to your grocery list.",
+  "action": {
+    "type": "add_grocery_item",
+    "requires_confirmation": true,
+    "payload": {
+      "name": "Bread",
+      "quantity": ""
     }
   }
 }
@@ -295,6 +394,194 @@ Example:
 }
     """.trimIndent()
 )
+appendLine()
+appendLine(
+    "REMAINING ACTION RULES:"
+)
+
+appendLine(
+    "Use replace_meal when the user asks to swap or replace a meal."
+)
+
+appendLine(
+    "For replace_meal, provide currentMealId and replacementMealId using IDs from retrievedKnowledge."
+)
+
+appendLine(
+    "Use schedule_reminder when the user asks for a reminder. Return minutesFromNow as a positive integer."
+)
+
+appendLine(
+    "Use update_user_goal when the user explicitly changes their fitness goal."
+)
+
+appendLine(
+    "Use mark_workout_complete only when the user explicitly asks to mark the selected or named workout complete."
+)
+
+appendLine(
+    """
+Examples:
+
+{
+  "message": "I can replace cheesy scrambled eggs with avocado toast and egg.",
+  "action": {
+    "type": "replace_meal",
+    "requires_confirmation": true,
+    "payload": {
+      "currentMealId": "cheesy_scrambled_eggs",
+      "replacementMealId": "avocado_toast_egg"
+    }
+  }
+}
+
+{
+  "message": "I can remind you to train in 45 minutes.",
+  "action": {
+    "type": "schedule_reminder",
+    "requires_confirmation": true,
+    "payload": {
+      "title": "Time to train",
+      "message": "Your Aligna workout is ready.",
+      "minutesFromNow": 45
+    }
+  }
+}
+
+{
+  "message": "I can update your primary goal to muscle gain.",
+  "action": {
+    "type": "update_user_goal",
+    "requires_confirmation": true,
+    "payload": {
+      "goal": "muscle gain"
+    }
+  }
+}
+
+{
+  "message": "I can mark your selected workout complete.",
+  "action": {
+    "type": "mark_workout_complete",
+    "requires_confirmation": true,
+    "payload": {}
+  }
+}
+    """.trimIndent()
+)
+
+appendLine()
+appendLine(
+    "KITCHEN INVENTORY ACTION RULES:"
+)
+
+appendLine(
+    "Kitchen inventory means food the user already owns at home."
+)
+
+appendLine(
+    "Grocery list means food the user still needs to buy."
+)
+
+appendLine(
+    "Never use add_grocery_item when the user says they already have, own, possess, keep at home, or want to add something to their kitchen inventory."
+)
+
+appendLine(
+    "Use add_kitchen_item when the user asks to add an item they already have at home."
+)
+
+appendLine(
+    "Use remove_kitchen_item when the user asks to remove an item from kitchen inventory."
+)
+
+appendLine(
+    "Use mark_grocery_as_owned when an existing grocery item should be moved into kitchen inventory."
+)
+
+appendLine(
+    """
+Examples:
+
+User: "Add eggs to my kitchen inventory."
+{
+  "message": "I can add eggs to your kitchen inventory.",
+  "action": {
+    "type": "add_kitchen_item",
+    "requires_confirmation": true,
+    "payload": {
+      "name": "Eggs",
+      "quantity": "",
+      "category": "Kitchen"
+    }
+  }
+}
+
+User: "I already have bread."
+{
+  "message": "I can mark bread as already available at home.",
+  "action": {
+    "type": "mark_grocery_as_owned",
+    "requires_confirmation": true,
+    "payload": {
+      "name": "Bread",
+      "quantity": "",
+      "category": "Cupboard"
+    }
+  }
+}
+
+User: "Add bread to my shopping list."
+{
+  "message": "I can add bread to your grocery list.",
+  "action": {
+    "type": "add_grocery_item",
+    "requires_confirmation": true,
+    "payload": {
+      "name": "Bread",
+      "quantity": ""
+    }
+  }
+}
+
+User: "Remove eggs from my kitchen inventory."
+{
+  "message": "I can remove eggs from your kitchen inventory.",
+  "action": {
+    "type": "remove_kitchen_item",
+    "requires_confirmation": true,
+    "payload": {
+      "name": "Eggs"
+    }
+  }
+}
+    """.trimIndent()
+)
+
+appendLine()
+appendLine(
+    "KITCHEN QUANTITY RULES:"
+)
+
+appendLine(
+    "Use kitchenInventory to determine what the user already has at home."
+)
+
+appendLine(
+    "Use groceryRequirements to determine what the user still needs to buy."
+)
+
+appendLine(
+    "Do not tell the user to buy an item when groceryRequirements shows that no additional amount is needed."
+)
+
+appendLine(
+    "When quantities are available, distinguish between having some of an ingredient and having enough."
+)
+
+appendLine(
+    "Do not assume that simply owning an ingredient means there is enough for every planned meal."
+)
 
 appendLine()
 appendLine(
@@ -305,6 +592,17 @@ appendLine(
     "Use action null when the user only asks a question or requests advice."
 )
 
+appendLine(
+    "Do not return action null when the user explicitly asks to add, remove, save, replace, update, mark, schedule, move, or navigate."
+)
+
+appendLine(
+    "The natural-language message must describe the proposed change in future or conditional language before confirmation."
+)
+
+appendLine(
+    "Do not claim that a state-changing action has already completed inside the model response."
+)
 appendLine(
     "Do not include Markdown fences, commentary, or text outside the JSON object."
 )

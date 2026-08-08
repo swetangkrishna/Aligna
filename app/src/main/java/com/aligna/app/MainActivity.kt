@@ -20,6 +20,7 @@ import java.util.Calendar
 import android.content.pm.ApplicationInfo
 import com.aligna.app.auth.AuthBridge
 import com.aligna.app.auth.AuthManager
+import com.aligna.app.sync.StateSyncBridge
 
 class MainActivity : Activity() {
 
@@ -28,6 +29,7 @@ class MainActivity : Activity() {
     private lateinit var aiBridge: AlignaAiBridge
     private lateinit var authManager: AuthManager
     private lateinit var authBridge: AuthBridge
+    private lateinit var stateSyncBridge: StateSyncBridge
 
     override fun onCreate(
         savedInstanceState: Bundle?
@@ -57,10 +59,22 @@ class MainActivity : Activity() {
                 authManager = authManager
             )
 
+        stateSyncBridge =
+            StateSyncBridge(
+                webView = webView,
+                authManager = authManager
+            )
+
         webView.addJavascriptInterface(
             authBridge,
             "AlignaAuth"
         )
+
+        webView.addJavascriptInterface(
+            stateSyncBridge,
+            "AlignaStateSync"
+        )
+
         aiManager =
             AlignaAiManager(
                 applicationContext
@@ -213,6 +227,7 @@ class MainActivity : Activity() {
         if (::authBridge.isInitialized) {
             authBridge.close()
         }
+        stateSyncBridge.close()
         
         if (::aiManager.isInitialized) {
             aiManager.close()
@@ -234,6 +249,7 @@ class MainActivity : Activity() {
             webView.destroy()
         }
 
+        
         super.onDestroy()
     }
 
