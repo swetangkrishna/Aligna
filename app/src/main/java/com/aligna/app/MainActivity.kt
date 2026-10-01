@@ -11,6 +11,9 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.net.Uri
+import android.webkit.ValueCallback
+import android.content.ActivityNotFoundException
 import android.webkit.JavascriptInterface
 import android.webkit.PermissionRequest
 import android.webkit.WebChromeClient
@@ -23,6 +26,9 @@ import com.aligna.app.auth.AuthManager
 import com.aligna.app.sync.StateSyncBridge
 
 class MainActivity : Activity() {
+
+    private var photoFileCallback: ValueCallback<Array<Uri>>? = null
+    private val photoPickerRequest = 4102
 
     private lateinit var webView: WebView
     private lateinit var aiManager: AlignaAiManager
@@ -111,6 +117,29 @@ class MainActivity : Activity() {
 
         webView.webChromeClient =
             object : WebChromeClient() {
+
+                override fun onShowFileChooser(
+                    view: WebView?,
+                    callback: ValueCallback<Array<Uri>>?,
+                    params: FileChooserParams?
+                ): Boolean {
+                    photoFileCallback?.onReceiveValue(null)
+                    photoFileCallback = callback
+                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                        addCategory(Intent.CATEGORY_OPENABLE)
+                        type = "image/*"
+                        putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/png", "image/webp"))
+                        putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    }
+                    try {
+                        startActivityForResult(intent, photoPickerRequest)
+                    } catch (_: ActivityNotFoundException) {
+                        photoFileCallback?.onReceiveValue(null)
+                        photoFileCallback = null
+                    }
+                    return true
+                }
 
                 override fun onPermissionRequest(
                     request: PermissionRequest
@@ -219,7 +248,18 @@ class MainActivity : Activity() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == photoPickerRequest) {
+            val uri = if (resultCode == RESULT_OK) data?.data else null
+            photoFileCallback?.onReceiveValue(uri?.let { arrayOf(it) })
+            photoFileCallback = null
+        }
+    }
+
     override fun onDestroy() {
+        photoFileCallback?.onReceiveValue(null)
+        photoFileCallback = null
         if (::aiBridge.isInitialized) {
             aiBridge.close()
         }

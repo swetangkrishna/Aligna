@@ -20,3 +20,25 @@ test('camera permission failure exposes retry and leaves no stuck capture',async
 test('deleting one scan cannot remove another account’s profile',async()=>{
  const {dom,w,auth,$}=setup();await seed(w,'alice','ALICE SHAPE');await seed(w,'bob','BOB SHAPE');auth('alice');await tick();$('alignaBodyScanOpen').click();$('scanDelete').click();assert.match($('scanDelete').textContent,/Tap again/);$('scanDelete').click();await tick();assert.doesNotMatch($('neoAvatarStage').textContent,/ALICE SHAPE/);auth('bob');await tick();assert.match($('neoAvatarStage').textContent,/BOB SHAPE/);dom.window.close();
 });
+
+test('existing photos open the picker without starting the camera',async()=>{
+ const {dom,w,auth,$}=setup();let picked=0,cameras=0;
+ Object.defineProperty(w.navigator,'mediaDevices',{value:{getUserMedia:()=>{cameras++;}}});
+ auth('alice');await tick();$('scanPhotoFile').click=()=>picked++;
+ $('alignaBodyScanOpen').click();$('scanStartUpload').click();
+ assert.equal(picked,1);assert.equal(cameras,0);assert.equal($('scanCapture').hidden,false);
+ Object.defineProperty($('scanPhotoFile'),'files',{value:[new w.File(['x'],'test.gif',{type:'image/gif'})]});
+ await $('scanPhotoFile').onchange();assert.match($('scanMessage').textContent,/JPG, PNG or WebP/);
+ dom.window.close();
+});
+test('closing during photo decoding discards and releases the image',async()=>{
+ const {dom,w,auth,$}=setup();let finish,closed=0;
+ w.createImageBitmap=()=>new Promise(r=>finish=r);
+ auth('alice');await tick();$('scanPhotoFile').click=()=>{};
+ $('alignaBodyScanOpen').click();$('scanStartUpload').click();
+ Object.defineProperty($('scanPhotoFile'),'files',{value:[new w.File(['x'],'test.jpg',{type:'image/jpeg'})]});
+ const pending=$('scanPhotoFile').onchange();$('scanClose').click();
+ finish({width:600,height:1000,close:()=>closed++});await pending;
+ assert.equal(closed,1);assert.equal($('scanPreview').hidden,true);assert.equal($('scanUpload').disabled,false);
+ dom.window.close();
+});
