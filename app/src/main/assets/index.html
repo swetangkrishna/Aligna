@@ -6597,6 +6597,7 @@ section{padding-left:18px!important;padding-right:18px!important}
 }
 
 </style>
+<link rel="stylesheet" href="css/modern-ui.css" />
 </head>
 <body>
   <div id="auth-overlay" class="auth-overlay">
@@ -12887,7 +12888,7 @@ window.dispatchEvent(
     const wrap=document.getElementById("weekPlanList"); wrap.innerHTML="";
     const plan=S.weekPlan||[];
     if(!plan.length){
-      wrap.innerHTML=`<div class="empty-hint">Tap "+ Add to this week" on any idea below to build your plan — I'll turn it into a grocery list.</div>`;
+      wrap.innerHTML=`<div class="empty-hint">Tap "+ Add to this week" in Meal ideas to build your plan — I'll turn it into a grocery list.</div>`;
     } else {
       plan.forEach(idx=>{
         const r=IDEAS[idx];
@@ -15830,9 +15831,9 @@ function renderGrocery(){
     ctx.fillStyle=grad; ctx.fill();
     // line
     ctx.beginPath(); w.forEach((p,i)=> i?ctx.lineTo(x(i),y(p.kg)):ctx.moveTo(x(i),y(p.kg)));
-    ctx.strokeStyle="#4B3B87"; ctx.lineWidth=2.4; ctx.lineJoin="round"; ctx.stroke();
+    ctx.strokeStyle="#b9e6ca"; ctx.lineWidth=2.4; ctx.lineJoin="round"; ctx.stroke();
     // dots
-    w.forEach((p,i)=>{ ctx.beginPath(); ctx.arc(x(i),y(p.kg),3.2,0,7); ctx.fillStyle="#DD9426"; ctx.fill(); });
+    w.forEach((p,i)=>{ ctx.beginPath(); ctx.arc(x(i),y(p.kg),3.2,0,7); ctx.fillStyle="#b9e6ca"; ctx.fill(); });
     const delta = vals[vals.length-1]-vals[0];
     if(w.length>1){
       trend.className="trend "+(delta>0?"up":"flat");
@@ -16192,12 +16193,15 @@ function navigateFromAi(payload){
 
   closeAI();
   switchView(page);
+  if(["weight","history"].includes(String(requestedPage).toLowerCase()))window.AlignaUI?.select("progress","trends");
+  if(["grocery","groceries","shopping"].includes(String(requestedPage).toLowerCase()))window.AlignaUI?.select("meals","plan");
 }
+  window.addEventListener("aligna-layout-change",()=>{if(!document.getElementById("view-progress").classList.contains("hidden"))drawChart();});
   function switchView(v){
     ["today","ideas","train","progress"].forEach(name=>{
       document.getElementById("view-"+name).classList.toggle("hidden", name!==v);
     });
-    document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.dataset.v===v));
+    document.querySelectorAll(".tab").forEach(t=>(t.classList.toggle("on",t.dataset.v===v),t.setAttribute("aria-current",t.dataset.v===v?"page":"false")));
     if(v==="today") renderHomeDashboard();
     if(v==="progress") renderProgress();
     if(v === "ideas"){renderIdeas(currentFilter);renderWeekPlan();renderKitchenInventory();
@@ -17763,10 +17767,10 @@ if(aiFab){
       );
 
     if(homeMealsButton){
-      homeMealsButton.onclick =
-        () => switchView(
-          "ideas"
-        );
+      homeMealsButton.onclick = () => {
+        if(window.AlignaUI?.openSchedule)window.AlignaUI.openSchedule();
+        else switchView("ideas");
+      };
     }
 
     const homeAskButton =
@@ -18623,5 +18627,6 @@ window.addEventListener(
 })();
 </script>
 
+<script src="js/modern-ui.js"></script>
 </body>
 </html>

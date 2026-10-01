@@ -1,0 +1,150 @@
+/* Aligna's restrained mobile design layer. Existing feature classes remain intact. */
+html:has(body.aligna-modern),body.aligna-modern{background:#121817!important;color:#edf2ed!important;color-scheme:dark}
+body.aligna-modern{--neo-bg:#121817;--neo-bg-2:#1b2320;--neo-panel:#1b2320;--neo-panel-strong:#202a25;--neo-line:#303c35;--neo-text:#edf2ed;--neo-muted:#a5b3a9;--neo-mint:#b9e6ca;--neo-blue:#b9e6ca;--neo-teal:#b9e6ca;--neo-violet:#c0cabf;--neo-glow:none;--surface:#1b2320;--surface-2:#222d26;--ink:#edf2ed;--ink-soft:#a5b3a9;--line:#303c35;--green:#b9e6ca;--green-soft:#2a3d31;--shadow:none;font-family:'Figtree',system-ui,sans-serif;font-size:15px;-webkit-font-smoothing:antialiased}
+body.aligna-modern *{box-sizing:border-box}
+body.aligna-modern .app{max-width:600px!important;padding-bottom:104px!important;background:none!important;overflow-x:clip}
+body.aligna-modern .app>header{position:relative!important;top:auto!important;padding:20px 22px 6px!important;background:none!important;border:0!important;backdrop-filter:none!important}
+body.aligna-modern .brand{display:flex;align-items:center;justify-content:space-between;gap:12px}
+body.aligna-modern .logo h1{font-family:inherit!important;font-size:24px!important;color:#edf2ed!important;letter-spacing:-1px!important;text-shadow:none!important;font-weight:650!important}
+body.aligna-modern .logo svg{width:25px;height:25px}
+body.aligna-modern .daystrip{padding:4px 0 0!important;margin:0!important;background:none!important;border:0!important}
+body.aligna-modern #dayCount{display:none}
+body.aligna-modern #dayDate{color:#a5b3a9!important;font-size:12px!important}
+.modern-header-actions{display:flex;align-items:center;gap:8px}
+body.aligna-modern .modern-ai{position:static!important;inset:auto!important;transform:none!important;width:auto!important;height:40px!important;min-width:88px!important;border-radius:24px!important;background:#26372d!important;border:1px solid #3b5042!important;box-shadow:none!important;display:flex!important;align-items:center;justify-content:center;gap:6px;padding:0 12px!important;color:#c8eed5!important;font-size:12px!important;font-weight:650}
+body.aligna-modern .modern-ai svg{width:17px;height:17px}
+body.aligna-modern .gear{width:40px;height:40px;background:transparent!important;border:1px solid #303c35!important;color:#c3cec5!important;box-shadow:none!important;border-radius:50%!important}
+body.aligna-modern .tabbar{max-width:600px!important;background:#161e19f5!important;backdrop-filter:blur(18px);border-top:1px solid #303c35!important;padding:9px 14px calc(10px + env(safe-area-inset-bottom))!important;box-shadow:none!important}
+body.aligna-modern .tab{min-height:52px!important;padding:7px!important;color:#9ca99f!important;font-size:11px!important;gap:5px!important;border-radius:14px!important;font-weight:500!important}
+body.aligna-modern .tab.on{background:#293a2e!important;color:#c7eed4!important;font-weight:700!important}
+body.aligna-modern .tab svg{width:21px;height:21px;stroke-width:1.7}
+body.aligna-modern :is(button,input,select,textarea){font-family:inherit}
+body.aligna-modern button{touch-action:manipulation}
+body.aligna-modern :is(button,summary,a,input,select,textarea):focus-visible{outline:2px solid #b9e6ca!important;outline-offset:4px}
+body.aligna-modern :is(input,select,textarea){background:#131b16!important;border-color:#3b4940!important;color:#edf2ed!important;font-size:16px!important;border-radius:12px!important}
+body.aligna-modern input::placeholder,body.aligna-modern textarea::placeholder{color:#8c9b91!important}
+body.aligna-modern :is(#view-today,#view-ideas,#view-train,#view-progress){--home-border:#303c35!important;--home-card:#1b2320!important;--home-mint:#b9e6ca!important;--progress-muted:#a5b3a9!important;--progress-card:#1b2320!important;--progress-line:#303c35!important;--progress-mint:#b9e6ca!important;padding-bottom:12px!important}
+body.aligna-modern :is(#view-today,#view-ideas,#view-train,#view-progress) section{padding:0!important;margin:0 0 20px!important}
+body.aligna-modern :is(#view-ideas,#view-train,#view-progress){padding:0 22px!important}
+body.aligna-modern #view-today>.home-dashboard{padding:0 22px!important}
+body.aligna-modern #view-today>.home-wellness-grid,body.aligna-modern #view-today>.modern-disclosure{margin:0 22px 18px!important}
+body.aligna-modern :is(.home-enter,.home-enter.delay-1,.home-enter.delay-2,.home-enter.delay-3){animation:none!important;opacity:1!important;transform:none!important}
+body.aligna-modern :is(.home-greeting,.modern-page-heading,.progress-v4-head){margin:26px 0 24px!important;padding:0!important}
+body.aligna-modern :is(.home-greeting h2,.modern-page-heading h2,.progress-v4-head h2){font-family:inherit!important;font-size:32px!important;line-height:1.12!important;font-weight:550!important;letter-spacing:-1.2px!important;color:#edf2ed!important;margin:8px 0!important}
+body.aligna-modern :is(.modern-page-heading p,.progress-v4-sub){color:#a5b3a9!important;font-size:14px!important;line-height:1.5!important;margin:10px 0 0!important}
+body.aligna-modern :is(.eyebrow,.progress-v4-kicker,.home-overline){font-size:10px!important;letter-spacing:.10em!important;color:#b7c7ba!important;font-weight:600!important}
+body.aligna-modern .home-overline-dot{background:#b9e6ca!important;box-shadow:none!important}
+body.aligna-modern .home-mini-score{width:52px!important;height:65px!important;background:none!important;box-shadow:none!important}
+body.aligna-modern .home-mini-score strong{font-size:12px!important;color:#e8efe8!important}
+body.aligna-modern .home-mini-score small{font-size:9px!important;color:#a5b3a9!important}
+body.aligna-modern #view-today .home-hero{background:#c7e7ce!important;border:0!important;box-shadow:none!important;border-radius:24px!important;padding:20px!important;margin:0 0 18px!important;overflow:hidden;min-height:0!important}
+body.aligna-modern #view-today .home-hero:before,body.aligna-modern #view-today .home-hero:after{display:none!important}
+body.aligna-modern #view-today .home-hero :is(.what,.sugg,.t,.u,.label,.home-hero-time,.home-live-pill){color:#213c2a!important}
+body.aligna-modern #view-today .home-hero-top{margin-bottom:14px!important}
+body.aligna-modern #view-today .home-live-pill{padding:0!important;background:none!important;border:0!important;font-size:10px!important;letter-spacing:.1em!important}
+body.aligna-modern #view-today .home-live-pill:before{display:none!important}
+body.aligna-modern #view-today .home-hero-time{font-size:12px!important}
+body.aligna-modern #view-today .nextcard{background:none!important;border:0!important;box-shadow:none!important;padding:0 65px 0 0!important;min-height:120px!important}
+body.aligna-modern #view-today .nextcard .label{display:none!important}
+body.aligna-modern #view-today .nextcard .what{font-family:inherit!important;font-size:26px!important;font-weight:600!important;line-height:1.15!important;letter-spacing:-.7px!important;margin:0 0 8px!important}
+body.aligna-modern #view-today .nextcard .sugg{font-size:13px!important;line-height:1.5!important}
+body.aligna-modern #view-today .plant{width:60px!important;height:86px!important;right:0!important;top:4px!important;opacity:.65}
+body.aligna-modern #view-today .countdown{margin:10px 0!important}
+body.aligna-modern #view-today .countdown .t{font-size:22px!important}
+body.aligna-modern #view-today .pips{display:none!important}
+body.aligna-modern #view-today .home-hero-actions{gap:8px!important;margin-top:16px!important;grid-template-columns:1.2fr 1fr!important}
+body.aligna-modern #view-today .home-hero-action{min-height:44px!important;border-radius:13px!important;font-size:12px!important;box-shadow:none!important}
+body.aligna-modern #view-today .home-hero-action.primary{background:#203b29!important;color:#e7f6e9!important;border:1px solid #203b29!important}
+body.aligna-modern #view-today .home-hero-action.secondary{background:transparent!important;color:#203b29!important;border:1px solid #6f947b!important}
+body.aligna-modern #view-today .home-metrics{gap:0!important;background:#1b2320!important;border:1px solid #303c35!important;border-radius:18px!important;margin:0 0 16px!important;overflow:hidden}
+body.aligna-modern #view-today .home-metric{background:none!important;border:0!important;box-shadow:none!important;border-radius:0!important;padding:15px 12px!important;min-height:0!important}
+body.aligna-modern #view-today .home-metric+.home-metric{border-left:1px solid #303c35!important}
+body.aligna-modern #view-today .home-metric-top{display:none!important}
+body.aligna-modern #view-today .home-metric strong{font-family:inherit!important;color:#edf2ed!important;font-size:21px!important;margin:0 0 5px!important}
+body.aligna-modern #view-today .home-metric small{color:#a5b3a9!important;font-size:11px!important}
+body.aligna-modern #view-today .personalised-home-button{background:transparent!important;border:0!important;border-bottom:1px solid #303c35!important;border-radius:0!important;box-shadow:none!important;padding:12px 0 19px!important;margin-bottom:22px!important;min-height:60px!important}
+body.aligna-modern #view-today .personalised-home-icon{background:#293a2e!important;color:#b9e6ca!important;border:0!important;box-shadow:none!important;width:38px!important;height:38px!important}
+body.aligna-modern #view-today .personalised-home-button strong{color:#e1ebe2!important;font-size:14px!important}
+body.aligna-modern #view-today .personalised-home-button small{color:#a5b3a9!important;font-size:11px!important}
+body.aligna-modern #view-today .home-wellness-grid{display:block!important}
+body.aligna-modern :is(#view-today,#view-ideas,#view-train,#view-progress) :is(.water,.kitchen-card,.week-day,.weekcard,.idea,.ex,.progress-v4-panel,.progress-v4-stat,.progress-v4-insight,.ai-plan-summary,.active-workout-header,.slot-detail-card,.grocerybox,.home-insight){background:#1b2320!important;border:1px solid #303c35!important;box-shadow:none!important;border-radius:18px!important;padding:18px!important;color:#edf2ed!important}
+body.aligna-modern :is(#view-today,#view-ideas,#view-train,#view-progress) :is(h3,h4,.progress-v4-stat strong,.record-row strong,.weight-latest strong){color:#edf2ed!important;font-family:inherit!important;letter-spacing:-.3px!important}
+body.aligna-modern :is(#view-today,#view-ideas,#view-train,#view-progress) :is(.hint,.count,.progress-v4-footnote,.progress-v4-panel-head p:not(.progress-v4-kicker),.progress-v4-stat small,.record-row small,.calorie-target-row span){color:#a5b3a9!important;font-size:12px!important;line-height:1.5!important}
+body.aligna-modern #view-today .glass{background:#141e17!important;border-color:#7ea78a!important;border-radius:4px 4px 9px 9px!important}
+body.aligna-modern #view-today .glass.full:after{background:#b9e6ca!important}
+.modern-disclosure{border:1px solid #303c35;border-radius:18px;background:#19211c;overflow:hidden}
+.modern-disclosure>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px;cursor:pointer;list-style:none;font-size:14px;font-weight:550;min-height:56px;color:#dce7dd}
+.modern-disclosure>summary::-webkit-details-marker{display:none}
+.modern-disclosure>summary small{display:block;font-size:11px;color:#a5b3a9;margin-top:5px;font-weight:400}
+.modern-disclosure[open]>.modern-chevron,.modern-disclosure[open]>summary .modern-chevron{transform:rotate(180deg)}
+body.aligna-modern #view-today .modern-disclosure>section{padding:0 14px 14px!important;margin:0!important}
+body.aligna-modern #view-today .home-section-head,body.aligna-modern #view-today .home-schedule-summary{display:none!important}
+body.aligna-modern #view-today .home-schedule-shell{background:none!important;border:0!important;box-shadow:none!important;padding:0!important}
+body.aligna-modern #view-today .slot{border-color:#303c35!important;background:#202b24!important;box-shadow:none!important;border-radius:12px!important}
+body.aligna-modern .modern-insight .home-insight{border:0!important;border-radius:0!important;padding-top:0!important}
+body.aligna-modern .home-insight-meta{display:none!important}
+.modern-segments{display:flex;gap:4px;padding:4px;background:#1b2320;border:1px solid #303c35;border-radius:15px;margin:0 0 22px}
+.modern-segments button{flex:1;min-width:0;min-height:42px;padding:9px 5px;border:0;border-radius:10px;background:transparent;color:#a5b3a9;font:inherit;font-size:12px;font-weight:550;cursor:pointer}
+.modern-segments button[aria-selected=true]{color:#14251a;background:#c7e7ce}
+body.aligna-modern .modern-tab-panel[hidden]{display:none!important}
+body.aligna-modern .modern-tab-panel{min-width:0}
+body.aligna-modern #view-progress .progress-v4{padding:0!important}
+body.aligna-modern #view-progress .progress-v4-head>.progress-v4-score{width:56px!important;height:68px!important;flex-shrink:0}
+body.aligna-modern #view-progress .progress-v4-head h2{font-size:32px!important}
+body.aligna-modern #view-progress .progress-v4-stats{gap:10px!important;margin:0 0 20px!important}
+body.aligna-modern #view-progress .progress-v4-stat{padding:17px!important;min-height:0!important}
+body.aligna-modern #view-progress .progress-v4-stat-icon{display:none!important}
+body.aligna-modern #view-progress .progress-v4-stat strong{font-size:27px!important}
+body.aligna-modern #view-progress .progress-v4-panel-head{margin-bottom:20px!important}
+body.aligna-modern #view-progress .progress-v4-panel-head h3{font-size:20px!important;line-height:1.2!important}
+body.aligna-modern #view-progress .progress-v4-panel-head p{margin-top:7px!important}
+body.aligna-modern #view-progress :is(.record-icon,.muscle-recovery-score,.progress-v4-live){background:#293a2e!important;color:#b9e6ca!important;border-color:#3d5343!important}
+body.aligna-modern #view-progress :is(.calorie-ring-value,.progress-v4-score-value){stroke:#b9e6ca!important}
+body.aligna-modern #view-progress .calorie-linear i{background:#b9e6ca!important}
+body.aligna-modern #view-progress .aligna-body-scan-entry{background:#26372d!important;border:1px solid #3b5042!important;box-shadow:none!important;border-radius:14px!important;padding:13px!important}
+body.aligna-modern #view-progress .aligna-body-scan-entry strong{color:#dcefe0!important;font-size:14px!important}
+body.aligna-modern #view-progress .aligna-body-scan-entry small{color:#a9bdae!important;font-size:11px!important}
+body.aligna-modern #view-progress .body-avatar-stage{background:#141d17!important;border:0!important;border-radius:16px!important}
+body.aligna-modern #view-ideas :is(.kitchen-card-head h3,.weekplan h3){font-size:19px!important}
+body.aligna-modern #view-ideas .kitchen-card-head p{color:#a5b3a9!important;line-height:1.5!important}
+body.aligna-modern :is(#view-ideas,#view-train) :is(.chip,.sessionbtn,.session-card,.pillbtn){background:#212e26!important;color:#d3e2d6!important;border-color:#3b4c40!important;box-shadow:none!important;min-height:44px!important}
+body.aligna-modern :is(#view-ideas,#view-train) :is(.chip.on,.sessionbtn.on,.session-card.active){background:#c7e7ce!important;color:#203b29!important;border-color:#c7e7ce!important}
+body.aligna-modern #view-train :is(.diagram,.setdot){background:#152018!important;border-color:#3b4c40!important;color:#cbdccf!important}
+body.aligna-modern #view-train .setdot{min-width:42px!important;min-height:42px!important}
+body.aligna-modern #view-train .setdot.on{background:#b9e6ca!important;color:#162e1e!important}
+body.aligna-modern :is(#view-train .finishw,#view-progress .winput button,#view-ideas .kitchen-form button,.done-btn,.auth-primary){background:#b9e6ca!important;color:#183121!important;border:0!important;box-shadow:none!important;min-height:46px!important}
+body.aligna-modern :is(.sheet,.auth-card,.personalised-page,.personalised-content){background:#19221c!important;color:#edf2ed!important;box-shadow:none!important;border-color:#303c35!important}
+body.aligna-modern :is(.sheet,.auth-card) :is(h2,h3,label){color:#edf2ed!important}
+body.aligna-modern :is(.sheet,.auth-card) :is(p,.sub,.subtitle){color:#a5b3a9!important}
+body.aligna-modern .aisuggest button{background:#283b2e!important;border-color:#3d5343!important;color:#c5e6ce!important;min-height:42px!important}
+body.aligna-modern .auth-tabs{background:#25332a!important;border-color:#3d5343!important}
+body.aligna-modern .ribbon{box-shadow:none!important;font-style:normal!important;background:transparent!important;border-color:#91b99b!important;color:#b5c5b9!important;font-size:13px!important;line-height:1.6!important}
+@media(min-width:700px){body.aligna-modern .app{border-left:1px solid #27332c;border-right:1px solid #27332c;min-height:100vh}body.aligna-modern .tabbar{border-left:1px solid #27332c;border-right:1px solid #27332c}}
+@media(max-width:360px){body.aligna-modern .app>header{padding-left:16px!important;padding-right:16px!important}body.aligna-modern :is(#view-ideas,#view-train,#view-progress){padding-left:16px!important;padding-right:16px!important}body.aligna-modern #view-today>.home-dashboard{padding:0 16px!important}body.aligna-modern #view-today>.home-wellness-grid,body.aligna-modern #view-today>.modern-disclosure{margin-left:16px!important;margin-right:16px!important}body.aligna-modern #view-today .home-hero{padding:17px!important}body.aligna-modern #view-today .nextcard{padding-right:45px!important}body.aligna-modern #view-today .nextcard .what{font-size:23px!important}}
+@media(prefers-reduced-motion:reduce){body.aligna-modern *,body.aligna-modern *:before,body.aligna-modern *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+body.aligna-modern #view-train .sbtn{background:#212e26!important;color:#d3e2d6!important;border:1px solid #3b4c40!important;box-shadow:none!important;border-radius:14px!important;min-height:65px!important}
+body.aligna-modern #view-train .sbtn.on{background:#c7e7ce!important;border-color:#c7e7ce!important;color:#203b29!important}
+body.aligna-modern #view-train .sbtn.on :is(.sn,.sl){color:#203b29!important}
+body.aligna-modern #view-train .resttimer{background:#283b2e!important;border:1px solid #3d5343!important;color:#c5e6ce!important;min-height:44px!important}
+body.aligna-modern #view-ideas :is(.planchip,.kitchen-item){background:#202b24!important;border-color:#3b4c40!important;color:#d3e2d6!important;border-radius:14px!important}
+body.aligna-modern .modern-add-meals{width:100%;min-height:48px;border:1px solid #6d9479;border-radius:14px;background:#293d30;color:#c7e7ce;font-size:14px;font-weight:600;cursor:pointer}
+body.aligna-modern .personalised-page-overlay{background:#121817!important}
+body.aligna-modern :is(.personalised-header,.personalised-hero,.personalised-block,.personalised-plan-card,.personalised-grocery-item){background:#1b2320!important;box-shadow:none!important;border-color:#303c35!important}
+body.aligna-modern :is(.personalised-block,.personalised-plan-card):before{display:none!important}
+body.aligna-modern :is(.neo-personalised-body,.neo-personalised-intelligence){display:none!important}
+body.aligna-modern .personalised-hero{min-height:0!important;padding:24px!important}
+body.aligna-modern .personalised-hero :is(h2,p){max-width:100%!important;width:auto!important}
+body.aligna-modern .personalised-hero h2{font-size:28px!important}
+body.aligna-modern :is(.personalised-card-copy p,.personalised-grocery-item span,.personalised-empty){color:#a5b3a9!important;font-size:12px!important;line-height:1.5!important}
+body.aligna-modern :is(.personalised-card-copy h4,.personalised-grocery-item strong){font-size:14px!important}
+body.aligna-modern :is(.personalised-ai-button,.personalised-back){background:#293d30!important;border-color:#4f6f59!important;color:#c7e7ce!important;box-shadow:none!important;min-height:44px!important}
+body.aligna-modern .aimsg.bot{background:#222f26!important;border-color:#3b4c40!important;color:#e0ece2!important;font-size:14px!important;line-height:1.6!important}
+body.aligna-modern .aimsg.user{background:#c7e7ce!important;color:#203b29!important;box-shadow:none!important;font-size:14px!important}
+body.aligna-modern .aiinputrow{background:#121b15!important;border-color:#3b4c40!important}
+body.aligna-modern .aiinputrow button{background:#b9e6ca!important;color:#183121!important}
+body.aligna-modern #view-today .home-hero-actions{display:block!important}
+body.aligna-modern #view-today #homeOpenMeals{width:100%!important}
+body.aligna-modern #view-today #homeAskAligna{display:none!important}
+body.aligna-modern .auth-overlay{background:#121817!important}
+body.aligna-modern .auth-tab{color:#b7c7ba!important}
+body.aligna-modern .auth-tab.active{background:#c7e7ce!important;color:#203b29!important}
