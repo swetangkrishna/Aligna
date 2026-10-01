@@ -10,12 +10,15 @@
     <uses-feature android:name="android.hardware.camera.front" android:required="false"/>
 
     <application
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="true">
+
+        <meta-data android:name="com.google.mlkit.vision.DEPENDENCIES" android:value="barcode_ui" />
 
         <!-- Lets LiteRT-LM (Gemma 4) use compatible GPU/OpenCL backends where available;
              both optional so the app still installs on devices without them. -->

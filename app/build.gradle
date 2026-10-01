@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+def cloudApiUrl = providers.gradleProperty("alignaApiUrl").getOrElse("http://127.0.0.1:8000")
+
 android {
     namespace 'com.aligna.app'
     compileSdk 34
@@ -16,9 +18,23 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField "String", "AI_PROVIDER", "\"remote\""
+            buildConfigField "String", "AI_BASE_URL", "\"${cloudApiUrl}\""
+        }
+
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField(
+                    "String",
+                    "AI_API_KEY",
+                    "\"\""
+            )
+            buildConfigField "String", "AI_PROVIDER", "\"remote\""
+            buildConfigField "String", "AI_BASE_URL", "\"${cloudApiUrl}\""
+            proguardFiles getDefaultProguardFile(
+                    "proguard-android-optimize.txt"
+            ), "proguard-rules.pro"
         }
     }
     compileOptions {
@@ -26,7 +42,12 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions { jvmTarget = '17' }
-}
+
+
+    buildFeatures {
+    buildConfig true
+	}
+	}
 
 repositories {
     google()
@@ -34,12 +55,15 @@ repositories {
 }
 
 dependencies {
+    implementation "com.google.android.gms:play-services-code-scanner:16.1.0"
     // On-device LLM inference (Gemma 4, via LiteRT-LM — replaces the earlier MediaPipe
     // tasks-genai integration per aligna_gemma4_integration_plan.md). Pinned to 0.14.0 —
     // this is the version that actually resolved from "latest.release" during setup, so
     // it's now fixed instead of left floating (a future "latest.release" could otherwise
     // silently pull a breaking change on a later sync).
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.24"
-    implementation "com.google.ai.edge.litertlm:litertlm-android:latest.release"
+    implementation "com.google.ai.edge.litertlm:litertlm-android:0.15.0"
+    implementation "com.squareup.okhttp3:okhttp:4.12.0"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2"
+    implementation "androidx.security:security-crypto:1.1.0-alpha06"
 }
