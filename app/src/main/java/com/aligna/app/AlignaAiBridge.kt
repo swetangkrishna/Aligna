@@ -37,14 +37,65 @@ class AlignaAiBridge(
 
     @JavascriptInterface
     fun modelStatus(
-        requestId: String
-    ) {
-        val status =
-            GemmaModelLocator.status(
-                webView.context
-            )
+    requestId: String
+) {
+    val backend =
+        aiManager.backend()
 
-        val response =
+    val isRemote =
+        backend.equals(
+            "remote",
+            ignoreCase = true
+        )
+
+    val response =
+        if (isRemote) {
+            JSONObject().apply {
+                put(
+                    "requestId",
+                    requestId
+                )
+
+                /*
+                 * The model is hosted by the backend,
+                 * so no on-device model file is required.
+                 */
+                put(
+                    "modelInstalled",
+                    true
+                )
+
+                put(
+                    "modelPath",
+                    "Managed by Aligna backend"
+                )
+
+                put(
+                    "modelSizeBytes",
+                    -1L
+                )
+
+                put(
+                    "modelReadable",
+                    true
+                )
+
+                put(
+                    "backend",
+                    backend
+                )
+
+                put(
+                    "initialized",
+                    aiManager.isInitialized()
+                )
+            }
+        } else {
+            val status =
+                GemmaModelLocator.status(
+                    webView.context
+                )
+
             JSONObject().apply {
                 put(
                     "requestId",
@@ -73,7 +124,7 @@ class AlignaAiBridge(
 
                 put(
                     "backend",
-                    aiManager.backend()
+                    backend
                 )
 
                 put(
@@ -81,15 +132,16 @@ class AlignaAiBridge(
                     aiManager.isInitialized()
                 )
             }
+        }
 
-        callJavaScript(
-            functionName =
-                "window.onModelStatus",
+    callJavaScript(
+        functionName =
+            "window.onModelStatus",
 
-            payload =
-                response
-        )
-    }
+        payload =
+            response
+    )
+}
 
     @JavascriptInterface
     fun askQuestion(
@@ -140,37 +192,62 @@ class AlignaAiBridge(
                             profileJson
                         )
 
-                    val answer =
-                        aiManager.answerQuestion(
-                            question =
-                                question,
+                    val rawAnswer =
+    aiManager.answerQuestion(
+        question =
+            question,
 
-                            profile =
-                                profile,
+        profile =
+            profile,
 
-                            appContext =
-                                appContext,
+        appContext =
+            appContext,
 
-                            retrievedKnowledge =
-                                retrievedKnowledge
-                        )
+        retrievedKnowledge =
+            retrievedKnowledge
+    )
 
-                    JSONObject().apply {
-                        put(
-                            "requestId",
-                            requestId
-                        )
+val envelope =
+    parseAssistantEnvelope(
+        rawAnswer
+    )
 
-                        put(
-                            "success",
-                            true
-                        )
+JSONObject().apply {
+    put(
+        "requestId",
+        requestId
+    )
 
-                        put(
-                            "answer",
-                            answer
-                        )
-                    }
+    put(
+        "success",
+        true
+    )
+
+    put(
+        "answer",
+        envelope.optString(
+            "message",
+            rawAnswer
+        )
+    )
+
+    if (
+        envelope.has("action") &&
+        !envelope.isNull("action")
+    ) {
+        put(
+            "action",
+            envelope.getJSONObject(
+                "action"
+            )
+        )
+    } else {
+        put(
+            "action",
+            JSONObject.NULL
+        )
+    }
+}
                 } catch (error: Throwable) {
                     Log.e(
                         TAG,
@@ -481,6 +558,138 @@ class AlignaAiBridge(
                 )
         ).validated()
     }
+
+private fun parseAssistantEnvelope(
+    rawAnswer: String
+): JSONObject {
+    val cleaned =
+        removeMarkdownCodeFence(
+            rawAnswer
+        )
+
+    return try {
+        val parsed =
+            JSONObject(cleaned)
+
+        val message =
+            parsed
+                .optString(
+                    "message"
+                )
+                .trim()
+
+        if (message.isBlank()) {
+            return JSONObject().apply {
+                put(
+                    "message",
+                    cleaned.ifBlank {
+                        "No response was generated."
+                    }
+                )
+
+                put(
+                    "action",
+                    JSONObject.NULL
+                )
+            }
+        }
+
+        val action =
+            parsed.optJSONObject(
+                "action"
+            )
+
+        if (action != null) {
+            try {
+                validateAssistantAction(
+                    action
+                )
+            } catch (error: Throwable) {
+                Log.w(
+                    TAG,
+                    "Ignoring invalid assistant action",
+                    error
+                )
+
+                parsed.put(
+                    "action",
+                    JSONObject.NULL
+                )
+            }
+        } else {
+            parsed.put(
+                "action",
+                JSONObject.NULL
+            )
+        }
+
+        parsed
+    } catch (error: Throwable) {
+        Log.w(
+            TAG,
+            "AI returned non-JSON content; using text fallback",
+            error
+        )
+
+        JSONObject().apply {
+            put(
+                "message",
+                cleaned.ifBlank {
+                    "No response was generated."
+                }
+            )
+
+            put(
+                "action",
+                JSONObject.NULL
+            )
+        }
+    }
+}
+
+private fun validateAssistantAction(
+    action: JSONObject
+) {
+    val type =
+        action
+            .optString("type")
+            .trim()
+
+    val allowedTypes =
+        setOf(
+            "navigate_to_page",
+            "save_workout_plan",
+            "save_meal_plan",
+            "replace_meal",
+            "add_grocery_item",
+            "remove_grocery_item",
+            "schedule_reminder",
+            "mark_workout_complete",
+            "update_user_goal"
+        )
+
+    require(type in allowedTypes) {
+        "Unsupported AI action: $type"
+    }
+
+    if (!action.has("payload")) {
+        action.put(
+            "payload",
+            JSONObject()
+        )
+    }
+
+    if (
+        !action.has(
+            "requires_confirmation"
+        )
+    ) {
+        action.put(
+            "requires_confirmation",
+            type != "navigate_to_page"
+        )
+    }
+}
 
     private fun errorResponse(
         requestId: String,

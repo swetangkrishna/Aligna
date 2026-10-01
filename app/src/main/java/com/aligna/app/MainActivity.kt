@@ -18,12 +18,18 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import java.util.Calendar
 import android.content.pm.ApplicationInfo
+import com.aligna.app.auth.AuthBridge
+import com.aligna.app.auth.AuthManager
+import com.aligna.app.sync.StateSyncBridge
 
 class MainActivity : Activity() {
 
     private lateinit var webView: WebView
     private lateinit var aiManager: AlignaAiManager
     private lateinit var aiBridge: AlignaAiBridge
+    private lateinit var authManager: AuthManager
+    private lateinit var authBridge: AuthBridge
+    private lateinit var stateSyncBridge: StateSyncBridge
 
     override fun onCreate(
         savedInstanceState: Bundle?
@@ -40,6 +46,33 @@ class MainActivity : Activity() {
 
         setContentView(
             webView
+        )
+
+        authManager =
+            AuthManager(
+                applicationContext
+            )
+
+        authBridge =
+            AuthBridge(
+                webView = webView,
+                authManager = authManager
+            )
+
+        stateSyncBridge =
+            StateSyncBridge(
+                webView = webView,
+                authManager = authManager
+            )
+
+        webView.addJavascriptInterface(
+            authBridge,
+            "AlignaAuth"
+        )
+
+        webView.addJavascriptInterface(
+            stateSyncBridge,
+            "AlignaStateSync"
         )
 
         aiManager =
@@ -191,6 +224,11 @@ class MainActivity : Activity() {
             aiBridge.close()
         }
 
+        if (::authBridge.isInitialized) {
+            authBridge.close()
+        }
+        stateSyncBridge.close()
+
         if (::aiManager.isInitialized) {
             aiManager.close()
         }
@@ -210,6 +248,7 @@ class MainActivity : Activity() {
             webView.removeAllViews()
             webView.destroy()
         }
+
 
         super.onDestroy()
     }
