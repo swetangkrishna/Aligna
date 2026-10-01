@@ -33,3 +33,16 @@ test('inconsistent front/back scans are rejected',()=>{
  const views=Object.fromEntries(['front','back','left','right'].map(view=>[view,{shape:analyse(fixture({view}))}]));
  views.back.shape.torso.forEach(r=>r.width*=2);assert.throws(()=>combine(views),/differ too much/);
 });
+
+test('touching arms do not become the full torso width',()=>{
+ const f=fixture();
+ for(const [a,b,y] of [[11,12,.23],[13,14,.4],[15,16,.57]]){f.landmarks[a]={x:.29,y,visibility:.95};f.landmarks[b]={x:.71,y,visibility:.95};}
+ for(let y=Math.ceil(.24*f.height);y<.55*f.height;y++)for(let x=Math.floor(.25*f.width);x<=.75*f.width;x++)f.mask[y*f.width+x]=1;
+ const result=analyse(f),raw=.5*.5/(.95-.06);
+ assert.ok(result.torso[12].width<raw*.8,'sleeves excluded from connected silhouette');
+});
+test('fitted profile retains measured joint heights and head dimensions',()=>{
+ const views=Object.fromEntries(['front','back','left','right'].map(view=>[view,{shape:analyse(fixture({view}))}]));
+ const p=combine(views);assert.equal(p.version,2);assert.equal(p.joints.wrist.y,views.front.shape.joints.wrist.y);
+ assert.ok(p.headWidth>0&&p.headWidth<.15);assert.equal(p.limbProfiles.thigh.length,5);
+});

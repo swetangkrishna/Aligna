@@ -14,7 +14,7 @@
       <section id="scanWelcome"><div class="scan-prep"><span>01</span><div><strong>Make room for the full picture</strong><p>Prop your phone upright at waist height. Stand 2–3 metres away with your head and feet visible.</p></div></div><div class="scan-prep"><span>02</span><div><strong>Keep the outline clear</strong><p>Use even light, a plain background and fitted clothing. Loose clothing changes the shape we see.</p></div></div><div class="scan-prep"><span>03</span><div><strong>Stay in control</strong><p>Photos and the avatar stay on this device, separate from your cloud account data. You can delete them here.</p></div></div><p class="scan-note">This estimates visible proportions. A camera cannot measure muscle mass, body fat or what is beneath clothing.</p><button id="scanStart" class="scan-primary">Use camera <span>→</span></button><button id="scanStartUpload" class="scan-secondary scan-upload">Choose existing photos</button></section>
       <section id="scanCapture" hidden><div class="scan-camera"><video id="scanVideo" autoplay muted playsinline></video><svg class="scan-guide" viewBox="0 0 240 440" aria-hidden="true"><rect x="20" y="8" width="200" height="424" rx="70"/><path d="M120 8v424M20 218h200"/></svg><span id="scanCount" class="scan-count"></span><img id="scanPreview" alt="Captured view" hidden/><button id="scanFlip" class="scan-flip" aria-label="Switch camera">↻</button><span class="scan-camera-label">FULL BODY · EVEN LIGHT</span></div><div id="scanCaptureActions"><p class="scan-note">Move into position. Capture starts after a 5-second timer.</p><button id="scanShutter" class="scan-primary">Capture this view</button><button id="scanUpload" class="scan-secondary scan-upload">Choose photo for this view</button><input id="scanPhotoFile" type="file" accept="image/jpeg,image/png,image/webp" hidden/></div><div id="scanPreviewActions" hidden><p class="scan-note">Check that the whole body is visible and the requested view is correct.</p><div class="scan-actions"><button id="scanRetake" class="scan-secondary">Retake</button><button id="scanAccept" class="scan-primary">Use this view →</button></div></div></section>
       <section id="scanReview" hidden><div class="scan-review-grid" id="scanPhotos"></div><p class="scan-note">Check all four views. The avatar follows your outline and proportions; clothing and camera angle affect the estimate.</p><button id="scanBuild" class="scan-primary">Create my avatar →</button></section>
-      <section id="scanResult" hidden><div class="scan-avatar" id="scanAvatar"></div><div class="scan-views" id="scanViews"><button data-view="front">Front</button><button data-view="left">Side</button><button data-view="back">Back</button></div><div class="scan-result-meta"><span class="scan-pill">ESTIMATED SHAPE</span><span>Drag to rotate</span></div><div class="scan-facts"><div><span>Built from</span><strong>Your four views</strong></div><div><span>Reflects</span><strong>Visible proportions</strong></div><div><span>Muscle mass</span><strong>Not measured</strong></div></div><p class="scan-note">Shoulders, torso depth, waist, hips and limb fullness follow the captured outlines. Face, hands and surface detail are simplified.</p><div class="scan-actions"><button id="scanRescan" class="scan-secondary">New scan</button><button id="scanSave" class="scan-primary">Save avatar</button></div><button id="scanDelete" class="scan-delete" hidden>Delete saved scan and photos</button></section>
+      <section id="scanResult" hidden><div class="scan-avatar" id="scanAvatar"></div><button id="scanCompare" class="scan-secondary scan-upload">Compare with source photo</button><img id="scanSourcePhoto" class="scan-source-photo" alt="Original scan photo for comparison" hidden/><div class="scan-views" id="scanViews"><button data-view="front">Front</button><button data-view="left">Side</button><button data-view="back">Back</button></div><div class="scan-result-meta"><span class="scan-pill">ESTIMATED SHAPE</span><span>Drag to rotate</span></div><div class="scan-facts"><div><span>Built from</span><strong>Your four views</strong></div><div><span>Reflects</span><strong>Visible proportions</strong></div><div><span>Muscle mass</span><strong>Not measured</strong></div></div><p class="scan-note">Shoulders, torso depth, waist, hips and limb fullness follow the captured outlines. Face, hands and surface detail are simplified.</p><div class="scan-actions"><button id="scanRescan" class="scan-secondary">New scan</button><button id="scanSave" class="scan-primary">Save avatar</button></div><button id="scanRefit" class="scan-secondary scan-upload" hidden>Rebuild from saved photos</button><button id="scanDelete" class="scan-delete" hidden>Delete saved scan and photos</button></section>
     </main></div>`;
   const video=$('scanVideo'),message=$('scanMessage');
   const panels=['scanWelcome','scanCapture','scanReview','scanResult'];
@@ -71,15 +71,19 @@
   async function start(){
     stop();disposeResult();draft={};index=0;captureStep();await camera();
   }
-  function analysePhoto(canvas){
+  function shapeFromCanvas(canvas,view){
           const result=tracker.detect(canvas);
           let shape;
           try{
             if(result.landmarks.length!==1)throw Error('Only one person should be visible. Adjust the framing and retake.');
             const mask=result.segmentationMasks?.[0];
             if(!mask)throw Error('Body outline unavailable. Use brighter light and a plain background.');
-            shape=AlignaBodyShape.analyse({landmarks:result.landmarks[0],mask:mask.getAsFloat32Array(),width:mask.width,height:mask.height,imageWidth:canvas.width,imageHeight:canvas.height,view:views[index][0]});
+            shape=AlignaBodyShape.analyse({landmarks:result.landmarks[0],mask:mask.getAsFloat32Array(),width:mask.width,height:mask.height,imageWidth:canvas.width,imageHeight:canvas.height,view});
           }finally{result.close();}
+          return shape;
+  }
+  function analysePhoto(canvas){
+          const shape=shapeFromCanvas(canvas,views[index][0]);
           preview={view:views[index][0],dataUrl:canvas.toDataURL('image/jpeg',.85),shape,capturedAt:new Date().toISOString()};
           $('scanPreview').src=preview.dataUrl;$('scanPreview').hidden=false;$('scanCaptureActions').hidden=true;$('scanPreviewActions').hidden=false;notify('Outline captured. Check the photo before continuing.');
   }
@@ -143,7 +147,14 @@
   function result(profile,isSaved){
     disposeResult();screen('scanResult');headings('BODY AVATAR','A shape that starts with you.','An approximate 3D shape, built from your front, back and side outlines.');
     const v=viewer($('scanAvatar'),profile);if(v)renderers.push(v);
-    $('scanViews').querySelectorAll('button').forEach(b=>b.onclick=()=>v?.view(b.dataset.view));
+    let angle='front';
+    const source=$('scanSourcePhoto');source.hidden=true;source.removeAttribute('src');
+    $('scanCompare').textContent='Compare with source photo';
+    const updateSource=()=>{source.src=draft[angle]?.dataUrl||'';};
+    $('scanCompare').onclick=()=>{source.hidden=!source.hidden;if(!source.hidden)updateSource();$('scanCompare').textContent=source.hidden?'Compare with source photo':'Hide source photo';};
+    $('scanViews').querySelectorAll('button').forEach(b=>b.onclick=()=>{angle=b.dataset.view;v?.view(angle);if(!source.hidden)updateSource();});
+    $('scanRefit').hidden=!isSaved;
+    $('scanRefit').disabled=false;
     $('scanSave').textContent=isSaved?'Done':'Save avatar';$('scanSave').disabled=false;$('scanDelete').hidden=!isSaved;
     $('scanSave').onclick=async()=>{
       if(isSaved){close();return;}const owner=user,token=epoch;
@@ -166,6 +177,27 @@
   $('scanFlip').onclick=async()=>{facing=facing==='user'?'environment':'user';captureStep();await camera();};
   $('scanRetake').onclick=()=>{preview=null;captureStep();};
   $('scanAccept').onclick=async()=>{if(!preview)return;draft[views[index][0]]=preview;const next=views.findIndex(([key])=>!draft[key]);if(next<0){review();return;}index=next;captureStep();};
+  $('scanRefit').onclick=async()=>{
+    const owner=user,token=epoch,captures=draft;
+    $('scanRefit').disabled=true;notify('Rebuilding the shape from your saved photos…');
+    try{
+      await ensureTracker();const rebuilt={};
+      for(const [view] of views){
+        if(token!==epoch||owner!==user)return;
+        if(!captures[view]?.dataUrl)throw Error('This scan has no saved photos. Start a new scan.');
+        const blob=await (await fetch(captures[view].dataUrl)).blob();
+        const bitmap=await createImageBitmap(blob);
+        try{
+          if(token!==epoch||owner!==user)return;
+          const canvas=document.createElement('canvas');canvas.width=bitmap.width;canvas.height=bitmap.height;canvas.getContext('2d').drawImage(bitmap,0,0);
+          rebuilt[view]={...captures[view],shape:shapeFromCanvas(canvas,view)};
+        }finally{bitmap.close();}
+      }
+      if(token!==epoch||owner!==user)return;
+      const profile=AlignaBodyShape.combine(rebuilt);draft=rebuilt;result(profile,false);notify('Updated shape ready. Compare it with your photos, then save.');
+    }catch(e){if(token===epoch)notify(e.message||'Could not rebuild. Check your connection and try again.');}
+    finally{if(token===epoch)$('scanRefit').disabled=false;}
+  };
   $('scanBuild').onclick=()=>{try{const profile=AlignaBodyShape.combine(draft);notify('');result(profile,false);}catch(e){notify(e.message);}};
   $('scanRescan').onclick=start;
   let deleteArmed=false;

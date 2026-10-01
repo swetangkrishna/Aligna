@@ -42,3 +42,9 @@ test('closing during photo decoding discards and releases the image',async()=>{
  assert.equal(closed,1);assert.equal($('scanPreview').hidden,true);assert.equal($('scanUpload').disabled,false);
  dom.window.close();
 });
+test('saved scans expose rebuilding and source comparison without starting the camera',async()=>{
+ const {dom,w,auth,$}=setup();await seed(w,'alice','SAVED');auth('alice');await tick();$('alignaBodyScanOpen').click();
+ assert.equal($('scanRefit').hidden,false);assert.equal($('scanSourcePhoto').hidden,true);
+ $('scanCompare').click();assert.equal($('scanSourcePhoto').hidden,false);
+ $('scanCompare').click();assert.equal($('scanSourcePhoto').hidden,true);dom.window.close();
+});

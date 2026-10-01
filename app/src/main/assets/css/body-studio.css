@@ -5,3 +5,5 @@
 @media(prefers-reduced-motion:reduce){.scan-shell *{scroll-behavior:auto!important;transition:none!important}}
 
 .scan-upload{display:block;width:100%;margin-top:10px}.scan-upload:disabled{opacity:.5}
+
+.scan-source-photo{display:block;width:100%;height:340px;object-fit:contain;background:#081015;border-radius:16px;margin:14px 0}.body-avatar-controls{margin-top:0}.body-avatar-canvas{padding-top:20px;box-sizing:border-box}
