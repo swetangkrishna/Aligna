@@ -30,6 +30,7 @@ class MainActivity : Activity() {
     private var photoFileCallback: ValueCallback<Array<Uri>>? = null
     private val photoPickerRequest = 4102
 
+    private lateinit var foodProductBridge: FoodProductBridge
     private lateinit var webView: WebView
     private lateinit var aiManager: AlignaAiManager
     private lateinit var aiBridge: AlignaAiBridge
@@ -85,6 +86,9 @@ class MainActivity : Activity() {
             AlignaAiManager(
                 applicationContext
             )
+
+        foodProductBridge = FoodProductBridge(this, webView)
+        webView.addJavascriptInterface(foodProductBridge, "AlignaProducts")
 
         configureWebView()
         registerJavaScriptBridges()
@@ -258,6 +262,7 @@ class MainActivity : Activity() {
     }
 
     override fun onDestroy() {
+        if (::foodProductBridge.isInitialized) foodProductBridge.close()
         photoFileCallback?.onReceiveValue(null)
         photoFileCallback = null
         if (::aiBridge.isInitialized) {

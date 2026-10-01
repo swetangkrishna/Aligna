@@ -18,6 +18,8 @@
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="true">
 
+        <meta-data android:name="com.google.mlkit.vision.DEPENDENCIES" android:value="barcode_ui" />
+
         <!-- Lets LiteRT-LM (Gemma 4) use compatible GPU/OpenCL backends where available;
              both optional so the app still installs on devices without them. -->
         <uses-native-library android:name="libvndksupport.so" android:required="false"/>
